@@ -582,5 +582,20 @@
 | Safety | No implicit Neon activation; no mainnet, signing, custody, or broadcast path |
 | Next Step | Build async runtime composition and repository adapter wiring behind explicit `PERSISTENCE=neon` |
 
+---
+
+## Progress Block 035 — Async Neon Runtime Composition Added
+
+| Field | Record |
+|---|---|
+| Timestamp | 2026-10-27 08:25 SEAST |
+| Status | In Progress |
+| Task | Add async domain service and explicit Neon runtime composition |
+| Result | Added `AsyncRiskPaperService` and `apps/api/src/neon-runtime.ts`; Neon runtime now constructs only when `PERSISTENCE=neon` and valid `DATABASE_URL` exist |
+| Safety | Existing synchronous memory runtime remains default; Neon path remains PAPER-only and has no signing or broadcast authority |
+| Verification | `24` test files passed; `56` tests passed; lint, build, and diff check passed |
+| Limitation | Runtime factory does not auto-run migrations; production deployment must run migration before enabling Neon |
+| Next Step | Add deployment environment contract, migration startup policy, and integration smoke test with approved Neon database |
+
 
 ---
