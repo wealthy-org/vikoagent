@@ -460,5 +460,20 @@
 | Safety | Paper-only mutation; no signing, mainnet, wallet, or real-fund execution |
 | Next Step | Run full release verification and complete Operator Dashboard hardening |
 
+---
+
+## Progress Block 027 — Dashboard Health States Hardened
+
+| Field | Record |
+|---|---|
+| Timestamp | 2026-10-27 06:35 SEAST |
+| Status | Built |
+| Task | Harden dashboard source health states and safe empty-state rendering |
+| Result | Dashboard displays source plus `HEALTHY`, `STALE`, `RECONNECTING`, or `ERROR`; scanner empty state no longer crashes |
+| API | `getDashboardReadModel(state)` supports deterministic health-state verification |
+| Test | `tests/dashboard-health.test.ts` covers all four health states and persistent PAPER safety label |
+| Safety | Health state uses text and source labels; no color-only state dependency |
+| Next Step | Run complete verification and finalize release readiness audit |
+
 
 ---
