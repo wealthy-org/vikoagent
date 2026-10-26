@@ -1,0 +1,71 @@
+[[entry]]
+id = 1
+type = "story"
+title = "Scaffold runnable Vikoagent workspace"
+description = "Create the web, API, worker, and shared package boundaries with one fixture command path proving the layers can communicate."
+verify = "A clean install runs the fixture command and returns one normalized Token Event through the application boundary."
+covers = ["CAP-1", "CAP-5"]
+after = []
+hitl = true
+risk = "medium"
+references = ["_bmad-output/ux-vikoagent/DESIGN.md", "_bmad-output/ux-vikoagent/EXPERIENCE.md"]
+notes = ["Tracer bullet must expose reference-inspired dashboard shell, fixture scanner event, and persistent DEVNET/PAPER labels."]
+plan_checkpoint = true
+
+[[entry]]
+id = 2
+type = "story"
+title = "Enforce Devnet and Paper safety configuration"
+description = "Add validated runtime configuration that defaults to Solana Devnet and Paper mode and rejects unsafe Phase 1 combinations."
+verify = "Automated configuration tests accept the safe defaults and fail startup for mainnet or unsafe live-mode settings."
+covers = ["CAP-2", "CAP-3", "CAP-4"]
+after = [1]
+hitl = false
+risk = "high"
+plan_checkpoint = true
+done_checkpoint = true
+
+[[entry]]
+id = 3
+type = "story"
+title = "Create persistence and repository baseline"
+description = "Create Neon PostgreSQL migrations and repository ports for Token Events, Decisions, Paper Trades, Treasury, and audit records used by later epics."
+verify = "Migration applies to a clean database and repository contract tests create and retrieve one fixture record with its idempotency key."
+covers = ["CAP-1", "CAP-2", "CAP-4"]
+after = [1, 2]
+hitl = false
+risk = "high"
+
+[[entry]]
+id = 4
+type = "story"
+title = "Define shared domain and read-model contracts"
+description = "Define stable event, decision, receipt, Treasury, health, and API error contracts consumed by ingestion, domain, and dashboard lanes."
+verify = "Contract tests reject incompatible payload shapes and a fixture can serialize and deserialize every shared record type."
+covers = ["CAP-1", "CAP-2", "CAP-3", "CAP-4", "CAP-5"]
+after = [1, 3]
+hitl = false
+risk = "medium"
+
+[[entry]]
+id = 5
+type = "story"
+title = "Refactor sweep"
+description = "Review foundation implementation for dependency-direction violations, duplicated configuration, unsafe logging, and missing tests before downstream epics consume it."
+verify = "Architecture checks, secret scan, lint, and foundation tests pass with no unresolved high-risk finding."
+covers = ["CAP-1", "CAP-2", "CAP-3", "CAP-4", "CAP-5"]
+after = [2, 3, 4]
+hitl = false
+risk = "medium"
+
+[[entry]]
+id = 6
+type = "story"
+title = "Foundation vertical-slice verification"
+description = "Run one end-to-end fixture through configuration, shared contracts, persistence, and the application boundary as the foundation handoff check."
+verify = "One fixture Token Event is persisted, returned through the read-model contract, and marked Devnet/Paper-safe in a repeatable automated test."
+covers = ["CAP-1", "CAP-2", "CAP-4", "CAP-5"]
+after = [5]
+hitl = false
+risk = "high"
+done_checkpoint = true
