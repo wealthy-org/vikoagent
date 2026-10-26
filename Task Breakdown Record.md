@@ -627,5 +627,20 @@
 | Limitation | Live URL connection, reconnect backoff, and Neon network smoke test require deployment credentials/environment; not run locally |
 | Next Step | Add bounded reconnect policy and credential-free integration harness, then execute security review and dashboard/release tickets |
 
+---
+
+## Progress Block 038 — Reconnect, Migration Harness, and Security Gates Verified
+
+| Field | Record |
+|---|---|
+| Timestamp | 2026-10-27 09:30 SEAST |
+| Status | In Progress |
+| Task | Add bounded PumpPortal reconnect policy, credential-free migration harness, and security boundary tests |
+| Result | Reconnect delay capped at `10000ms`; attempts capped at `8`; migration harness verifies all five statements; security tests verify unsafe network/mode rejection |
+| Verification | `28` test files passed; `65` tests passed; lint, build, audit, and diff check passed |
+| Warnings | Three existing `no-explicit-any` warnings remain in `tests/pumpportal-transport.test.ts`; no lint errors |
+| Limitation | Live Neon smoke test and live PumpPortal URL require deployment environment and credentials; not executed locally |
+| Next Step | Formalize dashboard/release ticket plans as done where verified, then prepare live-environment smoke checklist |
+
 
 ---
