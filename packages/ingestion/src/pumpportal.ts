@@ -1,0 +1,5 @@
+import type { AdapterHealth, RawMarketEvent } from './adapter';
+export type PumpPortalNewToken={mint:string;symbol:string;name?:string;uri?:string;signature?:string;}
+export function parsePumpPortalNewToken(input:unknown):RawMarketEvent { if(!input||typeof input!=='object') throw new Error('INVALID_PUMPPORTAL_EVENT'); const value=input as Record<string,unknown>; if(typeof value.mint!=='string'||typeof value.symbol!=='string') throw new Error('INVALID_PUMPPORTAL_EVENT'); const signature=typeof value.signature==='string'?value.signature:typeof value.txType==='string'?value.txType:'event'; return {eventKey:`pumpportal:${signature}:${value.mint}`,source:'PUMPPORTAL',mint:value.mint,symbol:value.symbol,occurredAt:new Date().toISOString(),payload:{name:typeof value.name==='string'?value.name:undefined,uri:typeof value.uri==='string'?value.uri:undefined}}; }
+export function pumpPortalHealth(state:AdapterHealth['state'],message:string):AdapterHealth{return {source:'PUMPPORTAL',state,message};}
+export const PUMPPORTAL_NEW_TOKEN_SUBSCRIPTION=Object.freeze({method:'subscribeNewToken'});
