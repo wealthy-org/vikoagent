@@ -174,3 +174,21 @@
 | Next Step | Run `bmad-build` for story `1.1` after repository boundary decision |
 
 ---
+
+## Progress Block 010 — Story 1.1 Scaffold Built
+
+| Field | Record |
+|---|---|
+| Timestamp | 2026-10-26 22:45 SEAST |
+| Status | Built |
+| Task | Build runnable Vikoagent tracer workspace and reference-inspired UI shell |
+| Skill | `bmad-build` |
+| Result | Next/TypeScript workspace, shared Token Event normalization, fixture read model, and responsive dark-glass dashboard created |
+| Plan | `_bmad-output/initiative-vikoagent/epic-platform-foundation/story-scaffold-runnable-vikoagent-workspace-plan.md` |
+| Main Files | `package.json`; `app/`; `apps/api/`; `apps/web/`; `packages/domain/`; `packages/contracts/`; `tests/` |
+| UI | Purple orb; violet glass panels; scanner; Mind Stream; Treasury; Receipts; persistent `DEVNET` and `PAPER MODE` |
+| Verification | `.next/BUILD_ID` exists; Vitest `2 passed`; malformed Token Event rejection tested |
+| Known Gap | Lint command needs Next 16 lint integration follow-up; browser screenshot review pending |
+| Next Step | Review story `1.1`, then continue story `1.2` safety configuration |
+
+---
