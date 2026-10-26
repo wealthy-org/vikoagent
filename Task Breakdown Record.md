@@ -226,3 +226,207 @@
 | Next Step | Review story `1.2`, then build story `1.3` persistence baseline |
 
 ---
+
+## Progress Block 013 — Story 1.3 Persistence Baseline Built
+
+| Field | Record |
+|---|---|
+| Timestamp | 2026-10-26 23:20 SEAST |
+| Status | Built |
+| Task | Create persistence schema and repository baseline |
+| Result | Neon-compatible migration, repository port, in-memory adapter, and event-key deduplication created |
+| Plan | `_bmad-output/initiative-vikoagent/epic-platform-foundation/story-create-persistence-and-repository-baseline-plan.md` |
+| Tables | `token_events`; `decisions`; `paper_trades`; `treasury_snapshots`; `audit_records` |
+| Safety | No provider logic; no private key persistence; UI remains separated from DB |
+| Verification | Vitest `12 passed`; Next build produced `.next/BUILD_ID` |
+| Commit | `b982811f17895dccf038c6d1d26ae3fbf8a41785` |
+| Next Step | Build story `1.4` shared domain and read-model contracts |
+
+---
+
+## Progress Block 014 — Story 1.4 Shared Contracts Built
+
+| Field | Record |
+|---|---|
+| Timestamp | 2026-10-26 23:35 SEAST |
+| Status | Built |
+| Task | Define shared domain and dashboard read-model contracts |
+| Result | Models, runtime guards, stable exports, and secret-redacting API error serializer created |
+| Plan | `_bmad-output/initiative-vikoagent/epic-platform-foundation/story-define-shared-domain-and-read-model-contracts-plan.md` |
+| Contracts | Decision; Paper Trade; Treasury; Health; API Error; Token Event |
+| Safety | Provider-neutral; no DB types in UI; no LLM authority; no secret leakage |
+| Verification | Vitest `17 passed`; Next build produced `.next/BUILD_ID` |
+| Commit | `ef7dda7210529de70a32fc23f40e2c146b8e9b75` |
+| Next Step | Build story `1.5` refactor sweep |
+
+---
+
+## Progress Block 015 — Story 1.5 Refactor Sweep Built
+
+| Field | Record |
+|---|---|
+| Timestamp | 2026-10-26 23:50 SEAST |
+| Status | Built |
+| Task | Harden foundation tooling and boundary checks |
+| Result | Modern ESLint flat config added; package scripts updated; source safety scan reviewed; build/test/lint verified |
+| Plan | `_bmad-output/initiative-vikoagent/epic-platform-foundation/story-refactor-sweep-plan.md` |
+| Tooling | `eslint.config.mjs`; `npm run lint` now works with Next 16 |
+| Safety Scan | Mainnet strings isolated to visual reference `kivo-clone-full.html`; excluded from source scan |
+| Verification | Vitest `17 passed`; Next build passed; ESLint passed |
+| Commit | `5df4acd869fc6667f0a5fbbdfb85f345ea524d51` |
+| Next Step | Build story `1.6` foundation vertical-slice verification |
+
+---
+
+## Progress Block 016 — Story 1.6 Foundation Vertical Slice Verified
+
+| Field | Record |
+|---|---|
+| Timestamp | 2026-10-26 23:55 SEAST |
+| Status | Built |
+| Task | Verify complete foundation path from fixture to dashboard contract |
+| Result | Safe config, fixture normalization, persistence deduplication, shared guards, read model, and UI surface checks connected |
+| Plan | `_bmad-output/initiative-vikoagent/epic-platform-foundation/story-foundation-vertical-slice-verification-plan.md` |
+| Tests | Foundation slice; UI contract; runtime; persistence; shared contract; token event |
+| Verification | Vitest `19 passed`; Next build passed; ESLint passed |
+| Documentation | `README.md` added with safe local run and verification commands |
+| Commit | `0b32d7a46e78ed8496e022e2d1ec41b4a70ede83` |
+| Next Step | Validate Platform Foundation epic, then start Market Ingestion epic |
+
+---
+
+## Progress Block 017 — Platform Foundation Validated; Market Ingestion Incepted
+
+| Field | Record |
+|---|---|
+| Timestamp | 2026-10-26 23:59 SEAST |
+| Status | Completed |
+| Task | Validate Foundation and break Market Ingestion into implementation stories |
+| Result | Foundation verification passed; Market Ingestion epic received 7 stories and explicit dependency gate |
+| Foundation Evidence | Vitest `19 passed`; Next build passed; ESLint passed; clean Git status before planning |
+| New Epic | `_bmad-output/initiative-vikoagent/epic-market-ingestion/` |
+| Stories | Adapter port; mock source; normalize/persist; PumpPortal boundary; scanner read model; refactor sweep; E2E verification |
+| Dependency Chain | `2.1 → 2.2 → 2.3 → 2.4 → 2.5 → 2.6 → 2.7` |
+| External Gate | `epic-platform-foundation` required by story `2.1` |
+| Open Question | PumpPortal live transport shape and reconnect policy before story `2.4` |
+| Validation | Epic status passed after dependency pin; no unpinned or undeclared prerequisites |
+| Next Step | Build story `2.1` market event adapter port |
+
+---
+
+## Progress Block 018 — Story 2.1 Market Adapter Port Built
+
+| Field | Record |
+|---|---|
+| Timestamp | 2026-10-27 00:10 SEAST |
+| Status | Built |
+| Task | Define provider-neutral market event adapter boundary |
+| Result | Adapter interface, raw/normalized event types, health states, normalizer, and contract tests created |
+| Plan | `_bmad-output/initiative-vikoagent/epic-market-ingestion/story-define-market-event-adapter-port-plan.md` |
+| Contract | Stable `eventKey`; source; mint; symbol; timestamp; serializable health |
+| Safety | No provider SDK types, secrets, private keys, or execution authority |
+| Verification | Vitest `23 passed`; Next build passed; ESLint passed |
+| Commit | `ceb2dab77a23a6d0f4961c8160a76edb0f67f9aa` |
+| Next Step | Build story `2.2` deterministic mock market source |
+
+---
+
+## Progress Block 019 — Story 2.2 Deterministic Mock Source Built
+
+| Field | Record |
+|---|---|
+| Timestamp | 2026-10-27 00:15 SEAST |
+| Status | Built |
+| Task | Implement deterministic local market source |
+| Result | Frozen ordered fixtures, mock adapter lifecycle, health callback, stop flag, and tests created |
+| Plan | `_bmad-output/initiative-vikoagent/epic-market-ingestion/story-implement-deterministic-mock-market-source-plan.md` |
+| Source | `MOCK`; no network; no provider SDK; no execution authority |
+| Verification | Vitest `25 passed`; Next build passed; ESLint passed |
+| Commit | `d5e225e080446258c8affa2b7fcf690a81c858d2` |
+| Next Step | Build story `2.3` normalize and persist market events |
+
+---
+
+## Progress Block 020 — Story 2.3 Market Event Persistence Built
+
+| Field | Record |
+|---|---|
+| Timestamp | 2026-10-27 00:20 SEAST |
+| Status | Built |
+| Task | Connect event normalization to persistent repository upsert |
+| Result | `ingestMarketEvent` service added; canonical mapping and event-key deduplication verified |
+| Plan | `_bmad-output/initiative-vikoagent/epic-market-ingestion/story-normalize-and-persist-market-events-plan.md` |
+| Safety | Malformed events rejected before repository mutation; no external network or execution |
+| Verification | Vitest `27 passed`; Next build passed; ESLint passed |
+| Commit | `7cee91e3fe5723e3dd8d27a45bf63e64a63cf110` |
+| Next Step | Build story `2.4` PumpPortal adapter boundary |
+
+---
+
+## Progress Block 021 — Story 2.4 PumpPortal Boundary Built
+
+| Field | Record |
+|---|---|
+| Timestamp | 2026-10-27 00:25 SEAST |
+| Status | Built |
+| Task | Isolate PumpPortal new-token parsing behind provider adapter boundary |
+| Result | Parser, free `subscribeNewToken` payload, stable event key, health mapper, and malformed-input tests added |
+| Plan | `_bmad-output/initiative-vikoagent/epic-market-ingestion/story-add-pumpportal-adapter-boundary-plan.md` |
+| Safety | No trade subscriptions, wallet, signing, execution, WebSocket credential handling, or API key logging |
+| Research | PumpPortal requires one persistent WebSocket with reconnect/resubscribe for future transport layer |
+| Verification | Vitest `31 passed`; Next build passed; ESLint passed |
+| Commit | `6500dfb01304d2409eae7b1c5205fe80ae21ed3a` |
+| Next Step | Build story `2.5` scanner read model and source health |
+
+---
+
+## Progress Block 022 — Story 2.5 Scanner Read Model Built
+
+| Field | Record |
+|---|---|
+| Timestamp | 2026-10-27 00:35 SEAST |
+| Status | Built |
+| Task | Expose typed scanner events and ingestion health through API boundary |
+| Result | Scanner contract expanded with identity, timing, liquidity, status; health read model supports all four source states |
+| Plan | `_bmad-output/initiative-vikoagent/epic-market-ingestion/story-expose-scanner-read-model-and-source-health-plan.md` |
+| Boundary | UI reads `apps/api/src/read-model.ts`; no repository/provider access |
+| Compatibility | Existing dashboard and foundation slice preserved with additive contract fields |
+| Verification | Vitest `34 passed`; Next build passed; ESLint passed |
+| Commit | `3b4df23420a5e867c7dca0054ae36464bac82b27` |
+| Next Step | Build story `2.6` ingestion refactor sweep |
+
+---
+
+## Progress Block 023 — Story 2.6 Ingestion Refactor Sweep Built
+
+| Field | Record |
+|---|---|
+| Timestamp | 2026-10-27 00:45 SEAST |
+| Status | Built |
+| Task | Harden ingestion validation and reconnect policy |
+| Result | Whitespace/date validation, bounded exponential delay, and secret-hygiene regression tests added |
+| Plan | `_bmad-output/initiative-vikoagent/epic-market-ingestion/story-ingestion-refactor-sweep-plan.md` |
+| Safety | No provider payload secret fields; no network side effects; no signing or execution |
+| Verification | Vitest `37 passed`; Next build passed; ESLint passed |
+| Commit | `ceac38f14337392d27c9f1a379ee859a74733d2` |
+| Next Step | Build story `2.7` market ingestion end-to-end verification |
+
+---
+
+## Progress Block 024 — Story 2.7 Market Ingestion Epic Verified
+
+| Field | Record |
+|---|---|
+| Timestamp | 2026-10-27 00:55 SEAST |
+| Status | Built |
+| Task | Verify complete deterministic market ingestion vertical slice |
+| Result | Mock adapter → normalization → persistence deduplication → scanner health verified end-to-end |
+| Plan | `_bmad-output/initiative-vikoagent/epic-market-ingestion/story-market-ingestion-end-to-end-verification-plan.md` |
+| Replay | `mock:001` duplicate returns existing record; repository count remains `2` |
+| Safety | Verification excludes live WebSocket transport, trade subscriptions, signing, and execution |
+| Verification | Vitest `38 passed`; Next build passed; ESLint passed |
+| Commit | `a8a424c08d2cb031cd20913e077770148ffab0da` |
+| Epic Handoff | Risk engine may consume provider-neutral persisted Token Events |
+| Next Step | Validate Market Ingestion epic, then plan Deterministic Risk and Paper Ledger epic |
+
+---

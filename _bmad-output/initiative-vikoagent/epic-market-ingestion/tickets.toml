@@ -1,0 +1,78 @@
+[[entry]]
+id = 1
+type = "story"
+title = "Define market event adapter port"
+description = "Define provider-neutral market event input, normalized Token Event output, source health, and adapter error contracts for mock and PumpPortal sources."
+verify = "Contract tests accept valid provider-neutral events and reject missing mint, source, or event key with stable errors."
+covers = ["CAP-1"]
+after = ["epic-platform-foundation"]
+hitl = false
+risk = "medium"
+
+[[entry]]
+id = 2
+type = "story"
+title = "Implement deterministic mock market source"
+description = "Implement a fixture-backed source that emits ordered token events and source health through the adapter port for local development and tests."
+verify = "A test starts mock source, receives ordered events, and observes healthy source state without external network access."
+covers = ["CAP-1"]
+after = [1]
+hitl = false
+risk = "low"
+
+[[entry]]
+id = 3
+type = "story"
+title = "Normalize and persist market events"
+description = "Connect adapter output to normalization and Token Event repository upsert so duplicate provider events produce one durable record."
+verify = "Two equivalent source events produce one persisted Token Event and normalized fields retain source, mint, timestamp, and event key."
+covers = ["CAP-1"]
+after = [1, 2]
+hitl = false
+risk = "high"
+
+[[entry]]
+id = 4
+type = "story"
+title = "Add PumpPortal adapter boundary"
+description = "Implement PumpPortal message parsing behind the existing adapter port with reconnect-safe health reporting and no provider payload leakage."
+verify = "Fixture PumpPortal messages normalize through the same port and malformed or disconnected input produces explicit adapter state."
+covers = ["CAP-1"]
+after = [1, 3]
+hitl = false
+risk = "high"
+unknown = "Confirm PumpPortal live transport shape and reconnect policy before implementation; mock-only mode can proceed without it."
+
+[[entry]]
+id = 5
+type = "story"
+title = "Expose scanner read model and source health"
+description = "Expose persisted Token Events and ingestion health to the application read model consumed by the dashboard scanner."
+verify = "Read-model tests return events with age/source/status and distinguish healthy, stale, reconnecting, and error source states."
+covers = ["CAP-1"]
+after = [3, 4]
+hitl = false
+risk = "medium"
+
+[[entry]]
+id = 6
+type = "story"
+title = "Refactor sweep"
+description = "Review ingestion boundary for duplicate normalization, unsafe logging, retry loops, and provider coupling before release to risk engine."
+verify = "Ingestion tests, lint, secret scan, and architecture boundary checks pass with no unresolved high-risk finding."
+covers = ["CAP-1"]
+after = [5]
+hitl = false
+risk = "medium"
+
+[[entry]]
+id = 7
+type = "story"
+title = "Market ingestion end-to-end verification"
+description = "Run mock event through adapter, normalization, persistence, deduplication, health, and scanner read model as the epic handoff."
+verify = "A deterministic fixture run returns one scanner event, source health, and stable duplicate behavior through the application boundary."
+covers = ["CAP-1"]
+after = [6]
+hitl = false
+risk = "high"
+done_checkpoint = true
