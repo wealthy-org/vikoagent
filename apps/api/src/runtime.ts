@@ -1,5 +1,9 @@
 import { RiskPaperService } from '../../../packages/domain/src/risk-paper-service';
 import { InMemoryPaperRepositories } from '../../../packages/persistence/src/paper-repositories';
+import { readPersistenceConfig } from '../../../packages/persistence/src/runtime-config';
+
+export const persistenceConfig = readPersistenceConfig();
+if (persistenceConfig.mode === 'neon') throw new Error('NEON_RUNTIME_COMPOSITION_PENDING');
 import { fixtureTokenEvent } from './fixtures/token-event';
 
 const repositories = new InMemoryPaperRepositories();

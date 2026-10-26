@@ -567,5 +567,20 @@
 | Limitation | Neon runtime composition and migration execution still require deployment environment contract; current default remains in-memory |
 | Next Step | Add deployment environment validation and explicit opt-in Neon runtime composition |
 
+---
+
+## Progress Block 034 — Persistence Environment Contract Added
+
+| Field | Record |
+|---|---|
+| Timestamp | 2026-10-27 08:05 SEAST |
+| Status | In Progress |
+| Task | Add explicit persistence mode configuration and safe Neon opt-in boundary |
+| Result | Added `runtime-config.ts`; default remains `memory`; `PERSISTENCE=neon` requires `DATABASE_URL`; unknown modes fail closed |
+| Runtime | `apps/api/src/runtime.ts` reads config and rejects Neon until async runtime composition is complete |
+| Verification | `23` test files passed; `55` tests passed; lint, build, and diff check passed |
+| Safety | No implicit Neon activation; no mainnet, signing, custody, or broadcast path |
+| Next Step | Build async runtime composition and repository adapter wiring behind explicit `PERSISTENCE=neon` |
+
 
 ---
