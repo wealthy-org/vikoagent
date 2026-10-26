@@ -1,0 +1,88 @@
+[[entry]]
+id = 1
+type = "story"
+title = "Define deterministic risk rule contract"
+description = "Define provider-neutral risk inputs, rules, decision actions, and deterministic evaluation result for Token Events."
+verify = "Contract tests accept valid rules and produce stable decisions for identical event inputs."
+covers = ["CAP-2"]
+after = ["epic-market-ingestion"]
+hitl = false
+risk = "high"
+
+[[entry]]
+id = 2
+type = "story"
+title = "Implement deterministic risk evaluator"
+description = "Evaluate persisted Token Events with ordered threshold rules and stable reasons without LLM or provider dependencies."
+verify = "Fixtures cover WATCH, REJECT, and ACCEPT outcomes with identical output across repeated runs."
+covers = ["CAP-2", "CAP-3"]
+after = [1]
+hitl = false
+risk = "high"
+
+[[entry]]
+id = 3
+type = "story"
+title = "Persist idempotent decisions"
+description = "Add decision repository behavior and application service that creates one Decision per event and rule version."
+verify = "Repeated evaluation with same idempotency key returns one Decision and never creates duplicates."
+covers = ["CAP-2"]
+after = [2]
+hitl = false
+risk = "high"
+
+[[entry]]
+id = 4
+type = "story"
+title = "Implement paper trade command boundary"
+description = "Accept only approved paper BUY or SELL commands and enforce idempotency before ledger mutation."
+verify = "Rejected and WATCH decisions cannot create trades; repeated receipt keys return one trade."
+covers = ["CAP-3", "CAP-4"]
+after = [3]
+hitl = false
+risk = "high"
+
+[[entry]]
+id = 5
+type = "story"
+title = "Implement treasury ledger"
+description = "Apply paper trades to cash, positions, NAV, realized PnL, and receipt records using deterministic arithmetic."
+verify = "Buy and sell fixtures reconcile cash, position quantity, NAV, and realized PnL."
+covers = ["CAP-4"]
+after = [4]
+hitl = false
+risk = "high"
+
+[[entry]]
+id = 6
+type = "story"
+title = "Expose decision and treasury read models"
+description = "Expose provider-neutral decisions, paper receipts, and treasury state through the application read-model boundary."
+verify = "Read-model tests return linked event, decision, receipt, and treasury records without secrets."
+covers = ["CAP-4", "CAP-5"]
+after = [5]
+hitl = false
+risk = "medium"
+
+[[entry]]
+id = 7
+type = "story"
+title = "Refactor sweep"
+description = "Review risk and paper boundaries for nondeterminism, unsafe mutation, secret leakage, and provider coupling."
+verify = "Tests, lint, build, and architecture boundary checks pass with no unresolved high-risk finding."
+covers = ["CAP-2", "CAP-3", "CAP-4"]
+after = [2, 3, 4, 5, 6]
+hitl = false
+risk = "medium"
+
+[[entry]]
+id = 8
+type = "story"
+title = "Risk and paper vertical-slice verification"
+description = "Run Token Event through deterministic evaluation, idempotent decision, paper ledger, treasury, and receipt flow."
+verify = "One fixture produces one decision, one receipt, reconciled treasury state, and stable duplicate behavior."
+covers = ["CAP-2", "CAP-3", "CAP-4"]
+after = [7]
+hitl = false
+risk = "high"
+done_checkpoint = true

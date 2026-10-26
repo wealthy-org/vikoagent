@@ -1,4 +1,6 @@
 export type DecisionAction='ACCEPT'|'REJECT'|'WATCH';
+export type RiskRule={version:string;minLiquidityUsd:number;maxAgeSeconds:number};
+export type RiskInput={eventId:string;mint:string;liquidityUsd:number;ageSeconds:number;timestamp:string};
 export type HealthState='HEALTHY'|'STALE'|'RECONNECTING'|'ERROR';
 export type Decision={id:string;tokenEventId:string;mint:string;action:DecisionAction;reason:string;timestamp:string;receiptId?:string};
 export type PaperTrade={id:string;decisionId:string;receiptKey:string;side:'BUY'|'SELL';quantity:number;price:number;timestamp:string};
