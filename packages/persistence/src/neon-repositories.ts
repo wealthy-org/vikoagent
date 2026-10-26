@@ -1,5 +1,5 @@
 import type { Decision, PaperTrade, TreasuryReadModel } from '../../contracts/src/models';
-import type { DecisionRepository, PaperTradeRepository, ReceiptRecord, ReceiptRepository, TreasuryRepository } from './paper-repositories';
+import type { ReceiptRecord } from './paper-repositories';
 
 export type NeonSql = <T = Record<string, unknown>>(strings: TemplateStringsArray, ...values: unknown[]) => Promise<T[]>;
 

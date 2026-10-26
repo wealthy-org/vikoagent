@@ -537,5 +537,20 @@
 | Limitation | Runtime composition still selects in-memory repositories; Neon client wiring and migration runner remain next work |
 | Next Step | Add server-only Neon client factory and token-event repository, then integration contract tests |
 
+---
+
+## Progress Block 032 — Neon Token Event and Client Boundaries Added
+
+| Field | Record |
+|---|---|
+| Timestamp | 2026-10-27 07:35 SEAST |
+| Status | In Progress |
+| Task | Extend Neon persistence boundary for token events, client creation, and migration entry point |
+| Result | Added `neon-token-events.ts`, `neon-client.ts`, and `migration-runner.ts`; token event validation and `DATABASE_URL` guards covered by tests |
+| Safety | Client factory intentionally throws `NEON_CLIENT_NOT_WIRED`; no dependency download, DB connection, credentials, signing, mainnet, or broadcast enabled |
+| Verification | `22` test files passed; `56` tests passed; lint, build, and diff check passed |
+| Limitation | Actual Neon SDK wiring and runtime selection remain blocked until dependency and deployment environment are approved |
+| Next Step | Wire approved Neon SDK through server-only factory, then add deployment environment contract and live migration tests |
+
 
 ---
