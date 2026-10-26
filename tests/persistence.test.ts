@@ -1,0 +1,4 @@
+import { describe, expect, it } from 'vitest';
+import { InMemoryTokenEventRepository } from '../packages/persistence/src/in-memory-repositories';
+const record={id:'evt-1',eventKey:'pump:evt-1',source:'PUMP.FUN',mint:'mint-1',symbol:'VIKO',occurredAt:'2026-10-26T12:00:00Z',payload:{}};
+describe('persistence baseline',()=>{it('creates first record',()=>{const r=new InMemoryTokenEventRepository();expect(r.upsertByEventKey(record).created).toBe(true);expect(r.count()).toBe(1)});it('deduplicates event key',()=>{const r=new InMemoryTokenEventRepository();const first=r.upsertByEventKey(record);const second=r.upsertByEventKey({...record,id:'evt-2'});expect(second.created).toBe(false);expect(second.record.id).toBe(first.record.id);expect(r.count()).toBe(1)});it('rejects missing id',()=>expect(()=>new InMemoryTokenEventRepository().upsertByEventKey({...record,id:''})).toThrow('INVALID_TOKEN_EVENT_RECORD'))});
