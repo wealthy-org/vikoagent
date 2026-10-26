@@ -1,2 +1,3 @@
-import { fixtureTokenEvent } from './fixtures/token-event';
-export function getScannerEvents() { return [fixtureTokenEvent]; }
+import { fixtureTokenEvent } from './fixtures/token-event'; import type { IngestionHealthReadModel, ScannerEventReadModel } from '../../../packages/contracts/src';
+export function getScannerEvents():ScannerEventReadModel[]{return [{id:fixtureTokenEvent.id,eventKey:fixtureTokenEvent.id,source:fixtureTokenEvent.source,mint:fixtureTokenEvent.mint,symbol:fixtureTokenEvent.symbol,occurredAt:fixtureTokenEvent.timestamp,timestamp:fixtureTokenEvent.timestamp,ageSeconds:fixtureTokenEvent.ageSeconds,liquidityUsd:fixtureTokenEvent.liquidityUsd,status:fixtureTokenEvent.status}];}
+export function getIngestionHealth(state:IngestionHealthReadModel['state']='HEALTHY',message='fixture source'):IngestionHealthReadModel{return {source:'MOCK',state,message,lastEventAt:fixtureTokenEvent.timestamp};}

@@ -1,0 +1,2 @@
+import { describe, expect, it } from 'vitest'; import { getIngestionHealth, getScannerEvents } from '../apps/api/src/read-model';
+describe('scanner read model',()=>{it('returns provider-neutral scanner view',()=>expect(getScannerEvents()[0]).toMatchObject({source:'PUMP.FUN',status:'EVALUATING'}));it('exposes all source health states',()=>{for(const state of ['HEALTHY','STALE','RECONNECTING','ERROR'] as const) expect(getIngestionHealth(state).state).toBe(state);});it('includes last event timestamp',()=>expect(getIngestionHealth().lastEventAt).toBeTruthy());});

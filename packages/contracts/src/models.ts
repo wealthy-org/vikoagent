@@ -4,4 +4,6 @@ export type Decision={id:string;tokenEventId:string;mint:string;action:DecisionA
 export type PaperTrade={id:string;decisionId:string;receiptKey:string;side:'BUY'|'SELL';quantity:number;price:number;timestamp:string};
 export type TreasuryReadModel={nav:number;realizedPnl:number;positions:number;mode:'PAPER'};
 export type HealthReadModel={state:HealthState;lastEventAt?:string;message:string};
+export type ScannerEventReadModel={id:string;eventKey:string;source:string;mint:string;symbol:string;occurredAt:string;timestamp:string;ageSeconds:number;liquidityUsd:number;status:'NEW'|'WATCHED'|'REJECTED'|'EVALUATING'|'SCANNING'|'ACCEPTED'};
+export type IngestionHealthReadModel=HealthReadModel & {source:string};
 export type ApiError={code:string;message:string;requestId:string};
