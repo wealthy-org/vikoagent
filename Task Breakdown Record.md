@@ -446,3 +446,19 @@
 | Next Step | Run final full verification, update Epic 3 status, then plan Operator Dashboard hardening |
 
 ---
+
+## Progress Block 026 — Treasury Average-Cost Accounting Hardened
+
+| Field | Record |
+|---|---|
+| Timestamp | 2026-10-27 06:25 SEAST |
+| Status | Built |
+| Task | Correct paper treasury realized PnL and position valuation |
+| Result | Treasury tracks average entry cost; SELL realizes price delta against cost basis |
+| Rules | BUY recalculates weighted average cost; SELL reduces position and realizes `(sellPrice - averageCost) × quantity` |
+| Verification | Profit, remaining position, weighted average cost, and insufficient-position guards tested |
+| Safety | Paper-only mutation; no signing, mainnet, wallet, or real-fund execution |
+| Next Step | Run full release verification and complete Operator Dashboard hardening |
+
+
+---

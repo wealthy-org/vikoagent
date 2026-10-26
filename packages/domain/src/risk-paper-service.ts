@@ -19,7 +19,7 @@ export class RiskPaperService {
     const existing = this.repositories.getTrade(receiptKey); if (existing) return existing;
     if (decision.action !== 'ACCEPT') throw new Error('DECISION_NOT_APPROVED');
     const current = this.repositories.get();
-    const state: Treasury = {startingBalance:10000, cash:current.cash, positionQuantity:current.positions, nav:current.nav, realizedPnl:current.realizedPnl};
+    const state: Treasury = {startingBalance:10000, cash:current.cash, positionQuantity:current.positions, averageCost:current.positions ? (current.nav - current.cash) / current.positions : 0, nav:current.nav, realizedPnl:current.realizedPnl};
     const trade: PaperTrade = {id:`trade-${receiptKey}`, decisionId:decision.id, receiptKey, side, quantity, price, timestamp:this.now()};
     const next = applyPaperTrade(state, trade);
     const saved = this.repositories.upsertTrade(receiptKey, trade).record;
