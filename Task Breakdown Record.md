@@ -430,3 +430,19 @@
 | Next Step | Validate Market Ingestion epic, then plan Deterministic Risk and Paper Ledger epic |
 
 ---
+
+## Progress Block 025 — Dashboard Receipts and Release Verification Built
+
+| Field | Record |
+|---|---|
+| Timestamp | 2026-10-27 06:15 SEAST |
+| Status | Built |
+| Task | Render persisted paper receipts and verify integrated release telemetry |
+| Result | Dashboard receipt list renders immutable receipt IDs, trade IDs, and timestamps from runtime read model |
+| Runtime | Mock Token Event → Risk Decision → Paper Trade → Treasury → Receipt → Dashboard |
+| Verification | Release vertical-slice test confirms DEVNET/PAPER safety state, linked decision/event/receipt, and MOCK source health |
+| Test | `tests/release-verification.test.ts` |
+| Safety | No signing, mainnet, wallet, or real-fund execution introduced |
+| Next Step | Run final full verification, update Epic 3 status, then plan Operator Dashboard hardening |
+
+---
