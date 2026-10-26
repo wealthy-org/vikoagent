@@ -114,23 +114,24 @@ flowchart LR
 apps/
   web/                 # dashboard and versioned read-model client
   api/                 # read models and controlled commands
-workers/
-  market-ingestor/     # provider connections and event normalization
 packages/
+  ingestion/           # provider connections, parsing, normalization
   domain/              # risk, decisions, paper portfolio
-  integrations/        # PumpPortal, OpenRouter, Solana, Meteora adapters
-  db/                  # schema, migrations, repositories
+  persistence/         # repository ports and in-memory baseline
   config/              # validated runtime configuration
+apps/
+  api/                 # read models and startup boundary
+  web/                 # target dashboard surface; root app remains current runtime entry
 ```
 
 ## Capability → Architecture Map
 
 | Capability / Area | Lives in | Governed by |
 |---|---|---|
-| CAP-1 discovery | `workers/market-ingestor`, `packages/integrations`, `packages/db` | AD-3, AD-4 |
+| CAP-1 discovery | `packages/ingestion`, `packages/persistence` | AD-3, AD-4 |
 | CAP-2 risk decisions | `packages/domain` | AD-2, AD-3 |
-| CAP-3 reasoning | `packages/integrations`, application services | AD-4, AD-6 |
-| CAP-4 paper ledger | `packages/domain`, `packages/db` | AD-2, AD-3, AD-5 |
+| CAP-3 reasoning | `packages/domain`, application services | AD-4, AD-6 |
+| CAP-4 paper ledger | `packages/domain`, `packages/persistence` | AD-2, AD-3, AD-5 |
 | CAP-5 dashboard | `apps/web`, `apps/api` | AD-7, AD-8 |
 
 ## Deferred
