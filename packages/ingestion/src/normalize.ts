@@ -1,0 +1,2 @@
+import type { NormalizedMarketEvent, RawMarketEvent } from './adapter';
+export function normalizeMarketEvent(input:RawMarketEvent):NormalizedMarketEvent { if(!input.eventKey||!input.source||!input.mint||!input.symbol||!input.occurredAt) throw new Error('INVALID_MARKET_EVENT'); return {eventKey:input.eventKey,source:input.source.trim().toUpperCase(),mint:input.mint.trim(),symbol:input.symbol.trim().toUpperCase(),occurredAt:new Date(input.occurredAt).toISOString(),payload:input.payload ?? {}}; }
