@@ -8,7 +8,7 @@ export interface TreasuryRepository { save(treasury:TreasuryReadModel):TreasuryR
 
 export class InMemoryPaperRepositories implements DecisionRepository, PaperTradeRepository, ReceiptRepository, TreasuryRepository {
   private decisions = new Map<string, Decision>(); private trades = new Map<string, PaperTrade>(); private receipts = new Map<string, ReceiptRecord>();
-  private treasury:TreasuryReadModel = {nav:10000, realizedPnl:0, positions:0, mode:'PAPER'};
+  private treasury:TreasuryReadModel = {cash:10000, nav:10000, realizedPnl:0, positions:0, mode:'PAPER'};
   upsertDecision(key:string, decision:Decision){const old=this.decisions.get(key); if(old)return {created:false,record:old}; this.decisions.set(key,decision); return {created:true,record:decision};}
   getDecision(key:string){return this.decisions.get(key);}
   upsertTrade(receiptKey:string, trade:PaperTrade){return this.upsertTradeInternal(receiptKey,trade);}
