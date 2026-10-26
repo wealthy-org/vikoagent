@@ -597,5 +597,20 @@
 | Limitation | Runtime factory does not auto-run migrations; production deployment must run migration before enabling Neon |
 | Next Step | Add deployment environment contract, migration startup policy, and integration smoke test with approved Neon database |
 
+---
+
+## Progress Block 036 — Deployment Safety Contract Added
+
+| Field | Record |
+|---|---|
+| Timestamp | 2026-10-27 08:45 SEAST |
+| Status | In Progress |
+| Task | Add deployment environment validation and explicit migration startup policy |
+| Result | Added `deployment-config.ts`; Neon runtime now uses validated config and runs initial migration only when `MIGRATE_ON_STARTUP=true` |
+| Safety | Rejects mainnet, non-PAPER mode, invalid persistence, missing Neon URL, and migration on memory runtime |
+| Verification | `25` test files passed; `60` tests passed; lint, build, audit, and diff check passed |
+| Limitation | Migration runner currently creates initial table entry only; full migration application and live Neon smoke test remain |
+| Next Step | Implement complete migration runner and add approved Neon integration smoke test without committing credentials |
+
 
 ---
