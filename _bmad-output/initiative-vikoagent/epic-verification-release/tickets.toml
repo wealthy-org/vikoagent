@@ -1,0 +1,33 @@
+[[entry]]
+id = 1
+type = "story"
+title = "Define release environment and health contract"
+description = "Document safe runtime variables, startup checks, health probes, and deployment boundaries for PAPER mode."
+verify = "Configuration tests reject unsafe values and health contract lists required dependencies."
+covers = ["CAP-1", "CAP-2", "CAP-3", "CAP-4", "CAP-5"]
+after = ["epic-operator-dashboard"]
+hitl = false
+risk = "high"
+
+[[entry]]
+id = 2
+type = "story"
+title = "Production dependency and security verification"
+description = "Run dependency audit, secret scan, source boundary review, and runtime safety checks."
+verify = "No vulnerable production dependency, secret exposure, provider leakage, or signing path is proven."
+covers = ["CAP-1", "CAP-2", "CAP-3", "CAP-4", "CAP-5"]
+after = [1]
+hitl = false
+risk = "high"
+
+[[entry]]
+id = 3
+type = "story"
+title = "Release end-to-end verification"
+description = "Verify ingestion, risk, paper ledger, receipts, dashboard read models, health states, build, and deployment checks together."
+verify = "Release suite passes with safe PAPER defaults and explicit deferred live-provider gates."
+covers = ["CAP-1", "CAP-2", "CAP-3", "CAP-4", "CAP-5"]
+after = [2]
+hitl = false
+risk = "high"
+done_checkpoint = true

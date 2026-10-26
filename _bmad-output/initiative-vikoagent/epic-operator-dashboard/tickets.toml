@@ -1,0 +1,44 @@
+[[entry]]
+id = 1
+type = "story"
+title = "Formalize dashboard read model states"
+description = "Define loading, empty, healthy, stale, reconnecting, and error states for operator telemetry surfaces."
+verify = "Contract tests cover every state without exposing provider or secret data."
+covers = ["CAP-5"]
+after = ["epic-risk-paper-engine"]
+hitl = false
+risk = "medium"
+
+[[entry]]
+id = 2
+type = "story"
+title = "Implement operator dashboard telemetry surfaces"
+description = "Render scanner, decision stream, treasury, receipts, and safety labels from versioned read models."
+verify = "Dashboard renders linked event, decision, treasury, receipt, source, network, and mode data."
+covers = ["CAP-5"]
+after = [1]
+hitl = false
+risk = "medium"
+
+[[entry]]
+id = 3
+type = "story"
+title = "Dashboard responsive and accessibility hardening"
+description = "Verify narrow viewport layout, semantic status text, keyboard access, and safe empty/error behavior."
+verify = "UI contract and browser checks pass for desktop and narrow viewport states."
+covers = ["CAP-5"]
+after = [2]
+hitl = false
+risk = "medium"
+
+[[entry]]
+id = 4
+type = "story"
+title = "Operator dashboard vertical-slice verification"
+description = "Verify the integrated operator view against the mock paper telemetry runtime."
+verify = "One fixture flow appears as scanner event, decision, treasury state, and receipt without unsafe action cues."
+covers = ["CAP-5"]
+after = [3]
+hitl = false
+risk = "high"
+done_checkpoint = true
