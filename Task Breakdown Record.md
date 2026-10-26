@@ -612,5 +612,20 @@
 | Limitation | Migration runner currently creates initial table entry only; full migration application and live Neon smoke test remain |
 | Next Step | Implement complete migration runner and add approved Neon integration smoke test without committing credentials |
 
+---
+
+## Progress Block 037 — Migration and PumpPortal Transport Boundaries Hardened
+
+| Field | Record |
+|---|---|
+| Timestamp | 2026-10-27 09:10 SEAST |
+| Status | In Progress |
+| Task | Complete schema migration sequence and add live-provider transport boundary |
+| Result | Migration runner now applies all five schema statements sequentially; PumpPortal transport supports subscription, event parsing, stop, and health transitions |
+| Safety | Transport only ingests market events; no trade command, wallet, signing, broadcast, or mainnet path |
+| Verification | `26` test files passed; `62` tests passed; lint, build, audit, and diff check passed |
+| Limitation | Live URL connection, reconnect backoff, and Neon network smoke test require deployment credentials/environment; not run locally |
+| Next Step | Add bounded reconnect policy and credential-free integration harness, then execute security review and dashboard/release tickets |
+
 
 ---
