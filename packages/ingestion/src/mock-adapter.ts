@@ -1,0 +1,2 @@
+import type { AdapterHealth, MarketEventAdapter } from './adapter'; import { mockMarketEvents } from './mock-fixtures';
+export class DeterministicMockAdapter implements MarketEventAdapter { readonly source='MOCK'; private stopped=false; async start(onEvent:(event:(typeof mockMarketEvents)[number])=>void,onHealth:(health:AdapterHealth)=>void){this.stopped=false; onHealth({source:this.source,state:'HEALTHY',message:'deterministic mock source'}); for(const event of mockMarketEvents){if(this.stopped) break; onEvent(event);} } async stop(){this.stopped=true;} }
