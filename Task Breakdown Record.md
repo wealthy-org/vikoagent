@@ -521,5 +521,21 @@
 | Safety | Mainnet, signing, custody, user funds, staking, and token contracts remain excluded |
 | Next Step | Formalize remaining epics, then implement Neon repository behind existing persistence ports |
 
+---
+
+## Progress Block 031 — Neon Persistence Boundary Implemented
+
+| Field | Record |
+|---|---|
+| Timestamp | 2026-10-27 07:25 SEAST |
+| Status | In Progress |
+| Task | Add Neon-compatible async paper repository boundary and schema support |
+| Result | Added `packages/persistence/src/neon-repositories.ts`; added decision idempotency key, treasury fields, and receipt table to `db/migrations/001_initial.sql` |
+| Safety | Adapter requires `DATABASE_URL`; no database client, credentials, signing, wallet, mainnet, or broadcast path added |
+| Compatibility | Existing synchronous in-memory repositories remain unchanged; Neon SQL client injected at runtime boundary |
+| Verification | `21` test files passed; `54` tests passed; build, lint, and diff check passed |
+| Limitation | Runtime composition still selects in-memory repositories; Neon client wiring and migration runner remain next work |
+| Next Step | Add server-only Neon client factory and token-event repository, then integration contract tests |
+
 
 ---

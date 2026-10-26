@@ -11,6 +11,8 @@ CREATE TABLE IF NOT EXISTS token_events (
 CREATE TABLE IF NOT EXISTS decisions (
   id TEXT PRIMARY KEY,
   token_event_id TEXT NOT NULL REFERENCES token_events(id),
+  decision_key TEXT NOT NULL UNIQUE,
+  mint TEXT NOT NULL,
   action TEXT NOT NULL,
   reason TEXT NOT NULL,
   created_at TIMESTAMPTZ NOT NULL DEFAULT now()
@@ -26,8 +28,19 @@ CREATE TABLE IF NOT EXISTS paper_trades (
 );
 CREATE TABLE IF NOT EXISTS treasury_snapshots (
   id TEXT PRIMARY KEY,
+  cash NUMERIC NOT NULL,
   nav NUMERIC NOT NULL,
   realized_pnl NUMERIC NOT NULL,
+  positions NUMERIC NOT NULL,
+  mode TEXT NOT NULL DEFAULT 'PAPER',
+  created_at TIMESTAMPTZ NOT NULL DEFAULT now()
+);
+CREATE TABLE IF NOT EXISTS receipts (
+  id TEXT PRIMARY KEY,
+  receipt_key TEXT NOT NULL UNIQUE,
+  decision_id TEXT NOT NULL REFERENCES decisions(id),
+  token_event_id TEXT NOT NULL REFERENCES token_events(id),
+  trade_id TEXT NOT NULL REFERENCES paper_trades(id),
   created_at TIMESTAMPTZ NOT NULL DEFAULT now()
 );
 CREATE TABLE IF NOT EXISTS audit_records (
