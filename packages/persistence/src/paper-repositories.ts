@@ -3,7 +3,7 @@ import type { Decision, PaperTrade, TreasuryReadModel } from '../../contracts/sr
 export type ReceiptRecord = { id:string; receiptKey:string; decisionId:string; tokenEventId:string; tradeId:string; timestamp:string };
 export interface DecisionRepository { upsertDecision(key:string, decision:Decision): {created:boolean;record:Decision}; getDecision(key:string):Decision|undefined; }
 export interface PaperTradeRepository { upsertTrade(receiptKey:string, trade:PaperTrade): {created:boolean;record:PaperTrade}; getTrade(receiptKey:string):PaperTrade|undefined; }
-export interface ReceiptRepository { create(receipt:ReceiptRecord): {created:boolean;record:ReceiptRecord}; getByKey(key:string):ReceiptRecord|undefined; }
+export interface ReceiptRepository { create(receipt:ReceiptRecord): {created:boolean;record:ReceiptRecord}; getByKey(key:string):ReceiptRecord|undefined; list():ReceiptRecord[]; }
 export interface TreasuryRepository { save(treasury:TreasuryReadModel):TreasuryReadModel; get():TreasuryReadModel; }
 
 export class InMemoryPaperRepositories implements DecisionRepository, PaperTradeRepository, ReceiptRepository, TreasuryRepository {
@@ -16,6 +16,7 @@ export class InMemoryPaperRepositories implements DecisionRepository, PaperTrade
   getTrade(receiptKey:string){return this.trades.get(receiptKey);}
   create(receipt:ReceiptRecord){const old=this.receipts.get(receipt.receiptKey); if(old)return {created:false,record:old}; this.receipts.set(receipt.receiptKey,receipt); return {created:true,record:receipt};}
   getByKey(key:string){return this.receipts.get(key);}
+  list(){return [...this.receipts.values()];}
   save(treasury:TreasuryReadModel){this.treasury={...treasury};return this.treasury;}
   get(){return {...this.treasury};}
 }
