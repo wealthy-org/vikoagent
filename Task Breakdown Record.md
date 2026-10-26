@@ -552,5 +552,20 @@
 | Limitation | Actual Neon SDK wiring and runtime selection remain blocked until dependency and deployment environment are approved |
 | Next Step | Wire approved Neon SDK through server-only factory, then add deployment environment contract and live migration tests |
 
+---
+
+## Progress Block 033 — Approved Neon SDK Wired
+
+| Field | Record |
+|---|---|
+| Timestamp | 2026-10-27 07:50 SEAST |
+| Status | In Progress |
+| Task | Wire approved Neon serverless SDK behind persistence client factory |
+| Result | Added `@neondatabase/serverless`; `createNeonSql()` now returns injected Neon SQL client when `DATABASE_URL` exists and fails closed otherwise |
+| Safety | No browser import, wallet signing, mainnet, broadcast, or runtime switch from PAPER default |
+| Verification | `23` test files passed; `58` tests passed; lint, build, audit, and diff check passed |
+| Limitation | Neon runtime composition and migration execution still require deployment environment contract; current default remains in-memory |
+| Next Step | Add deployment environment validation and explicit opt-in Neon runtime composition |
+
 
 ---
