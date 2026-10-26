@@ -3,7 +3,7 @@ title: 'Add PumpPortal adapter boundary'
 type: 'feature'
 ticket: '4'
 created: '2026-10-27'
-status: 'built'
+status: done
 baseline_revision: '7cee91e3fe5723e3dd8d27a45bf63e64a63cf110'
 route: 'oneshot'
 route_source: 'auto'

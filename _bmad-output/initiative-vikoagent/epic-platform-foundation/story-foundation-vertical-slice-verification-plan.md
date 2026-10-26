@@ -3,7 +3,7 @@ title: 'Foundation vertical-slice verification'
 type: 'feature'
 ticket: '6'
 created: '2026-10-26'
-status: 'built'
+status: done
 baseline_revision: '5df4acd869fc6667f0a5fbbdfb85f345ea524d51'
 route: 'oneshot'
 route_source: 'auto'

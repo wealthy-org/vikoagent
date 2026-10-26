@@ -3,7 +3,7 @@ title: 'Normalize and persist market events'
 type: 'feature'
 ticket: '3'
 created: '2026-10-27'
-status: 'built'
+status: done
 baseline_revision: 'd5e225e080446258c8affa2b7fcf690a81c858d2'
 route: 'oneshot'
 route_source: 'auto'

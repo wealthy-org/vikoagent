@@ -3,7 +3,7 @@ title: 'Define market event adapter port'
 type: 'feature'
 ticket: '1'
 created: '2026-10-26'
-status: 'built'
+status: done
 baseline_revision: '0b32d7a46e78ed8496e022e2d1ec41b4a70ede83'
 route: 'oneshot'
 route_source: 'auto'

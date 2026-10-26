@@ -3,7 +3,7 @@ title: 'Expose scanner read model and source health'
 type: 'feature'
 ticket: '5'
 created: '2026-10-27'
-status: 'built'
+status: done
 baseline_revision: '6500dfb01304d2409eae7b1c5205fe80ae21ed3a'
 route: 'oneshot'
 route_source: 'auto'

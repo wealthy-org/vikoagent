@@ -3,7 +3,7 @@ title: 'Scaffold runnable Vikoagent workspace'
 type: 'feature'
 ticket: '1'
 created: '2026-10-26'
-status: 'built'
+status: done
 baseline_revision: 'HEAD'
 route: 'full'
 route_source: 'auto'

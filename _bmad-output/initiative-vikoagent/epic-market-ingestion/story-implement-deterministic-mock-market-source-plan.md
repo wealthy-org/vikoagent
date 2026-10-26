@@ -3,7 +3,7 @@ title: 'Implement deterministic mock market source'
 type: 'feature'
 ticket: '2'
 created: '2026-10-27'
-status: 'built'
+status: done
 baseline_revision: 'ceb2dab77a23a6d0f4961c8160a76edb0f67f9aa'
 route: 'oneshot'
 route_source: 'auto'

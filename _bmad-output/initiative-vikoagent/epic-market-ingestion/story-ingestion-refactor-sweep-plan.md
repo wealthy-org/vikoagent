@@ -3,7 +3,7 @@ title: 'Ingestion refactor sweep'
 type: 'refactor'
 ticket: '6'
 created: '2026-10-27'
-status: 'built'
+status: done
 baseline_revision: '3b4df23420a5e867c7dca0054ae36464bac82b27'
 route: 'oneshot'
 route_source: 'auto'

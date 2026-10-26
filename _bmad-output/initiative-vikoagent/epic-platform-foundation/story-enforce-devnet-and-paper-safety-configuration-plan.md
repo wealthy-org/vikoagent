@@ -3,7 +3,7 @@ title: 'Enforce Devnet and Paper safety configuration'
 type: 'feature'
 ticket: '2'
 created: '2026-10-26'
-status: 'built'
+status: done
 baseline_revision: '7e7d3e25b657cbed437c16fe7a41c30daf34044c'
 route: 'oneshot'
 route_source: 'auto'

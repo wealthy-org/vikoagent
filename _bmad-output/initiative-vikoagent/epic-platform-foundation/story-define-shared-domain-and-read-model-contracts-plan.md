@@ -3,7 +3,7 @@ title: 'Define shared domain and read-model contracts'
 type: 'feature'
 ticket: '4'
 created: '2026-10-26'
-status: 'built'
+status: done
 baseline_revision: 'b982811f17895dccf038c6d1d26ae3fbf8a41785'
 route: 'oneshot'
 route_source: 'auto'

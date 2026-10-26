@@ -3,7 +3,7 @@ title: 'Market ingestion end-to-end verification'
 type: 'feature'
 ticket: '7'
 created: '2026-10-27'
-status: 'built'
+status: done
 baseline_revision: 'ceac38f14337392d27c9f1a379ee859a74733d2d'
 route: 'oneshot'
 route_source: 'auto'

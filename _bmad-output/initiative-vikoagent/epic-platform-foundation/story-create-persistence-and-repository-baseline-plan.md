@@ -3,7 +3,7 @@ title: 'Create persistence and repository baseline'
 type: 'feature'
 ticket: '3'
 created: '2026-10-26'
-status: 'built'
+status: done
 baseline_revision: '7e08e9657d206767e8a2946acff07da897bcb262'
 route: 'oneshot'
 route_source: 'auto'
