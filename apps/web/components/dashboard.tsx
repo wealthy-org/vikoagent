@@ -219,6 +219,34 @@ export function Dashboard() {
   const [aiModelLabel, setAiModelLabel] = useState('🧠 Llama 3 via OpenRouter');
   const [activeAnalysisToken, setActiveAnalysisToken] = useState('$SOLCAT');
   const [dbSyncedCount, setDbSyncedCount] = useState<number>(5);
+  const [connectedAddress, setConnectedAddress] = useState<string | null>(null);
+  const [isConnecting, setIsConnecting] = useState(false);
+
+  // Solana Devnet Read-Only Wallet Connect
+  async function handleConnectWallet() {
+    if (connectedAddress) {
+      setConnectedAddress(null);
+      return;
+    }
+
+    setIsConnecting(true);
+    try {
+      // Check for Phantom / Solflare in window
+      const provider = (window as unknown as { solana?: { isPhantom?: boolean; connect: () => Promise<{ publicKey: { toString: () => string } }> } })?.solana;
+      if (provider && typeof provider.connect === 'function') {
+        const resp = await provider.connect();
+        const pubkey = resp.publicKey.toString();
+        setConnectedAddress(`${pubkey.slice(0, 4)}...${pubkey.slice(-4)}`);
+      } else {
+        // Fallback demo devnet address for simulated inspection
+        setConnectedAddress('7xKX...42As (Devnet)');
+      }
+    } catch {
+      setConnectedAddress('7xKX...42As (Devnet)');
+    } finally {
+      setIsConnecting(false);
+    }
+  }
 
   // Initial load DB count
   useEffect(() => {
@@ -426,12 +454,18 @@ export function Dashboard() {
 
           <div className="nav-right-actions">
             <a href="#mind-stream" className="nav-pill-btn">Docs</a>
-            <button type="button" className="nav-pill-btn nav-pill-btn-primary">
+            <button
+              type="button"
+              onClick={handleConnectWallet}
+              disabled={isConnecting}
+              className={`nav-pill-btn ${connectedAddress ? 'nav-pill-btn-connected' : 'nav-pill-btn-primary'}`}
+              style={connectedAddress ? { background: 'var(--color-long-soft)', color: 'var(--color-long)', borderColor: 'var(--color-long)' } : {}}
+            >
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" style={{ marginRight: '4px' }}>
                 <rect x="2" y="4" width="20" height="16" rx="3" />
                 <path d="M16 12h.01" />
               </svg>
-              Connect
+              {isConnecting ? 'Connecting...' : connectedAddress ? connectedAddress : 'Connect'}
             </button>
           </div>
         </header>
