@@ -453,7 +453,7 @@ export function Dashboard() {
           </div>
 
           <div className="nav-right-actions">
-            <a href="#mind-stream" className="nav-pill-btn">Docs</a>
+            <a href="/docs#agent" className="nav-pill-btn">Docs</a>
             <button
               type="button"
               onClick={handleConnectWallet}
@@ -1086,11 +1086,11 @@ export function Dashboard() {
                   <span>Explore Stream</span>
                   <span style={{ fontSize: '11px' }}>↗</span>
                 </a>
-                <a href="#mind-stream" className="footer-pill-link footer-pill-white">
-                  Telemetry
+                <a href="/docs" className="footer-pill-link footer-pill-white">
+                  White paper
                 </a>
-                <a href="#treasury-section" className="footer-pill-link footer-pill-white">
-                  Treasury
+                <a href="#scanner-radar" className="footer-pill-link footer-pill-white">
+                  Scanner
                 </a>
                 <a
                   href="https://x.com"
