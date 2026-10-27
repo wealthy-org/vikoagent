@@ -657,5 +657,20 @@
 | Safety | No credentials committed; no mainnet, signing, broadcast, or real-fund path enabled |
 | Next Step | Run smoke checklist only in approved environment with injected secrets; then record environment evidence separately |
 
+---
+
+## Progress Block 040 — Neon Evidence Recorded and PumpPortal URL Guard Added
+
+| Field | Record |
+|---|---|
+| Timestamp | 2026-10-27 10:05 SEAST |
+| Status | In Progress |
+| Task | Record external Neon staging smoke evidence and guard PumpPortal runtime URL configuration |
+| Result | Added `docs/staging-smoke-report.md`; added `pumpportal-config.ts` requiring `wss://` and rejecting unsafe URL patterns |
+| Evidence | Antigravity reported Neon migration, tables, idempotency, credential rotation, and local checks passed; raw secrets/logs absent by design |
+| Verification | `29` test files passed; `68` tests passed; lint, build, audit, and diff check passed |
+| Limitation | PumpPortal URL not provided to workspace; no live socket opened; no production certification claimed |
+| Next Step | Obtain approved read-only `wss://` URL through secret manager, wire config into transport startup, and run staging-only connection smoke test |
+
 
 ---
