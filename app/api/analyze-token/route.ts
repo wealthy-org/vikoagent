@@ -7,11 +7,14 @@ export async function POST(req: Request) {
     const body = await req.json();
     const { symbol, liquidityUsd, bondingProgress, devHoldPercent } = body;
 
-    // Sanitize input variables to prevent prompt injections
+    // Sanitize input variables to prevent prompt injections and NaN values
     const safeSymbol = String(symbol || '').replace(/[^a-zA-Z0-9$]/g, '').slice(0, 16);
-    const safeLiquidity = Math.max(0, Number(liquidityUsd || 0));
-    const safeBonding = Math.min(100, Math.max(0, Number(bondingProgress || 0)));
-    const safeDevHold = Math.min(100, Math.max(0, Number(devHoldPercent || 0)));
+    const numLiquidity = Number(liquidityUsd);
+    const safeLiquidity = Number.isFinite(numLiquidity) ? Math.max(0, numLiquidity) : 0;
+    const numBonding = Number(bondingProgress);
+    const safeBonding = Number.isFinite(numBonding) ? Math.min(100, Math.max(0, numBonding)) : 0;
+    const numDevHold = Number(devHoldPercent);
+    const safeDevHold = Number.isFinite(numDevHold) ? Math.min(100, Math.max(0, numDevHold)) : 0;
 
     const apiKey = process.env.OPENROUTER_API_KEY;
     const model = process.env.LLM_MODEL || 'nvidia/nemotron-3.5-lightning:free';

@@ -56,6 +56,46 @@ describe('Serverless API Route Handlers', () => {
 
       process.env.OPENROUTER_API_KEY = originalKey;
     });
+
+    it('safely handles NaN and non-numeric inputs without breaking fallback reasoning', async () => {
+      const originalKey = process.env.OPENROUTER_API_KEY;
+      delete process.env.OPENROUTER_API_KEY;
+
+      const req = new Request('http://localhost:3000/api/analyze-token', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          symbol: 12345,
+          liquidityUsd: 'not_a_number',
+          bondingProgress: NaN,
+          devHoldPercent: 'invalid',
+        }),
+      });
+
+      const res = await analyzePost(req);
+      const json = await res.json();
+
+      expect(res.status).toBe(200);
+      expect(json.reasoning).not.toContain('NaN');
+      expect(json.model).toBe('Deterministic Risk Fallback');
+
+      process.env.OPENROUTER_API_KEY = originalKey;
+    });
+
+    it('handles malformed request body gracefully', async () => {
+      const req = new Request('http://localhost:3000/api/analyze-token', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: 'invalid-json-content',
+      });
+
+      const res = await analyzePost(req);
+      const json = await res.json();
+
+      expect(res.status).toBe(200);
+      expect(json.model).toBe('Deterministic Risk Fallback');
+      expect(json.error).toBeDefined();
+    });
   });
 
   describe('GET & POST /api/record-token', () => {
@@ -75,6 +115,29 @@ describe('Serverless API Route Handlers', () => {
       expect(res.status).toBe(400);
       expect(json.success).toBe(false);
       expect(json.reason).toBeDefined();
+    });
+
+    it('returns 400 with NO_DATABASE_URL when DATABASE_URL is not set', async () => {
+      const originalUrl = process.env.DATABASE_URL;
+      delete process.env.DATABASE_URL;
+
+      const req = new Request('http://localhost:3000/api/record-token', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          mint: 'So11111111111111111111111111111111111111112',
+          symbol: 'SOL',
+        }),
+      });
+
+      const res = await recordPost(req);
+      const json = await res.json();
+
+      expect(res.status).toBe(400);
+      expect(json.success).toBe(false);
+      expect(json.reason).toBe('NO_DATABASE_URL');
+
+      process.env.DATABASE_URL = originalUrl;
     });
 
     it('GET /api/record-token returns valid status and count integer', async () => {

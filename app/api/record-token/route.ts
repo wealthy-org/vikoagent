@@ -17,15 +17,33 @@ export async function POST(req: Request) {
       return NextResponse.json({ success: false, reason: 'MISSING_MINT_OR_SYMBOL' }, { status: 400 });
     }
 
+    const safeMint = String(mint).trim().slice(0, 64);
+    const safeSymbol = String(symbol).trim().slice(0, 16);
+    const safeSource = String(source || 'PUMPPORTAL').slice(0, 32);
+
     const sql = neon(dbUrl);
     const eventId = `evt_${Date.now()}_${Math.random().toString(36).slice(2, 7)}`;
-    const eventKey = `pumpportal:${mint}`;
+    const eventKey = `pumpportal:${safeMint}`;
     const occurredAt = new Date().toISOString();
+
+    // Ensure table exists (self-healing for fresh Neon instances)
+    await sql`
+      CREATE TABLE IF NOT EXISTS token_events (
+        id TEXT PRIMARY KEY,
+        source TEXT NOT NULL,
+        mint TEXT NOT NULL,
+        symbol TEXT NOT NULL,
+        event_key TEXT NOT NULL UNIQUE,
+        occurred_at TIMESTAMPTZ NOT NULL,
+        payload JSONB NOT NULL DEFAULT '{}'::jsonb,
+        created_at TIMESTAMPTZ NOT NULL DEFAULT now()
+      )
+    `;
 
     // Upsert into token_events table
     await sql`
       INSERT INTO token_events (id, source, mint, symbol, event_key, occurred_at, payload)
-      VALUES (${eventId}, ${source || 'PUMPPORTAL'}, ${mint}, ${symbol}, ${eventKey}, ${occurredAt}, ${JSON.stringify(payload || { liquidityUsd })})
+      VALUES (${eventId}, ${safeSource}, ${safeMint}, ${safeSymbol}, ${eventKey}, ${occurredAt}, ${JSON.stringify(payload || { liquidityUsd })})
       ON CONFLICT (event_key) DO NOTHING
     `;
 

@@ -1,1 +1,34 @@
-{"name":"vikoagent","private":true,"type":"module","scripts":{"dev":"next dev","build":"next build","start":"next start","lint":"eslint .","test":"vitest run"},"dependencies":{"@neondatabase/serverless":"^1.2.0","next":"16.4.1","react":"19.1.0","react-dom":"19.1.0","server-only":"^0.0.1"},"devDependencies":{"@eslint/js":"latest","@types/node":"latest","@types/react":"latest","@types/react-dom":"latest","eslint":"latest","jsdom":"latest","typescript":"latest","typescript-eslint":"latest","vitest":"latest"}}
+{
+  "name": "vikoagent",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "eslint .",
+    "test": "vitest run",
+    "build:worker": "tsc -p apps/worker/tsconfig.json",
+    "start:worker": "node apps/worker/dist/index.js"
+  },
+  "dependencies": {
+    "@neondatabase/serverless": "^1.2.0",
+    "next": "16.4.1",
+    "react": "19.1.0",
+    "react-dom": "19.1.0",
+    "server-only": "^0.0.1",
+    "ws": "^8.22.0"
+  },
+  "devDependencies": {
+    "@eslint/js": "latest",
+    "@types/node": "latest",
+    "@types/react": "latest",
+    "@types/react-dom": "latest",
+    "@types/ws": "^8.18.2",
+    "eslint": "latest",
+    "jsdom": "latest",
+    "typescript": "latest",
+    "typescript-eslint": "latest",
+    "vitest": "latest"
+  }
+}
