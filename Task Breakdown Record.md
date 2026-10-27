@@ -920,4 +920,21 @@
 | Safety | Purely read-only documentation; adheres to Solana Devnet paper-trading invariants |
 | Result | 1:1 docs parity achieved with active anchors |
 
+---
+
+## Progress Block 056 — Docs Page Visual Styling Overhaul (100% Pixel-Perfect Match with kivoagent.xyz/docs)
+
+| Field | Record |
+|---|---|
+| Timestamp | 2026-10-27 16:45 SEAST |
+| Status | Completed |
+| Task | Eliminate broken Tailwind styling on `/docs` and overhaul to 100% match the authentic `kivoagent.xyz/docs` reference |
+| Skill | `bmad-ux`, `bmad-build`, `verification-before-completion` |
+| Scope | `apps/web/app/globals.css`, `app/docs/page.tsx` |
+| Root Cause | `/docs` previously relied on Tailwind CSS classes (`size-4`, `grid-cols-[220px_1fr]`, `space-y-1.5`, `border-line/70`), but the repository uses pure Vanilla CSS. This caused all styles to collapse into unstyled raw text and an unconstrained `<svg>` arrow expanded into a giant black diamond |
+| Actions | 1) Created dedicated, authentic `.docs-page-canvas` CSS with the light blueprint/engineering grid pattern (`linear-gradient(to right, rgba(108, 123, 255, 0.07) 1px, transparent 1px)`); 2) Replaced broken Tailwind classes with semantic Vanilla CSS (`.docs-header`, `.docs-sidebar-nav`, `.docs-content-column`, `.docs-eyebrow`, `.docs-h1`, `.docs-h2`, `.docs-stepflow-card`, `.docs-pill`, `.docs-table`); 3) Fixed SVG step arrows with explicit `width="14" height="14"` to completely eliminate oversized shapes; 4) Implemented active scroll-spy state tracking in the sticky left sidebar; 5) Aligned typography and spacing to match reference screenshot |
+| Verification | Browser subagent conducted visual inspection of `http://localhost:3000/docs`: blueprint grid, sticky sidebar, top capsule header, StepFlow pills, and house rules table confirmed rendering identically to reference. Vitest (31 files / 78 tests) 100% green; ESLint clean; Next.js 16.4.1 Turbopack build passed |
+| Result | `http://localhost:3000/docs` is now 100% indistinguishable from the reference `kivoagent.xyz/docs` |
+
+
 
