@@ -567,19 +567,19 @@ export function Dashboard() {
               <p className="hero-subtext">
                 It owns its treasury, pays for its own mind, and trades in public. viko trades on{' '}
                 <span className="partner-tag-inline">
-                  <span style={{ fontSize: '11px', background: '#ede9fe', color: '#6d28d9', padding: '1px 4px', borderRadius: '4px', marginRight: '3px' }}>⚡</span>
+                  <img src="/partners/solana.svg" alt="Solana" style={{ width: '13px', height: '11px', display: 'inline-block', verticalAlign: 'middle', marginRight: '4px' }} />
                   <strong>Solana Devnet</strong>
                 </span>, scans on{' '}
                 <span className="partner-tag-inline">
-                  <span style={{ fontSize: '11px', background: '#dcfce7', color: '#15803d', padding: '1px 4px', borderRadius: '4px', marginRight: '3px' }}>💊</span>
+                  <img src="/partners/pumpfun.png" alt="Pump.fun" style={{ width: '13px', height: '13px', display: 'inline-block', verticalAlign: 'middle', marginRight: '4px' }} />
                   <strong>Pump.fun</strong>
                 </span>, tracks on{' '}
                 <span className="partner-tag-inline">
-                  <span style={{ fontSize: '11px', background: '#e0f2fe', color: '#0369a1', padding: '1px 4px', borderRadius: '4px', marginRight: '3px' }}>☄️</span>
+                  <img src="/partners/meteora.svg" alt="Meteora DBC" style={{ width: '13px', height: '13px', display: 'inline-block', verticalAlign: 'middle', marginRight: '4px' }} />
                   <strong>Meteora DBC</strong>
                 </span>, and reasons via{' '}
                 <span className="partner-tag-inline">
-                  <span style={{ fontSize: '11px', background: '#fae8ff', color: '#a21caf', padding: '1px 4px', borderRadius: '4px', marginRight: '3px' }}>🧠</span>
+                  <img src="/partners/openrouter.svg" alt="OpenRouter" style={{ width: '13px', height: '11px', display: 'inline-block', verticalAlign: 'middle', marginRight: '4px' }} />
                   <strong>OpenRouter</strong>
                 </span>. Zero real funds at risk with 100% public onchain telemetry.{' '}
                 <a href="#scanner-radar" className="hero-stake-btn">
@@ -1347,8 +1347,8 @@ export function Dashboard() {
         <section className="runs-on-section">
           <div className="runs-on-grid">
             <a href="https://pump.fun" target="_blank" rel="noopener noreferrer" className="glass partner-card-kivo">
-              <span className="partner-logo-box logo-pump">
-                💊
+              <span className="partner-logo-box">
+                <img src="/partners/pumpfun.png" alt="Pump.fun" style={{ width: '28px', height: '28px', objectFit: 'contain' }} />
               </span>
               <div className="partner-info-box">
                 <div className="partner-title-row">
@@ -1361,8 +1361,8 @@ export function Dashboard() {
             </a>
 
             <a href="https://meteora.ag" target="_blank" rel="noopener noreferrer" className="glass partner-card-kivo">
-              <span className="partner-logo-box logo-meteora">
-                ☄️
+              <span className="partner-logo-box">
+                <img src="/partners/meteora.svg" alt="Meteora DBC" style={{ width: '28px', height: '28px', objectFit: 'contain' }} />
               </span>
               <div className="partner-info-box">
                 <div className="partner-title-row">
@@ -1375,8 +1375,8 @@ export function Dashboard() {
             </a>
 
             <a href="https://dexscreener.com/moonshot" target="_blank" rel="noopener noreferrer" className="glass partner-card-kivo">
-              <span className="partner-logo-box logo-moonshot">
-                🚀
+              <span className="partner-logo-box">
+                <img src="/partners/moonshot.png" alt="Moonshot" style={{ width: '28px', height: '28px', objectFit: 'contain', borderRadius: '6px' }} />
               </span>
               <div className="partner-info-box">
                 <div className="partner-title-row">
@@ -1389,8 +1389,8 @@ export function Dashboard() {
             </a>
 
             <a href="https://raydium.io" target="_blank" rel="noopener noreferrer" className="glass partner-card-kivo">
-              <span className="partner-logo-box logo-raydium">
-                ⚡
+              <span className="partner-logo-box">
+                <img src="/partners/raydium.svg" alt="Raydium" style={{ width: '28px', height: '28px', objectFit: 'contain' }} />
               </span>
               <div className="partner-info-box">
                 <div className="partner-title-row">
