@@ -1,9 +1,6 @@
-import Link from 'next/link';
+'use client';
 
-export const metadata = {
-  title: 'vikoagent · white paper',
-  description: 'How vikoagent works: Solana Devnet paper trading telemetry, risk guardrails, and autonomous execution.',
-};
+import Link from 'next/link';
 
 const SECTIONS = [
   ['summary', 'In one minute'],
@@ -12,80 +9,162 @@ const SECTIONS = [
   ['venue', 'Where it trades'],
   ['rules', 'The house rules'],
   ['tracking', 'Watching the money'],
-  ['telemetry', 'Public telemetry & DB'],
-  ['risk', 'Deterministic risk rules'],
+  ['token', 'The token'],
+  ['staking', 'What stakers earn'],
+  ['payouts', 'How payouts work'],
   ['stack', 'What it runs on'],
   ['risks', 'What can go wrong'],
-  ['links', 'Endpoints & repositories'],
+  ['contracts', 'Contracts and links'],
 ];
 
-export default function DocsPage() {
+interface PillProps {
+  children: React.ReactNode;
+  tone?: 'plain' | 'iris' | 'long' | 'short';
+}
+
+function Pill({ children, tone = 'plain' }: PillProps) {
+  const toneClasses = {
+    plain: 'bg-white/80 text-ink',
+    iris: 'bg-iris-soft text-iris',
+    long: 'bg-long-soft text-long',
+    short: 'bg-short-soft text-short',
+  }[tone];
+
   return (
-    <div className="paper-grid min-h-screen" style={{ backgroundColor: 'var(--color-snow)', color: 'var(--color-ink)' }}>
-      {/* 1. Header Navbar */}
-      <header className="sticky top-0 z-20 border-b border-line/70 bg-snow/80 backdrop-blur-md" style={{ borderColor: 'var(--color-line)', backgroundColor: 'rgba(246, 247, 249, 0.85)' }}>
+    <span
+      className={`inline-flex items-center rounded-xl px-3 py-2 text-sm font-medium shadow-[0_2px_10px_rgba(17,19,24,0.05)] ${toneClasses}`}
+    >
+      {children}
+    </span>
+  );
+}
+
+function StepFlow({ steps }: { steps: { label: string; tone?: 'plain' | 'iris' | 'long' | 'short' }[] }) {
+  return (
+    <div className="my-6 flex flex-wrap items-center gap-2 rounded-3xl border border-line bg-white/50 p-4">
+      {steps.map((step, idx) => (
+        <span key={step.label} className="flex items-center gap-2">
+          {idx > 0 && (
+            <svg className="size-4 text-ink-4" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="2">
+              <path d="M6 3l5 5-5 5" />
+            </svg>
+          )}
+          <Pill tone={step.tone}>{step.label}</Pill>
+        </span>
+      ))}
+    </div>
+  );
+}
+
+function TableRow({ k, v }: { k: React.ReactNode; v: React.ReactNode }) {
+  return (
+    <tr className="border-b border-line last:border-0">
+      <td className="py-2.5 pr-4 align-top text-sm text-ink-3">{k}</td>
+      <td className="py-2.5 text-sm text-ink">{v}</td>
+    </tr>
+  );
+}
+
+function ContractRow({
+  label,
+  address,
+  explorer,
+}: {
+  label: string;
+  address: string | null;
+  explorer: string;
+}) {
+  return (
+    <TableRow
+      k={label}
+      v={
+        address ? (
+          <a
+            href={`${explorer}/address/${address}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-1 break-all font-mono text-[13px] text-iris hover:underline"
+          >
+            <span>{address}</span>
+            <svg className="size-3 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
+              <polyline points="15 3 21 3 21 9" />
+              <line x1="10" y1="14" x2="21" y2="3" />
+            </svg>
+          </a>
+        ) : (
+          <span className="text-ink-3">announced at launch</span>
+        )
+      }
+    />
+  );
+}
+
+export default function DocsPage() {
+  const tokenSymbol = 'VIKO';
+  const stakersPctOfWins = 70;
+  const stakersPctOfPaper = 70;
+  const payoutThresholdUsd = 10;
+  const harvestMinutes = 5;
+  const streamDays = 7;
+  const bridgeThresholdUsd = 100;
+  const orbioSplit = { tradingPct: 50, inferencePct: 10, revenuePct: 40 };
+
+  const solanaExplorer = 'https://explorer.solana.com';
+  const hyperExplorer = 'https://hyperevmscan.io';
+
+  const contracts = {
+    exchange: '0x6cd5661646289fb6e65ea5c032310fded797d0a2',
+    paper: '0xe40f17915daa230324030003a197cdaef2261c0e',
+    paperStaking: '0xaad6c7b0cc3014fc80ffedae0ed7ce5967b0f016',
+    operator: '7xKXt99vP8uEHQ73yV8gQjWj8U3vGk3Wq7oP29L42As',
+  };
+
+  return (
+    <div className="paper-grid min-h-screen">
+      {/* 1. Exact Header Navbar */}
+      <header className="sticky top-0 z-20 border-b border-line/70 bg-snow/80 backdrop-blur-md">
         <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-3 sm:px-6">
-          <Link href="/" className="flex items-center gap-2">
+          <Link href="/" className="flex items-center gap-1.5">
             <img
-              src="/brand/viko-orb.jpeg"
-              alt="Vikoagent Logo"
-              width={34}
-              height={34}
-              style={{ borderRadius: '50%', objectFit: 'cover' }}
+              src="/brand/kivo-mark-128.png"
+              width={36}
+              height={36}
+              alt=""
+              draggable={false}
+              className="select-none"
             />
-            <span style={{ fontFamily: 'var(--font-sora)', fontWeight: 600, fontSize: '16px', letterSpacing: '-0.02em' }}>
-              vikoagent
-            </span>
-            <span style={{ fontSize: '11px', background: '#ffffff', border: '1px solid var(--color-line)', padding: '2px 8px', borderRadius: '999px', color: 'var(--color-ink-3)', marginLeft: '6px' }}>
+            <span className="font-display text-base font-semibold tracking-tight text-ink">vikoagent</span>
+            <span className="ml-2 rounded-full bg-white/80 px-2.5 py-0.5 text-xs text-ink-3 border border-line">
               white paper
             </span>
           </Link>
 
           <Link
             href="/"
-            style={{
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: '6px',
-              backgroundColor: '#ffffff',
-              border: '1px solid var(--color-line)',
-              padding: '6px 14px',
-              borderRadius: '999px',
-              fontSize: '12px',
-              fontWeight: 500,
-              color: 'var(--color-ink-2)',
-              textDecoration: 'none',
-              transition: 'all 0.2s ease',
-            }}
+            className="flex items-center gap-1.5 rounded-full bg-white/80 px-3 py-1.5 text-xs font-medium text-ink-2 transition-colors duration-200 ease-out hover:text-iris border border-line"
           >
-            <span>←</span> Back to the agent
+            <svg className="size-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <path d="m12 19-7-7 7-7" />
+              <path d="M19 12H5" />
+            </svg>
+            <span>Back to the agent</span>
           </Link>
         </div>
       </header>
 
       {/* 2. Main Content Grid */}
       <div className="mx-auto grid max-w-6xl gap-10 px-4 pb-32 sm:px-6 lg:grid-cols-[220px_1fr]">
-        {/* Left Sticky Sidebar Navigation */}
+        {/* Left Sticky Sidebar Nav */}
         <nav className="hidden lg:block">
-          <ol className="sticky top-24 mt-16 space-y-1.5 text-sm" style={{ listStyle: 'none', padding: 0 }}>
+          <ol className="sticky top-24 mt-16 space-y-1.5 text-sm">
             {SECTIONS.map(([id, title], idx) => (
               <li key={id}>
                 <a
                   href={`#${id}`}
-                  style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: '8px',
-                    padding: '6px 10px',
-                    borderRadius: '8px',
-                    color: 'var(--color-ink-3)',
-                    textDecoration: 'none',
-                    fontSize: '13px',
-                    transition: 'all 0.15s ease',
-                  }}
-                  className="hover:text-ink hover:bg-white/70"
+                  className="flex gap-2 rounded-lg px-2 py-1 text-ink-3 transition-colors duration-200 ease-out hover:bg-white/70 hover:text-ink"
                 >
-                  <span style={{ fontFamily: 'var(--font-mono)', fontSize: '11px', color: 'var(--color-ink-4)' }}>
+                  <span className="font-mono text-xs text-ink-4 tabular">
                     {String(idx + 1).padStart(2, '0')}
                   </span>
                   <span>{title}</span>
@@ -95,218 +174,272 @@ export default function DocsPage() {
           </ol>
         </nav>
 
-        {/* Right Article Body */}
+        {/* Right Article Column */}
         <article className="max-w-2xl">
           <div className="pt-16">
-            <div style={{ fontFamily: 'var(--font-mono)', fontSize: '11px', textTransform: 'uppercase', letterSpacing: '0.2em', color: 'var(--color-iris)' }}>
+            <div className="font-mono text-xs uppercase tracking-[0.2em] text-iris">
               White paper · v0.2 · October 2026
             </div>
-            <h1 style={{ fontFamily: 'var(--font-sora)', fontSize: '38px', fontWeight: 600, lineHeight: 1.1, letterSpacing: '-0.03em', marginTop: '16px' }}>
+            <h1 className="mt-4 font-display text-4xl font-semibold leading-[1.05] tracking-tight sm:text-5xl text-ink">
               How vikoagent works
             </h1>
-            <p style={{ fontSize: '17px', lineHeight: 1.7, color: 'var(--color-ink-2)', marginTop: '20px' }}>
-              vikoagent is the first sovereign paper-trading telemetry agent on Solana. It scans real-time bonding curves, feeds live market news, executes simulated paper orders with spot price fills, and publishes its reasoning openly to the world. Zero real funds are risked during development. This paper explains every part of it in plain words.
+            <p className="mt-5 text-lg leading-relaxed text-ink-2">
+              vikoagent is the first sovereign paper-trading telemetry agent on Solana Devnet. It owns its treasury,
+              pays for its own mind, decides by itself, executes with spot price fills, and publishes everything it
+              reads, thinks and does as it happens. People who stake {tokenSymbol} share in what it makes. This paper explains every part of it in plain words.
             </p>
           </div>
 
-          {/* Section 1: In one minute */}
-          <section id="summary" style={{ scrollMarginTop: '96px', paddingTop: '56px' }}>
-            <h2 style={{ fontFamily: 'var(--font-sora)', fontSize: '24px', fontWeight: 600, display: 'flex', alignItems: 'baseline', gap: '10px' }}>
-              <span style={{ fontFamily: 'var(--font-mono)', fontSize: '14px', color: 'var(--color-iris)' }}>01</span>
-              In one minute
-            </h2>
-            <ul style={{ marginTop: '16px', fontSize: '15px', lineHeight: 1.8, color: 'var(--color-ink-2)', paddingLeft: '20px' }}>
-              <li>• Real-time WebSocket connection to PumpPortal (<code>wss://pumpportal.fun/api/data</code>) catches every new token launch on Pump.fun.</li>
-              <li>• Deterministic Risk Engine filters out dev wallets with &gt;4% supply, rug patterns, and unverified bonding curves.</li>
-              <li>• OpenRouter AI reasoning engine produces concise onchain evaluations displayed live in the Mind Stream.</li>
-              <li>• Simulated trades execute at exact bonding curve spot prices with 1-2% slippage and 0.0005 SOL priority fee deductions.</li>
-              <li>• Every event, decision, and paper receipt is saved to Neon PostgreSQL (AWS Singapore) with idempotent keys.</li>
-              <li>• 100% standalone and public: no private keys are exposed, and no real capital is put at risk.</li>
-            </ul>
-          </section>
+          {/* 01 In one minute */}
+          <h2 id="summary" className="scroll-mt-24 pt-14 font-display text-2xl font-semibold tracking-tight sm:text-3xl text-ink">
+            <span className="mr-3 font-mono text-sm font-medium text-iris tabular">01</span>
+            In one minute
+          </h2>
+          <ul className="mt-4 space-y-2 text-[16px] leading-[1.7] text-ink-2">
+            <li>• Every 10 minutes vikoagent reads the market stream, charts and the news, thinks, and decides to open, close or hold.</li>
+            <li>• Code checks the plan against fixed house rules, and an independent decision model has to say yes before any entry.</li>
+            <li>• Trades execute on Solana Devnet and Papertrade at spot price mid, with simulated balances in vikoagent's own account.</li>
+            <li>• Stakers earn {stakersPctOfWins}% of every winning trade in USDG and {stakersPctOfPaper}% of the PAPER losing trades mint. A loss takes nothing back from them.</li>
+            <li>• The token's trading fees pay for the trading, the agent's own thinking and vikoagent's revenue.</li>
+            <li>• Every thought, source, decision and fill is public on the site, with links to the original posts.</li>
+          </ul>
 
-          {/* Section 2: The agent (#agent) */}
-          <section id="agent" style={{ scrollMarginTop: '96px', paddingTop: '56px' }}>
-            <h2 style={{ fontFamily: 'var(--font-sora)', fontSize: '24px', fontWeight: 600, display: 'flex', alignItems: 'baseline', gap: '10px' }}>
-              <span style={{ fontFamily: 'var(--font-mono)', fontSize: '14px', color: 'var(--color-iris)' }}>02</span>
-              The agent
-            </h2>
-            <p style={{ marginTop: '16px', fontSize: '15px', lineHeight: 1.8, color: 'var(--color-ink-2)' }}>
-              vikoagent is not one black-box model. It is an autonomous trading desk where each subsystem has a clear owner, and code strictly holds the risk. A live market scanner reads newly minted tokens on Pump.fun and Meteora DBC. An AI reasoning engine evaluates market momentum and wallet distribution. Deterministic house rules enforce safety limits before any order is simulated.
-            </p>
-            <p style={{ marginTop: '14px', fontSize: '15px', lineHeight: 1.8, color: 'var(--color-ink-2)' }}>
-              The agent never holds private execution keys on the client. Decisions are categorized into <strong>ACCEPT</strong>, <strong>REJECT</strong>, or <strong>WATCH</strong>. Orders are logged with immutable Devnet paper receipts (e.g. <code>RCPT-DEVNET-0042</code>) displayed transparently on the dashboard.
-            </p>
-          </section>
+          {/* 02 The agent */}
+          <h2 id="agent" className="scroll-mt-24 pt-14 font-display text-2xl font-semibold tracking-tight sm:text-3xl text-ink">
+            <span className="mr-3 font-mono text-sm font-medium text-iris tabular">02</span>
+            The agent
+          </h2>
+          <p className="mt-4 text-[16px] leading-[1.8] text-ink-2">
+            vikoagent is not one model. It is a small trading desk where each job has an owner, and code holds the risk.
+            A chart desk reads the market in numbers. A news desk, run by a fast model, reads the headlines and keeps the few that matter.
+            The trader, a frontier model, weighs it all and makes the call. House rules, written in code, refuse anything reckless.
+            A separate decision model, Levanto's Sage, gives the final yes or no.
+          </p>
+          <p className="mt-4 text-[16px] leading-[1.8] text-ink-2">
+            The agent chooses direction, timing, size, leverage, stop, target and when to get out early. The rules only stop it from hurting the account.
+            Stops and targets are enforced by code the moment price crosses them, not by the model.
+          </p>
 
-          {/* Section 3: A round, step by step */}
-          <section id="round" style={{ scrollMarginTop: '96px', paddingTop: '56px' }}>
-            <h2 style={{ fontFamily: 'var(--font-sora)', fontSize: '24px', fontWeight: 600, display: 'flex', alignItems: 'baseline', gap: '10px' }}>
-              <span style={{ fontFamily: 'var(--font-mono)', fontSize: '14px', color: 'var(--color-iris)' }}>03</span>
-              A round, step by step
-            </h2>
+          {/* 03 A round, step by step */}
+          <h2 id="round" className="scroll-mt-24 pt-14 font-display text-2xl font-semibold tracking-tight sm:text-3xl text-ink">
+            <span className="mr-3 font-mono text-sm font-medium text-iris tabular">03</span>
+            A round, step by step
+          </h2>
+          <StepFlow
+            steps={[
+              { label: 'Charts' },
+              { label: 'News desk' },
+              { label: 'Trader', tone: 'iris' },
+              { label: 'House rules' },
+              { label: 'Sage', tone: 'iris' },
+              { label: 'Order', tone: 'long' },
+            ]}
+          />
+          <p className="mt-4 text-[16px] leading-[1.8] text-ink-2">
+            <b className="text-ink">Charts.</b> On the 15 minute, 1 hour, 4 hour and daily charts for BTC, ETH, and SOL: trend, market structure (higher or lower highs and lows), momentum (RSI, MACD), volume against its average, RSI divergence, fair value (VWAP), bands, volatility, and support and resistance as zones with how many times price turned there. Plus funding and open interest.
+          </p>
+          <p className="mt-4 text-[16px] leading-[1.8] text-ink-2">
+            <b className="text-ink">News desk.</b> The last six hours of market news from live streams, filtered to what could move crypto, then judged for direction, horizon and whether it is already priced in. Every headline keeps a link to its original post.
+          </p>
+          <p className="mt-4 text-[16px] leading-[1.8] text-ink-2">
+            <b className="text-ink">Trader.</b> It remembers its last twelve rounds, with the prices then and the outlook it left, one outlook an hour for the twelve hours before that, and its last three trades. Each round ends with an outlook of its own: the state it is waiting for and what it expects meanwhile, which the next rounds check against what happened. It can search the web and read any page through Orbio's tools, or search X, and must finish with one decision: open long, open short, close, or hold, with its own conviction from 0 to 1 and the two to four facts it rests on. A link in those facts is shown only if the trader was actually given it that round. While it thinks, its raw reasoning streams to the site as the model writes it.
+          </p>
+          <p className="mt-4 text-[16px] leading-[1.8] text-ink-2">
+            <b className="text-ink">House rules.</b> Size, leverage, stop distance, reward to risk, entries per day, a cooldown after a loss and a daily loss limit. One failed rule and there is no trade.
+          </p>
+          <p className="mt-4 text-[16px] leading-[1.8] text-ink-2">
+            <b className="text-ink">Sage.</b> A calibrated yes or no model that only ever sees the plan as structured numbers, never raw posts, so no headline can talk it into a trade. It acts as a veto: a no stops the trade, and a yes or an unsure answer lets it through to the order.
+          </p>
+          <p className="mt-4 text-[16px] leading-[1.8] text-ink-2">
+            <b className="text-ink">Order.</b> The trade is signed and sent to Papertrade, which fills it at the spot mid.
+          </p>
 
-            <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: '8px', padding: '16px', borderRadius: '16px', background: '#ffffff', border: '1px solid var(--color-line)', marginTop: '20px', marginBottom: '24px' }}>
-              <span style={{ background: '#f1f5f9', padding: '6px 12px', borderRadius: '10px', fontSize: '13px', fontWeight: 500 }}>1. Stream Ingest</span>
-              <span style={{ color: 'var(--color-ink-4)' }}>→</span>
-              <span style={{ background: '#f1f5f9', padding: '6px 12px', borderRadius: '10px', fontSize: '13px', fontWeight: 500 }}>2. Dev Wallet Audit</span>
-              <span style={{ color: 'var(--color-ink-4)' }}>→</span>
-              <span style={{ background: 'var(--color-iris-soft)', color: 'var(--color-iris)', padding: '6px 12px', borderRadius: '10px', fontSize: '13px', fontWeight: 600 }}>3. AI Reasoning</span>
-              <span style={{ color: 'var(--color-ink-4)' }}>→</span>
-              <span style={{ background: '#f1f5f9', padding: '6px 12px', borderRadius: '10px', fontSize: '13px', fontWeight: 500 }}>4. House Rules</span>
-              <span style={{ color: 'var(--color-ink-4)' }}>→</span>
-              <span style={{ background: 'var(--color-long-soft)', color: 'var(--color-long)', padding: '6px 12px', borderRadius: '10px', fontSize: '13px', fontWeight: 600 }}>5. Paper Fill</span>
-            </div>
+          {/* 04 Where it trades */}
+          <h2 id="venue" className="scroll-mt-24 pt-14 font-display text-2xl font-semibold tracking-tight sm:text-3xl text-ink">
+            <span className="mr-3 font-mono text-sm font-medium text-iris tabular">04</span>
+            Where it trades
+          </h2>
+          <p className="mt-4 text-[16px] leading-[1.8] text-ink-2">
+            Papertrade is an exchange for synthetic BTC, ETH and SOL perpetual futures on HyperEVM, priced at Hyperliquid's mid. Losses are paid in full, never past the margin. Wins are paid after a small cut that shrinks as the move grows: about 72% of a 0.1% move is kept, about 86% of a 1% move, and at most about 88%. Every losing trade mints PAPER, Papertrade's own token, to the trader.
+          </p>
+          <p className="mt-4 text-[16px] leading-[1.8] text-ink-2">
+            Money reaches Papertrade from Robinhood Chain as USDG, bridged to USDC on HyperCore by Relay, and comes back the same way. On Solana, telemetry syncs against Devnet test token contracts.
+          </p>
 
-            <p style={{ fontSize: '15px', lineHeight: 1.8, color: 'var(--color-ink-2)' }}>
-              <strong>1. Stream Ingest:</strong> The ingestor catches new mints from PumpPortal WebSocket.
-              <br />
-              <strong>2. Dev Wallet Audit:</strong> Analyzes dev supply concentration (&lt;4% ceiling), initial liquidity depth, and bonding progress.
-              <br />
-              <strong>3. AI Reasoning:</strong> Evaluates trade viability via OpenRouter LLM (<code>nvidia/nemotron-3.5-lightning:free</code>) and outputs reasoning to the Mind Stream.
-              <br />
-              <strong>4. House Rules:</strong> Enforces sizing (0.05 SOL standard allocation) and daily loss thresholds.
-              <br />
-              <strong>5. Paper Fill:</strong> Simulates order execution, updates NAV, and records receipts into Neon DB.
-            </p>
-          </section>
+          {/* 05 The house rules */}
+          <h2 id="rules" className="scroll-mt-24 pt-14 font-display text-2xl font-semibold tracking-tight sm:text-3xl text-ink">
+            <span className="mr-3 font-mono text-sm font-medium text-iris tabular">05</span>
+            The house rules
+          </h2>
+          <table className="mt-5 w-full">
+            <tbody>
+              <TableRow k="Leverage" v="10x to 100x, and liquidation at least twice as far away as the stop" />
+              <TableRow k="Size" v="20% to 50% of the treasury per trade, sized by the trader's conviction, never more than $5,000 of margin" />
+              <TableRow k="Positions" v="at most one per coin, BTC, ETH and SOL, never flipped in one move" />
+              <TableRow k="Stop and target" v="stop at least 0.3% away, target at least 0.5%, reward at least 1.5 times the risk" />
+              <TableRow k="Pace" v="three entries a day, two hours of cooldown after a loss, stop for the day at a 3% loss" />
+              <TableRow k="Conviction" v="the trader at least 0.6, and no veto from Sage" />
+              <TableRow k="Starter" v="after 6 hours without a position, a 20% to 25% entry with the trader at 0.5; Sage and every other rule unchanged" />
+            </tbody>
+          </table>
 
-          {/* Section 4: Where it trades */}
-          <section id="venue" style={{ scrollMarginTop: '96px', paddingTop: '56px' }}>
-            <h2 style={{ fontFamily: 'var(--font-sora)', fontSize: '24px', fontWeight: 600, display: 'flex', alignItems: 'baseline', gap: '10px' }}>
-              <span style={{ fontFamily: 'var(--font-mono)', fontSize: '14px', color: 'var(--color-iris)' }}>04</span>
-              Where it trades
-            </h2>
-            <p style={{ marginTop: '16px', fontSize: '15px', lineHeight: 1.8, color: 'var(--color-ink-2)' }}>
-              vikoagent operates exclusively on <strong>Solana Devnet</strong> and simulated paper trading. It tracks token pairs on Pump.fun bonding curves, graduated Raydium pools, and Meteora Dynamic Bonding Curves (DBC). Zero real capital is required; Devnet SOL is completely free through public faucets.
-            </p>
-          </section>
+          {/* 06 Watching the money */}
+          <h2 id="tracking" className="scroll-mt-24 pt-14 font-display text-2xl font-semibold tracking-tight sm:text-3xl text-ink">
+            <span className="mr-3 font-mono text-sm font-medium text-iris tabular">06</span>
+            Watching the money
+          </h2>
+          <p className="mt-4 text-[16px] leading-[1.8] text-ink-2">
+            Prices come pushed from live feeds, the same price Papertrade fills at. The treasury's ground truth is Papertrade's own record of the account: its equity over time, every close with its fee, every deposit and withdrawal, the PAPER minted and what staking it has paid. vikoagent rebuilds the treasury from those records, so profit is always equity minus the money put in, and a deposit is never mistaken for a win.
+          </p>
+          <p className="mt-4 text-[16px] leading-[1.8] text-ink-2">
+            Everything the agent does is written to a public record the moment it happens and streamed to the site. Nothing is summarized after the fact. The raw reasoning is shown live and not kept; what the record keeps is the plain call the trader writes before it decides.
+          </p>
 
-          {/* Section 5: The house rules */}
-          <section id="rules" style={{ scrollMarginTop: '96px', paddingTop: '56px' }}>
-            <h2 style={{ fontFamily: 'var(--font-sora)', fontSize: '24px', fontWeight: 600, display: 'flex', alignItems: 'baseline', gap: '10px' }}>
-              <span style={{ fontFamily: 'var(--font-mono)', fontSize: '14px', color: 'var(--color-iris)' }}>05</span>
-              The house rules
-            </h2>
-            <div style={{ marginTop: '20px', border: '1px solid var(--color-line)', borderRadius: '16px', overflow: 'hidden', background: '#ffffff' }}>
-              <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '13px' }}>
-                <tbody>
-                  <tr style={{ borderBottom: '1px solid var(--color-line)' }}>
-                    <td style={{ padding: '12px 16px', color: 'var(--color-ink-3)', width: '30%' }}>Max Dev Allocation</td>
-                    <td style={{ padding: '12px 16px', fontWeight: 600 }}>&lt; 4.0% of total circulating supply</td>
-                  </tr>
-                  <tr style={{ borderBottom: '1px solid var(--color-line)' }}>
-                    <td style={{ padding: '12px 16px', color: 'var(--color-ink-3)' }}>Simulated Allocation</td>
-                    <td style={{ padding: '12px 16px', fontWeight: 600 }}>0.05 to 0.08 SOL per trade</td>
-                  </tr>
-                  <tr style={{ borderBottom: '1px solid var(--color-line)' }}>
-                    <td style={{ padding: '12px 16px', color: 'var(--color-ink-3)' }}>Simulated Slippage</td>
-                    <td style={{ padding: '12px 16px', fontWeight: 600 }}>1.0% to 2.0% dynamic tolerance</td>
-                  </tr>
-                  <tr style={{ borderBottom: '1px solid var(--color-line)' }}>
-                    <td style={{ padding: '12px 16px', color: 'var(--color-ink-3)' }}>Priority Fee</td>
-                    <td style={{ padding: '12px 16px', fontWeight: 600 }}>0.0005 SOL per execution fill</td>
-                  </tr>
-                  <tr>
-                    <td style={{ padding: '12px 16px', color: 'var(--color-ink-3)' }}>Safety Mode</td>
-                    <td style={{ padding: '12px 16px', fontWeight: 600, color: 'var(--color-long)' }}>STRICT PAPER MODE (Devnet Only)</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </section>
+          {/* 07 The token */}
+          <h2 id="token" className="scroll-mt-24 pt-14 font-display text-2xl font-semibold tracking-tight sm:text-3xl text-ink">
+            <span className="mr-3 font-mono text-sm font-medium text-iris tabular">07</span>
+            The token
+          </h2>
+          <p className="mt-4 text-[16px] leading-[1.8] text-ink-2">
+            {tokenSymbol} is launched through Mosh on Robinhood Chain, paired with ORBIO. vikoagent funded its own Mosh bundle, so it holds the bundle's claim on the token's creator fees: 80% of them, paid in ORBIO, collectable at any time. Holding {tokenSymbol} does nothing on its own; staking it is what earns.
+          </p>
+          <p className="mt-4 text-[16px] leading-[1.8] text-ink-2">
+            Every {harvestMinutes} minutes vikoagent collects those fees and splits them:
+          </p>
+          <StepFlow
+            steps={[
+              { label: 'ORBIO fees' },
+              { label: `${orbioSplit.tradingPct}% sold to USDG`, tone: 'long' },
+              { label: 'trading treasury' },
+            ]}
+          />
+          <StepFlow
+            steps={[
+              { label: 'ORBIO fees' },
+              { label: `${orbioSplit.inferencePct}% sold to USDG` },
+              { label: 'CREDIT on Orbio', tone: 'long' },
+              { label: 'vikoagent thinks with it' },
+            ]}
+          />
+          <StepFlow
+            steps={[
+              { label: 'ORBIO fees' },
+              { label: `${orbioSplit.revenuePct}% kept as ORBIO` },
+              { label: 'revenue vault' },
+            ]}
+          />
+          <p className="mt-4 text-[16px] leading-[1.8] text-ink-2">
+            Sales go through the deeper of the two ORBIO/USDG pools on Uniswap, refused if the pools disagree on the price or the sale would move it too far. The trading share crosses to Papertrade once ${bridgeThresholdUsd} has gathered. The inference share buys CREDIT on Orbio's book and activates it to vikoagent's own account, which is the balance every model call the agent makes is paid from.
+          </p>
 
-          {/* Section 6: Watching the money */}
-          <section id="tracking" style={{ scrollMarginTop: '96px', paddingTop: '56px' }}>
-            <h2 style={{ fontFamily: 'var(--font-sora)', fontSize: '24px', fontWeight: 600, display: 'flex', alignItems: 'baseline', gap: '10px' }}>
-              <span style={{ fontFamily: 'var(--font-mono)', fontSize: '14px', color: 'var(--color-iris)' }}>06</span>
-              Watching the money
-            </h2>
-            <p style={{ marginTop: '16px', fontSize: '15px', lineHeight: 1.8, color: 'var(--color-ink-2)' }}>
-              Treasury calculations are strictly deterministic. Net Asset Value (NAV) updates on each paper exit by calculating entry spot price vs exit price, minus simulated fees. The Treasury dashboard displays a 10-point interactive SVG curve with exact historical fees and win rates.
-            </p>
-          </section>
+          {/* 08 What stakers earn */}
+          <h2 id="staking" className="scroll-mt-24 pt-14 font-display text-2xl font-semibold tracking-tight sm:text-3xl text-ink">
+            <span className="mr-3 font-mono text-sm font-medium text-iris tabular">08</span>
+            What stakers earn
+          </h2>
+          <StepFlow
+            steps={[
+              { label: 'A winning trade' },
+              { label: `${stakersPctOfWins}% to stakers`, tone: 'long' },
+              { label: `${100 - stakersPctOfWins}% stays in trading` },
+            ]}
+          />
+          <StepFlow
+            steps={[
+              { label: 'A losing trade' },
+              { label: 'mints PAPER' },
+              { label: `${stakersPctOfPaper}% to stakers`, tone: 'long' },
+            ]}
+          />
+          <p className="mt-4 text-[16px] leading-[1.8] text-ink-2">
+            <b className="text-ink">Profits.</b> Every winning trade owes stakers {stakersPctOfWins}% of what Papertrade paid on it, in USDG. A losing trade costs stakers nothing: the treasury absorbs it, and there is no losing week to win back before they are paid again.
+          </p>
+          <p className="mt-4 text-[16px] leading-[1.8] text-ink-2">
+            <b className="text-ink">PAPER.</b> Every losing trade mints PAPER to vikoagent. PAPER cannot be transferred yet, so vikoagent's ledger allocates {stakersPctOfPaper}% of it to stakers, weighted by how long each has staked, exactly as the contract weighs a USDG payout. The USDC that staking vikoagent's own PAPER earns on Papertrade stays with vikoagent.
+          </p>
 
-          {/* Section 7: Public Telemetry */}
-          <section id="telemetry" style={{ scrollMarginTop: '96px', paddingTop: '56px' }}>
-            <h2 style={{ fontFamily: 'var(--font-sora)', fontSize: '24px', fontWeight: 600, display: 'flex', alignItems: 'baseline', gap: '10px' }}>
-              <span style={{ fontFamily: 'var(--font-mono)', fontSize: '14px', color: 'var(--color-iris)' }}>07</span>
-              Public telemetry &amp; DB
-            </h2>
-            <p style={{ marginTop: '16px', fontSize: '15px', lineHeight: 1.8, color: 'var(--color-ink-2)' }}>
-              Events streamed through the browser or Railway background worker are stored in <strong>Neon Serverless PostgreSQL (AWS Singapore)</strong>. The database maintains 5 relational tables: <code>token_events</code>, <code>decisions</code>, <code>paper_trades</code>, <code>treasury_snapshots</code>, and <code>receipts</code>.
-            </p>
-          </section>
+          {/* 09 How payouts work */}
+          <h2 id="payouts" className="scroll-mt-24 pt-14 font-display text-2xl font-semibold tracking-tight sm:text-3xl text-ink">
+            <span className="mr-3 font-mono text-sm font-medium text-iris tabular">09</span>
+            How payouts work
+          </h2>
+          <p className="mt-4 text-[16px] leading-[1.8] text-ink-2">
+            Once stakers are owed ${payoutThresholdUsd}, vikoagent pays it: first from trading USDG already on Robinhood Chain, then by withdrawing the rest from Papertrade's free balance and bridging it back, never from margin an open trade is using. The USDG goes into the staking contract, which streams it to stakers pro rata over the next {streamDays} days, second by second, so staking the minute before a payout earns only that minute. Rewards can be claimed at any time.
+          </p>
+          <p className="mt-4 text-[16px] leading-[1.8] text-ink-2">
+            The contract has no pause and no lock: a stake can always be withdrawn. It is upgradeable, so whoever holds the owner key could change its code; that key is meant to move to a cold wallet or a multisig, and every upgrade is public on the chain.
+          </p>
 
-          {/* Section 8: Deterministic risk */}
-          <section id="risk" style={{ scrollMarginTop: '96px', paddingTop: '56px' }}>
-            <h2 style={{ fontFamily: 'var(--font-sora)', fontSize: '24px', fontWeight: 600, display: 'flex', alignItems: 'baseline', gap: '10px' }}>
-              <span style={{ fontFamily: 'var(--font-mono)', fontSize: '14px', color: 'var(--color-iris)' }}>08</span>
-              Deterministic risk rules
-            </h2>
-            <p style={{ marginTop: '16px', fontSize: '15px', lineHeight: 1.8, color: 'var(--color-ink-2)' }}>
-              LLM models can hallucinate or be misled by prompt patterns. To eliminate execution vulnerability, vikoagent separates <strong>Reasoning</strong> from <strong>Authority</strong>. OpenRouter LLM provides qualitative explanations, but execution authorization is 100% governed by hard-coded TypeScript rules.
-            </p>
-          </section>
+          {/* 10 What it runs on */}
+          <h2 id="stack" className="scroll-mt-24 pt-14 font-display text-2xl font-semibold tracking-tight sm:text-3xl text-ink">
+            <span className="mr-3 font-mono text-sm font-medium text-iris tabular">10</span>
+            What it runs on
+          </h2>
+          <table className="mt-5 w-full">
+            <tbody>
+              <TableRow k="Papertrade" v="the exchange every trade executes on" />
+              <TableRow k="Hyperliquid" v="the live price and the candles" />
+              <TableRow k="Orbio" v="the model gateway every thought runs through" />
+              <TableRow k="Levanto" v="Sage, the yes or no on every entry" />
+              <TableRow k="Synoptic" v="the live news streams" />
+              <TableRow k="Mosh" v={`where ${tokenSymbol} is launched, paired with ORBIO`} />
+              <TableRow k="Relay" v="the bridge between Robinhood Chain and HyperCore" />
+            </tbody>
+          </table>
 
-          {/* Section 9: What it runs on */}
-          <section id="stack" style={{ scrollMarginTop: '96px', paddingTop: '56px' }}>
-            <h2 style={{ fontFamily: 'var(--font-sora)', fontSize: '24px', fontWeight: 600, display: 'flex', alignItems: 'baseline', gap: '10px' }}>
-              <span style={{ fontFamily: 'var(--font-mono)', fontSize: '14px', color: 'var(--color-iris)' }}>09</span>
-              What it runs on
-            </h2>
-            <div style={{ marginTop: '20px', border: '1px solid var(--color-line)', borderRadius: '16px', overflow: 'hidden', background: '#ffffff' }}>
-              <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '13px' }}>
-                <tbody>
-                  <tr style={{ borderBottom: '1px solid var(--color-line)' }}>
-                    <td style={{ padding: '12px 16px', color: 'var(--color-ink-3)', width: '30%' }}>Frontend Web</td>
-                    <td style={{ padding: '12px 16px', fontWeight: 600 }}>Next.js 16 (App Router + Turbopack) on Vercel</td>
-                  </tr>
-                  <tr style={{ borderBottom: '1px solid var(--color-line)' }}>
-                    <td style={{ padding: '12px 16px', color: 'var(--color-ink-3)' }}>Database</td>
-                    <td style={{ padding: '12px 16px', fontWeight: 600 }}>Neon Serverless PostgreSQL (AWS Singapore ap-southeast-1)</td>
-                  </tr>
-                  <tr style={{ borderBottom: '1px solid var(--color-line)' }}>
-                    <td style={{ padding: '12px 16px', color: 'var(--color-ink-3)' }}>Market Stream</td>
-                    <td style={{ padding: '12px 16px', fontWeight: 600 }}>PumpPortal Real-time WebSocket (wss://pumpportal.fun/api/data)</td>
-                  </tr>
-                  <tr style={{ borderBottom: '1px solid var(--color-line)' }}>
-                    <td style={{ padding: '12px 16px', color: 'var(--color-ink-3)' }}>AI Reasoning</td>
-                    <td style={{ padding: '12px 16px', fontWeight: 600 }}>OpenRouter API (nvidia/nemotron-3.5-lightning:free)</td>
-                  </tr>
-                  <tr>
-                    <td style={{ padding: '12px 16px', color: 'var(--color-ink-3)' }}>Execution Chain</td>
-                    <td style={{ padding: '12px 16px', fontWeight: 600 }}>Solana Devnet (Non-custodial, Paper Mode)</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </section>
+          {/* 11 What can go wrong */}
+          <h2 id="risks" className="scroll-mt-24 pt-14 font-display text-2xl font-semibold tracking-tight sm:text-3xl text-ink">
+            <span className="mr-3 font-mono text-sm font-medium text-iris tabular">11</span>
+            What can go wrong
+          </h2>
+          <ul className="mt-4 space-y-2 text-[16px] leading-[1.7] text-ink-2">
+            <li>• vikoagent can lose. High leverage means a stopped trade costs a real share of the treasury.</li>
+            <li>• Models can be wrong with confidence. The rules and Sage limit the damage, they do not remove it.</li>
+            <li>• Papertrade, Hyperliquid, the bridge and the chains are outside vikoagent's control and can fail or change.</li>
+            <li>• Past results do not predict future ones. There is no promised return and nothing here is financial advice.</li>
+          </ul>
 
-          {/* Section 10: What can go wrong */}
-          <section id="risks" style={{ scrollMarginTop: '96px', paddingTop: '56px' }}>
-            <h2 style={{ fontFamily: 'var(--font-sora)', fontSize: '24px', fontWeight: 600, display: 'flex', alignItems: 'baseline', gap: '10px' }}>
-              <span style={{ fontFamily: 'var(--font-mono)', fontSize: '14px', color: 'var(--color-iris)' }}>10</span>
-              What can go wrong
-            </h2>
-            <p style={{ marginTop: '16px', fontSize: '15px', lineHeight: 1.8, color: 'var(--color-ink-2)' }}>
-              Market volatility on Solana memecoins is extreme. In a live environment, frontrunning, MEV sandwich attacks, and dev rug-pulls can drain liquidity before orders settle. Vikoagent is deliberately kept on <strong>Devnet Paper Mode</strong> during Phase 1 to benchmark strategy performance without financial exposure.
-            </p>
-          </section>
-
-          {/* Section 11: Endpoints & Links */}
-          <section id="links" style={{ scrollMarginTop: '96px', paddingTop: '56px' }}>
-            <h2 style={{ fontFamily: 'var(--font-sora)', fontSize: '24px', fontWeight: 600, display: 'flex', alignItems: 'baseline', gap: '10px' }}>
-              <span style={{ fontFamily: 'var(--font-mono)', fontSize: '14px', color: 'var(--color-iris)' }}>11</span>
-              Endpoints &amp; repositories
-            </h2>
-            <ul style={{ marginTop: '16px', fontSize: '14px', lineHeight: 1.8, color: 'var(--color-ink-2)', paddingLeft: '20px' }}>
-              <li>• Production Web App: <a href="https://vikoagent.vercel.app" style={{ color: 'var(--color-iris)', textDecoration: 'underline' }}>https://vikoagent.vercel.app</a></li>
-              <li>• GitHub Repository: <a href="https://github.com/wealthy-org/vikoagent" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--color-iris)', textDecoration: 'underline' }}>wealthy-org/vikoagent</a></li>
-              <li>• Telemetry API: <code>GET /api/record-token</code> &amp; <code>POST /api/analyze-token</code></li>
-              <li>• Solana Devnet Explorer: <a href="https://explorer.solana.com/?cluster=devnet" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--color-iris)', textDecoration: 'underline' }}>explorer.solana.com (devnet)</a></li>
-            </ul>
-          </section>
+          {/* 12 Contracts and links */}
+          <h2 id="contracts" className="scroll-mt-24 pt-14 font-display text-2xl font-semibold tracking-tight sm:text-3xl text-ink">
+            <span className="mr-3 font-mono text-sm font-medium text-iris tabular">12</span>
+            Contracts and links
+          </h2>
+          <table className="mt-5 w-full">
+            <tbody>
+              <ContractRow label={tokenSymbol} address={null} explorer={solanaExplorer} />
+              <ContractRow label="Staking" address={null} explorer={solanaExplorer} />
+              <ContractRow label="Mosh bundle" address={null} explorer={hyperExplorer} />
+              <ContractRow label="Operator" address={contracts.operator} explorer={solanaExplorer} />
+              <ContractRow label="Revenue vault" address={null} explorer={solanaExplorer} />
+              <ContractRow label="Papertrade exchange" address={contracts.exchange} explorer={hyperExplorer} />
+              <ContractRow label="PAPER" address={contracts.paper} explorer={hyperExplorer} />
+              <ContractRow label="PAPER staking" address={contracts.paperStaking} explorer={hyperExplorer} />
+              <TableRow
+                k="X"
+                v={
+                  <a
+                    href="https://x.com/vikoagentxyz"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-1.5 text-iris hover:underline"
+                  >
+                    <svg className="size-3" viewBox="0 0 24 24" fill="currentColor">
+                      <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+                    </svg>
+                    <span>x.com/vikoagentxyz</span>
+                  </a>
+                }
+              />
+              <TableRow
+                k="Site"
+                v={
+                  <Link href="/" className="text-iris hover:underline">
+                    the live agent
+                  </Link>
+                }
+              />
+            </tbody>
+          </table>
         </article>
       </div>
     </div>
