@@ -687,5 +687,19 @@
 | Workspace | Existing unstaged changes in `packages/persistence/src/migration-runner.ts` and `packages/persistence/src/neon-repositories.ts` preserved, not overwritten |
 | Next Step | Run live PumpPortal read-only smoke test in approved staging environment, then review preserved persistence diff before commit |
 
+---
+
+## Progress Block 042 — Local Release Hygiene Completed
+
+| Field | Record |
+|---|---|
+| Timestamp | 2026-10-27 10:40 SEAST |
+| Status | In Progress |
+| Task | Remove test lint warnings and validate preserved persistence changes |
+| Result | Replaced test `any` casts with typed `SocketLike`; preserved migration raw-template handling and Neon decision `mint` insertion pass verification |
+| Verification | `30` test files passed; `69` tests passed; lint clean; build, audit, and diff check passed |
+| Uncommitted | `packages/persistence/src/migration-runner.ts` and `packages/persistence/src/neon-repositories.ts` remain unstaged because changes originated outside current task and need owner confirmation |
+| Next Step | User/owner confirms whether preserved persistence diff should be committed; live PumpPortal smoke test still requires approved secret-manager environment |
+
 
 ---
