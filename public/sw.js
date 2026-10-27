@@ -1,5 +1,5 @@
 /* eslint-disable */
-const CACHE_NAME = 'vikoagent-cache-v2';
+const CACHE_NAME = 'vikoagent-cache-v3';
 const STATIC_ASSETS = [
   '/',
   '/docs',
@@ -42,6 +42,22 @@ self.addEventListener('fetch', (event) => {
           headers: { 'Content-Type': 'application/json' },
         });
       })
+    );
+    return;
+  }
+
+  // Next.js chunks, scripts, and stylesheets: network-first so new releases appear immediately
+  if (url.pathname.startsWith('/_next/')) {
+    event.respondWith(
+      fetch(event.request)
+        .then((response) => {
+          if (response && response.status === 200) {
+            const copy = response.clone();
+            caches.open(CACHE_NAME).then((cache) => cache.put(event.request, copy));
+          }
+          return response;
+        })
+        .catch(() => caches.match(event.request))
     );
     return;
   }

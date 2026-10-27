@@ -1347,59 +1347,59 @@ export function Dashboard() {
         <section className="runs-on-section">
           <div className="runs-on-grid">
             <a href="https://pump.fun" target="_blank" rel="noopener noreferrer" className="glass partner-card-kivo">
-              <span className="partner-logo-box" style={{ background: '#dcfce7', color: '#15803d', fontSize: '18px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+              <span className="partner-logo-box logo-pump">
                 💊
               </span>
-              <div className="partner-info-box" style={{ flex: 1 }}>
-                <div style={{ display: 'flex', alignItems: 'baseline', gap: '6px' }}>
-                  <h4>Pump.fun</h4>
-                  <span style={{ fontSize: '11px', color: 'var(--color-ink-3)', fontWeight: 500 }}>Bonding Curve</span>
+              <div className="partner-info-box">
+                <div className="partner-title-row">
+                  <h4 className="partner-name">Pump.fun</h4>
+                  <span className="partner-badge">Bonding Curve</span>
                 </div>
-                <p>primary Solana memecoin launchpad</p>
+                <p className="partner-desc">primary Solana memecoin launchpad</p>
               </div>
-              <span style={{ fontSize: '13px', color: 'var(--color-ink-3)' }}>↗</span>
+              <span className="partner-arrow-icon">↗</span>
             </a>
 
             <a href="https://meteora.ag" target="_blank" rel="noopener noreferrer" className="glass partner-card-kivo">
-              <span className="partner-logo-box" style={{ background: '#e0f2fe', color: '#0369a1', fontSize: '18px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+              <span className="partner-logo-box logo-meteora">
                 ☄️
               </span>
-              <div className="partner-info-box" style={{ flex: 1 }}>
-                <div style={{ display: 'flex', alignItems: 'baseline', gap: '6px' }}>
-                  <h4>Meteora DBC</h4>
-                  <span style={{ fontSize: '11px', color: 'var(--color-ink-3)', fontWeight: 500 }}>Dynamic AMM</span>
+              <div className="partner-info-box">
+                <div className="partner-title-row">
+                  <h4 className="partner-name">Meteora DBC</h4>
+                  <span className="partner-badge">Dynamic AMM</span>
                 </div>
-                <p>dynamic bonding curve & DAMM pools</p>
+                <p className="partner-desc">dynamic bonding curve & DAMM pools</p>
               </div>
-              <span style={{ fontSize: '13px', color: 'var(--color-ink-3)' }}>↗</span>
+              <span className="partner-arrow-icon">↗</span>
             </a>
 
             <a href="https://dexscreener.com/moonshot" target="_blank" rel="noopener noreferrer" className="glass partner-card-kivo">
-              <span className="partner-logo-box" style={{ background: '#fae8ff', color: '#a21caf', fontSize: '18px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+              <span className="partner-logo-box logo-moonshot">
                 🚀
               </span>
-              <div className="partner-info-box" style={{ flex: 1 }}>
-                <div style={{ display: 'flex', alignItems: 'baseline', gap: '6px' }}>
-                  <h4>Moonshot</h4>
-                  <span style={{ fontSize: '11px', color: 'var(--color-ink-3)', fontWeight: 500 }}>Fair Launch</span>
+              <div className="partner-info-box">
+                <div className="partner-title-row">
+                  <h4 className="partner-name">Moonshot</h4>
+                  <span className="partner-badge">Fair Launch</span>
                 </div>
-                <p>DexScreener audited trending tokens</p>
+                <p className="partner-desc">DexScreener audited trending tokens</p>
               </div>
-              <span style={{ fontSize: '13px', color: 'var(--color-ink-3)' }}>↗</span>
+              <span className="partner-arrow-icon">↗</span>
             </a>
 
             <a href="https://raydium.io" target="_blank" rel="noopener noreferrer" className="glass partner-card-kivo">
-              <span className="partner-logo-box" style={{ background: '#ede9fe', color: '#6d28d9', fontSize: '18px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+              <span className="partner-logo-box logo-raydium">
                 ⚡
               </span>
-              <div className="partner-info-box" style={{ flex: 1 }}>
-                <div style={{ display: 'flex', alignItems: 'baseline', gap: '6px' }}>
-                  <h4>Raydium</h4>
-                  <span style={{ fontSize: '11px', color: 'var(--color-ink-3)', fontWeight: 500 }}>LaunchLab & AMM</span>
+              <div className="partner-info-box">
+                <div className="partner-title-row">
+                  <h4 className="partner-name">Raydium</h4>
+                  <span className="partner-badge">LaunchLab & AMM</span>
                 </div>
-                <p>bonding curve graduation & liquidity venue</p>
+                <p className="partner-desc">bonding curve graduation & liquidity venue</p>
               </div>
-              <span style={{ fontSize: '13px', color: 'var(--color-ink-3)' }}>↗</span>
+              <span className="partner-arrow-icon">↗</span>
             </a>
           </div>
         </section>

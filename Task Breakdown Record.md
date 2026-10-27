@@ -1080,6 +1080,23 @@
 | Verification | 1) 31 Vitest test files (78/78 tests passed, 100%); 2) ESLint clean (0 errors, 0 warnings); 3) Next.js 16.4.1 Turbopack build passed (`npm run build`, exit code 0); 4) Visual browser verification via subagent on 375x667 (iPhone SE) confirming header `06:44 UTC · 8m ago · Hold` and `[🧠 AI via OpenRouter] ⌄` are completely on one line without text fragmentation, checklist items show both BTC & ETH prices clearly, and earlier holds strip displays neatly on a single line with right-aligned chevron |
 | Result | Mind Stream section is 100% responsive, sleek, and visually aligned across all mobile device viewports with zero regressions |
 
+---
+
+## Progress Block 066 — Multi-Device Responsiveness & Layout Overhaul for Top Solana Launchpads Cards
+
+| Field | Record |
+|---|---|
+| Timestamp | 2026-10-27 17:30 SEAST |
+| Status | Completed |
+| Task | Fix cramped, colliding, and broken text wrapping in Top Solana Launchpads & Venues cards (`Pump.fun`, `Meteora DBC`, `Moonshot`, `Raydium`) across all viewport widths |
+| Skill | `bmad-ux`, `bmad-build`, `verification-before-completion` |
+| Scope | `apps/web/components/dashboard.tsx`, `apps/web/app/globals.css`, `app/globals.css`, `public/sw.js` |
+| Problem Identified | 1) The 4 launchpad cards were previously forced into 4 columns (`repeat(4, 1fr)`) across desktop viewports, leaving only ~145px width for card text. Inside each card, titles and badges (`<h4>` and `<span>`) were forced inline with `display: flex; align-items: baseline`, causing words to wrap into clumsy vertical pieces ("Bonding" over "Curve", "Dynamic" over "AMM", and "Meteora" next to "Dynamic"); 2) The external arrow icon `↗` was squished against the text description; 3) The previous Service Worker cache served stale JS bundles |
+| Actions Taken | 1) Refactored card markup in `apps/web/components/dashboard.tsx` with dedicated classes (`.partner-title-row`, `.partner-name`, `.partner-badge`, `.partner-desc`, `.partner-arrow-icon`, and logo modifiers `.logo-pump`, `.logo-meteora`, `.logo-moonshot`, `.logo-raydium`); 2) Protected titles and badges from word wrapping with `white-space: nowrap;` and styled badges with an elegant chip/pill background; 3) Replaced brittle 4-column constraint with a fluid multi-device layout: 4 columns on wide desktop (>= 1200px), 2x2 grid on medium/tablet (641px - 1199px), and 1-column card stack on mobile (<= 640px); 4) Upgraded `public/sw.js` to `vikoagent-cache-v3` with network-first handling for `/_next/` assets; 5) Synchronized `app/globals.css` with `apps/web/app/globals.css` |
+| Verification | 1) 31 Vitest test files (78/78 tests passed, 100%); 2) ESLint clean (0 errors, 0 warnings); 3) Next.js 16.4.1 Turbopack build passed (`npm run build`, exit code 0); 4) Visual browser subagent verification across 502x539 (user's window), 375x667 (iPhone SE), 1024x768 (Tablet/laptop), and 1280x800 (Desktop) confirming zero text splitting, pristine badge pills, and clean right-aligned arrow icons |
+| Result | Launchpad cards section is 100% responsive, sleek, and visually pristine across all screen sizes |
+
+
 
 
 
