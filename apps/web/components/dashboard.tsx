@@ -580,6 +580,20 @@ export function Dashboard() {
           </div>
 
           <div className="nav-right-actions">
+            <a
+              href="https://faucet.solana.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="nav-pill-btn"
+              style={{ display: 'inline-flex', alignItems: 'center', gap: '4px', textDecoration: 'none' }}
+              title="Solana Devnet Faucet"
+            >
+              <span>Faucet</span>
+              <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                <line x1="7" y1="17" x2="17" y2="7" />
+                <polyline points="7 7 17 7 17 17" />
+              </svg>
+            </a>
             <a href="/docs#agent" className="nav-pill-btn">Docs</a>
             <button
               type="button"
@@ -663,8 +677,12 @@ export function Dashboard() {
                     </div>
                   </div>
 
-                  <div className="treasury-big-nav tabular">
-                    {chartHover ? chartHover.nav : currentChart.nav}
+                  <div className="treasury-big-nav tabular" style={{ display: 'flex', alignItems: 'baseline', gap: '8px', flexWrap: 'wrap' }}>
+                    <span>{chartHover ? chartHover.nav : currentChart.nav}</span>
+                    <span style={{ fontSize: '14px', fontWeight: 600, color: '#8b5cf6', background: '#ede9fe', padding: '2px 8px', borderRadius: '6px', display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
+                      <img src="/partners/solana.svg" alt="" style={{ width: '10px', height: '8px' }} />
+                      18.32 SOL
+                    </span>
                   </div>
 
                   <div className="treasury-pills-row">
@@ -1451,10 +1469,21 @@ export function Dashboard() {
             <div className="receipts-rows-stack">
               <div className="clay-inset receipt-audit-row">
                 <div>
-                  <strong style={{ fontFamily: 'var(--font-mono)', fontSize: '11px', color: 'var(--color-ink)', display: 'block' }}>
-                    RCPT-DEVNET-0042
-                  </strong>
-                  <small style={{ fontFamily: 'var(--font-mono)', fontSize: '10px', color: 'var(--color-ink-3)' }}>
+                  <a
+                    href="https://explorer.solana.com/address/7xKXt99vP8uEHQ73yV8gQjWj8U3vGk3Wq7oP29L42As?cluster=devnet"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    style={{ textDecoration: 'none', color: 'inherit' }}
+                  >
+                    <strong style={{ fontFamily: 'var(--font-mono)', fontSize: '11px', color: 'var(--color-ink)', display: 'inline-flex', alignItems: 'center', gap: '3px' }}>
+                      RCPT-DEVNET-0042
+                      <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                        <line x1="7" y1="17" x2="17" y2="7" />
+                        <polyline points="7 7 17 7 17 17" />
+                      </svg>
+                    </strong>
+                  </a>
+                  <small style={{ fontFamily: 'var(--font-mono)', fontSize: '10px', color: 'var(--color-ink-3)', display: 'block' }}>
                     7xKX...JosgAsU · PAPER BUY
                   </small>
                 </div>
@@ -1470,10 +1499,21 @@ export function Dashboard() {
 
               <div className="clay-inset receipt-audit-row">
                 <div>
-                  <strong style={{ fontFamily: 'var(--font-mono)', fontSize: '11px', color: 'var(--color-ink)', display: 'block' }}>
-                    RCPT-DEVNET-0041
-                  </strong>
-                  <small style={{ fontFamily: 'var(--font-mono)', fontSize: '10px', color: 'var(--color-ink-3)' }}>
+                  <a
+                    href="https://explorer.solana.com/address/5rT2pW8Yk3sEHQ73yV8gQjWj8U3vGk3Wq7oP29L42As?cluster=devnet"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    style={{ textDecoration: 'none', color: 'inherit' }}
+                  >
+                    <strong style={{ fontFamily: 'var(--font-mono)', fontSize: '11px', color: 'var(--color-ink)', display: 'inline-flex', alignItems: 'center', gap: '3px' }}>
+                      RCPT-DEVNET-0041
+                      <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                        <line x1="7" y1="17" x2="17" y2="7" />
+                        <polyline points="7 7 17 7 17 17" />
+                      </svg>
+                    </strong>
+                  </a>
+                  <small style={{ fontFamily: 'var(--font-mono)', fontSize: '10px', color: 'var(--color-ink-3)', display: 'block' }}>
                     5rT2...oI6vT · PAPER BUY
                   </small>
                 </div>
@@ -1489,10 +1529,21 @@ export function Dashboard() {
 
               <div className="clay-inset receipt-audit-row">
                 <div>
-                  <strong style={{ fontFamily: 'var(--font-mono)', fontSize: '11px', color: 'var(--color-ink)', display: 'block' }}>
-                    RCPT-DEVNET-0040
-                  </strong>
-                  <small style={{ fontFamily: 'var(--font-mono)', fontSize: '10px', color: 'var(--color-ink-3)' }}>
+                  <a
+                    href="https://explorer.solana.com/address/2wQ1vP8uEHQ73yV8gQjWj8U3vGk3Wq7oP29L42As8kM?cluster=devnet"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    style={{ textDecoration: 'none', color: 'inherit' }}
+                  >
+                    <strong style={{ fontFamily: 'var(--font-mono)', fontSize: '11px', color: 'var(--color-ink)', display: 'inline-flex', alignItems: 'center', gap: '3px' }}>
+                      RCPT-DEVNET-0040
+                      <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                        <line x1="7" y1="17" x2="17" y2="7" />
+                        <polyline points="7 7 17 7 17 17" />
+                      </svg>
+                    </strong>
+                  </a>
+                  <small style={{ fontFamily: 'var(--font-mono)', fontSize: '10px', color: 'var(--color-ink-3)', display: 'block' }}>
                     2wQ1...8kMpL · PAPER SELL
                   </small>
                 </div>
