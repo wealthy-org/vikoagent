@@ -701,5 +701,21 @@
 | Uncommitted | `packages/persistence/src/migration-runner.ts` and `packages/persistence/src/neon-repositories.ts` remain unstaged because changes originated outside current task and need owner confirmation |
 | Next Step | User/owner confirms whether preserved persistence diff should be committed; live PumpPortal smoke test still requires approved secret-manager environment |
 
+---
+
+## Progress Block 043 — Final Local Audit and Live Gate Status Recorded
+
+| Field | Record |
+|---|---|
+| Timestamp | 2026-10-27 11:00 SEAST |
+| Status | In Progress |
+| Task | Record PumpPortal external smoke result and run final BMAD tree/release audit |
+| Result | Added `docs/pumpportal-smoke-report.md`; all `28/28` tickets done; no remaining chain or dependency conflict |
+| Verification | `30` test files passed; `71` tests passed; lint, build, audit, and diff check passed |
+| Live blocker | PumpPortal URL absent from approved secret manager/process environment; live WebSocket and subscription not run |
+| External evidence | Neon smoke report recorded separately; raw credentials and provider payloads absent |
+| Uncommitted owner diff | `packages/persistence/src/migration-runner.ts` and `packages/persistence/src/neon-repositories.ts` remain unstaged; no overwrite performed |
+| Release status | Local PAPER/DEVNET release candidate verified; live provider certification and production deployment remain blocked |
+
 
 ---
