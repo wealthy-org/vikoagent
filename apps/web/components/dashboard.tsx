@@ -210,9 +210,27 @@ export function Dashboard() {
   const [countdownMinutes, setCountdownMinutes] = useState(0);
   const [countdownSeconds, setCountdownSeconds] = useState(27);
   const [roundCountdown, setRoundCountdown] = useState(77); // 1:17
-  const [scannedTokens, setScannedTokens] = useState(MOCK_SCANNED_TOKENS);
+  const [scannedTokens, setScannedTokens] = useState<ScannedToken[]>(MOCK_SCANNED_TOKENS);
   const [incomingFeed, setIncomingFeed] = useState(INCOMING_NEWS_FEED);
   const [liveConnected, setLiveConnected] = useState(false);
+  const [currentAiThought, setCurrentAiThought] = useState(
+    'Pump.fun bonding curve metrics show healthy organic liquidity influx. Dev wallet holds 2.8% supply, well below our 4% risk ceiling. Top 10 non-bonding holders control under 12% total supply. Paper entry executed deterministically at spot price.'
+  );
+  const [aiModelLabel, setAiModelLabel] = useState('🧠 Llama 3 via OpenRouter');
+  const [activeAnalysisToken, setActiveAnalysisToken] = useState('$SOLCAT');
+  const [dbSyncedCount, setDbSyncedCount] = useState<number>(5);
+
+  // Initial load DB count
+  useEffect(() => {
+    fetch('/api/record-token')
+      .then((res) => res.json())
+      .then((data) => {
+        if (data && typeof data.count === 'number') {
+          setDbSyncedCount(data.count);
+        }
+      })
+      .catch(() => undefined);
+  }, []);
 
   // PumpPortal Live WebSocket Integration
   useEffect(() => {
@@ -260,6 +278,47 @@ export function Dashboard() {
                 headline: `NEW MINT: $${data.symbol} launched on Pump.fun bonding curve ($${formatNumberWithCommas(approxLiqUsd)} initial liq)`,
               };
               setIncomingFeed((prev) => [newFeedItem, ...prev.slice(0, 7)]);
+
+              // OPSI 2: Record to Neon PostgreSQL
+              fetch('/api/record-token', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                  mint: data.mint,
+                  symbol: data.symbol,
+                  source: 'PUMPPORTAL',
+                  liquidityUsd: approxLiqUsd,
+                  payload: { name: data.name, bondingPct, status },
+                }),
+              })
+                .then((r) => r.json())
+                .then((res) => {
+                  if (res && res.totalCount) setDbSyncedCount(res.totalCount);
+                })
+                .catch(() => undefined);
+
+              // OPSI 1: Ask OpenRouter AI for dynamic reasoning on latest token
+              if (Math.random() > 0.4) {
+                fetch('/api/analyze-token', {
+                  method: 'POST',
+                  headers: { 'Content-Type': 'application/json' },
+                  body: JSON.stringify({
+                    symbol: data.symbol,
+                    liquidityUsd: approxLiqUsd,
+                    bondingProgress: bondingPct,
+                    devHoldPercent: newToken.devHoldPercent,
+                  }),
+                })
+                  .then((r) => r.json())
+                  .then((aiRes) => {
+                    if (aiRes && aiRes.reasoning) {
+                      setCurrentAiThought(aiRes.reasoning);
+                      setActiveAnalysisToken(`$${data.symbol}`);
+                      if (aiRes.model) setAiModelLabel(`🧠 ${aiRes.model.split('/')[1] || 'AI'} via OpenRouter`);
+                    }
+                  })
+                  .catch(() => undefined);
+              }
             }
           } catch {
             // ignore non-json messages
@@ -634,9 +693,9 @@ export function Dashboard() {
               {/* Checklist Step Card (Read the charts, News desk, Decided, Best setup) */}
               <div className="clay-inset round-card-expanded">
                 <div className="round-card-top">
-                  <span>02:48 UTC · 8m ago · Accept</span>
+                  <span>02:48 UTC · Live round · Accept</span>
                   <span style={{ background: '#ffffff', padding: '2px 8px', borderRadius: '999px', border: '1px solid var(--color-line)' }}>
-                    🧠 DeepSeek V4 via OpenRouter
+                    {aiModelLabel}
                   </span>
                 </div>
 
@@ -675,7 +734,7 @@ export function Dashboard() {
                       <span className="step-check-icon gray">○</span>
                       <span className="step-title-text">Best setup</span>
                       <span className="step-desc-text">
-                        buy $SOLCAT · breakout past 45% bonding curve into 50k market cap...
+                        evaluating {activeAnalysisToken} · dynamic bonding telemetry verified...
                       </span>
                     </div>
                     <span style={{ color: 'var(--color-ink-3)', fontSize: '11px' }}>⌄</span>
@@ -683,13 +742,13 @@ export function Dashboard() {
                 </div>
 
                 <div className="round-thought-summary">
-                  Pump.fun bonding curve metrics show healthy organic liquidity influx. Dev wallet holds 2.8% supply, well below our 4% risk ceiling. Top 10 non-bonding holders control under 12% total supply. Paper entry executed deterministically at spot price.
+                  {currentAiThought}
                 </div>
 
                 <div className="earlier-rounds-collapsed">
-                  <span>22:48 to 02:38 UTC · 18m ago · 24 holds</span>
+                  <span>Neon DB: {dbSyncedCount} events stored · OpenRouter: active</span>
                   <button type="button" style={{ background: '#ffffff', border: '1px solid var(--color-line)', padding: '3px 10px', borderRadius: '999px', fontSize: '11px', cursor: 'pointer', color: 'var(--color-ink)' }}>
-                    View more
+                    Live telemetry
                   </button>
                 </div>
               </div>
