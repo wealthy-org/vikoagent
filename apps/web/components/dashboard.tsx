@@ -244,49 +244,31 @@ export function Dashboard() {
 
   const CAROUSEL_ROUNDS = [
     {
-      time: '06:44 UTC',
-      ago: '8m ago',
+      time: '13:42 UTC',
+      ago: '3m ago',
       action: 'Hold',
+      conviction: '50%',
+      thesis: 'BTC and ETH 4h trend still down: price under both 4h EMAs with ADX 32.9 (BTC) and 39.1 (ETH). ETH tagged 2,335.3 and pulled back to 2,329.4 on the 13:00 bar after the strong-volume 12:00 push to 2,340.6. 1h volume above average on both (BTC 1.85x, ETH 2.59x) shows this bounce has real buying, so a short needs a clear rejection close.',
+      charts: 'BTC 80,191 ▼ · ETH 2,329 ▼',
+      setup: 'short ETH · a stall into 2,340-2,344.4 that closes a 1h bar back under 2,335 on above-average volume · entry 2,332.00 · stop 2,348.50 · target 2,294.00 · conviction 50%'
+    },
+    {
+      time: '12:42 UTC',
+      ago: '1h ago',
+      action: 'Hold',
+      conviction: '50%',
+      thesis: 'Holding the ETH short on the 4h downtrend: the bounce from 2296 has extended to 2332 on real volume, but it has not closed a 1h bar above 2335 and is still a lower high under 2344.4, so I keep the trade inside its defined risk and let the 2337 stop and the 1h close decide.',
+      charts: 'BTC 80,015 ▼ · ETH 2,322 ▼',
+      setup: 'short ETH · trail stop to 2,337.00 · target 2,294.00'
+    },
+    {
+      time: '11:08 UTC',
+      ago: '2h ago',
+      action: 'Short ETH',
       conviction: '75%',
-      thesis: 'Monitoring bonding curve velocity on $SOLCAT (42% bonded) and $MDV. Creator allocation verified under 4% supply with zero mint authority exploit risk.',
-      charts: '$SOLCAT 42% · $MDV 76% · $RUGMOON 18%',
-      setup: 'buy $SOLCAT · bonding curve breakout >55% with >25 SOL volume spike'
-    },
-    {
-      time: '06:34 UTC',
-      ago: '18m ago',
-      action: 'Hold',
-      conviction: '72%',
-      thesis: 'RSI divergence detected on lower timeframes. Liquidity pool $MDV showing accumulation but spread remains above threshold.',
-      charts: '$SOLCAT 38% · $MDV 71% · $BONK 89%',
-      setup: 'buy $MDV · 15m range consolidation with >150 SOL daily volume'
-    },
-    {
-      time: '06:24 UTC',
-      ago: '28m ago',
-      action: 'Hold',
-      conviction: '68%',
-      thesis: 'Early volume spike detected on newly deployed pump token. Creator holding checked at 2.1%. Awaiting devnet paper order confirmation.',
-      charts: '$SOLCAT 35% · $MDV 66% · $PEPE 94%',
-      setup: 'buy $SOLCAT · breakout confirmation above 40% bonding curve'
-    },
-    {
-      time: '06:14 UTC',
-      ago: '38m ago',
-      action: 'Hold',
-      conviction: '70%',
-      thesis: 'Broad market trend sideways. Gas fees nominal on Devnet cluster. No aggressive entry justified under current risk rules.',
-      charts: '$SOLCAT 31% · $MDV 62% · $WIF 82%',
-      setup: 'buy $MDV · sudden liquidity injection >30 SOL from unique wallets'
-    },
-    {
-      time: '06:04 UTC',
-      ago: '48m ago',
-      action: 'Hold',
-      conviction: '74%',
-      thesis: 'Initial telemetry session initialized. Scanner radar actively streaming new tokens from PumpPortal WebSocket stream.',
-      charts: '$SOLCAT 28% · $MDV 58% · $JUP 91%',
-      setup: 'buy $SOLCAT · trend continuation with verified LP lock'
+      thesis: "ETH's 4h downtrend is intact (price below its 4h EMAs, ADX near 40, lower highs since 2344.4) and the dip-buy rally off the 2296 low has stalled into the 2320-2323 supply zone on the session's lightest volume, a classic exhausted-buyer lower high. A short here into 2287 is with the trend and hedged against a hawkish-leaning Fed, firm dollar and near-5% yields.",
+      charts: 'BTC 79,840 ▼ · ETH 2,321 ▼',
+      setup: 'short ETH · entry 2,321.50 · stop 2,338.00 · target 2,287.00'
     },
   ];
 
@@ -1060,10 +1042,61 @@ export function Dashboard() {
                         <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" className={`step-chevron ${expandedSteps['charts'] ? 'rotated' : ''}`} aria-hidden="true"><polyline points="6 9 12 15 18 9" /></svg>
                       </div>
                       {expandedSteps['charts'] && (
-                        <div className="step-accordion-content">
-                          <div className="mini-chart-grid">
-                            <span><strong>$SOLCAT:</strong> 5m Bull · DBC 42% · Vol 142 SOL · Dev 3.8% · Liquidity Verified</span>
-                            <span><strong>$MDV:</strong> 15m Range · Meteora DBC 76% · Vol 318 SOL · Rug Risk Low</span>
+                        <div className="step-accordion-content" style={{ padding: '4px 8px 12px 28px' }}>
+                          <div className="nested-chart-desk-card">
+                            <div className="chart-desk-header">
+                              <span className="chart-desk-title">
+                                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ marginRight: '6px' }}>
+                                  <polyline points="22 12 18 12 15 21 9 3 6 12 2 12" />
+                                </svg>
+                                Chart desk
+                              </span>
+                              <div className="chart-desk-timeframes">
+                                <span>1D</span>
+                                <span>4H</span>
+                                <span>1H</span>
+                                <span>15M</span>
+                              </div>
+                            </div>
+
+                            {/* BTC Row */}
+                            <div className="chart-desk-row">
+                              <div className="chart-desk-row-top">
+                                <div className="chart-desk-asset">BTC <span className="tabular">80,190.5</span></div>
+                                <div className="chart-desk-arrows-group">
+                                  <span className="arrow-indicator up">▲</span>
+                                  <span className="arrow-indicator down">▼</span>
+                                  <span className="arrow-indicator down">▼</span>
+                                  <span className="arrow-indicator up">▲</span>
+                                  <span className="chart-desk-rsi tabular">RSI 54</span>
+                                </div>
+                              </div>
+                              <div className="chart-desk-row-bottom">
+                                <span className="pill-metric blue">vol 1.9x 1h</span>
+                                <span className="pill-metric green">bull div 1h</span>
+                                <span className="pill-metric green">S 80,051</span>
+                                <span className="pill-metric red">R 80,469 ×3</span>
+                              </div>
+                            </div>
+
+                            {/* ETH Row */}
+                            <div className="chart-desk-row" style={{ marginTop: '10px' }}>
+                              <div className="chart-desk-row-top">
+                                <div className="chart-desk-asset">ETH <span className="tabular">2,329.45</span></div>
+                                <div className="chart-desk-arrows-group">
+                                  <span className="arrow-indicator down">▼</span>
+                                  <span className="arrow-indicator down">▼</span>
+                                  <span className="arrow-indicator down">▼</span>
+                                  <span className="arrow-indicator up">▲</span>
+                                  <span className="chart-desk-rsi tabular">RSI 56</span>
+                                </div>
+                              </div>
+                              <div className="chart-desk-row-bottom">
+                                <span className="pill-metric blue">vol 2.6x 1h</span>
+                                <span className="pill-metric green">S 2,318</span>
+                                <span className="pill-metric red">R 2,335 ×2</span>
+                              </div>
+                            </div>
                           </div>
                         </div>
                       )}
@@ -1087,18 +1120,58 @@ export function Dashboard() {
                             News desk
                           </span>
                           <span className="step-desc-text">
-                            kept 6 · Mostly neutral macro and crypto infrastructure news; ETF flows ...
+                            kept 7 · Macro signals are mixed with rising Treasury yields and infl...
                           </span>
                         </div>
                         <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" className={`step-chevron ${expandedSteps['news'] ? 'rotated' : ''}`} aria-hidden="true"><polyline points="6 9 12 15 18 9" /></svg>
                       </div>
                       {expandedSteps['news'] && (
-                        <div className="step-accordion-content">
-                          <ul style={{ paddingLeft: '16px', margin: 0, fontSize: '11.5px', color: 'var(--color-ink-2)' }}>
-                            <li>PumpPortal WebSocket: 1,420 token discovery events ingested.</li>
-                            <li>Meteora DBC: Dynamic pool $MDV bonding velocity +18% over 15m.</li>
-                            <li>Solana Devnet: Cluster TPS steady at 2,840 with zero failed txs.</li>
-                          </ul>
+                        <div className="step-accordion-content" style={{ padding: '4px 8px 12px 28px' }}>
+                          <p className="news-desk-lead-summary">
+                            Macro signals are mixed with rising Treasury yields and inflation risks offset by risk-on equities, while crypto-specific news is mildly positive on regulated derivatives and on-chain bullishness.
+                          </p>
+
+                          <div className="nested-kept-news-card">
+                            <div className="kept-news-header">
+                              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ marginRight: '6px' }}>
+                                <path d="M4 11a9 9 0 0 1 9 9" />
+                                <path d="M4 4a16 16 0 0 1 16 16" />
+                                <circle cx="5" cy="19" r="1" />
+                              </svg>
+                              Kept 7
+                            </div>
+
+                            <div className="kept-news-list">
+                              <div className="kept-news-item">
+                                <span className="news-signal-dot green">●</span>
+                                <span className="news-source-tag">marketwatch.com</span>
+                                <span className="news-item-title">DOW, NASDAQ AND S&amp;P 500 OPEN HIGHER AS OIL PRICES FALL AND CHIP STOCKS BOUNCE</span>
+                                <span className="news-link-arrow">↗</span>
+                              </div>
+                              <div className="kept-news-item">
+                                <span className="news-signal-dot red">●</span>
+                                <span className="news-source-tag">𝕏 @DeItaone</span>
+                                <span className="news-item-title">GLOBAL INFLATION RISKS RISE DESPITE RESILIENT ECONOMIC GROWTH</span>
+                                <span className="news-link-arrow">↗</span>
+                              </div>
+                              <div className="kept-news-item">
+                                <span className="news-signal-dot red">●</span>
+                                <span className="news-source-tag">marketwatch.com</span>
+                                <span className="news-item-title">A BIGGER-THAN-EXPECTED WIN FOR DEMOCRATS IN THE MIDTERMS COULD DELIVER &lsquo;SHORT-LIVED WEAKNESS&rsquo; FOR STOCKS, STRATEGISTS SAY</span>
+                                <span className="news-link-arrow">↗</span>
+                              </div>
+                              <div className="kept-news-item">
+                                <span className="news-signal-dot green">●</span>
+                                <span className="news-source-tag">𝕏 @TheBlockCo</span>
+                                <span className="news-item-title">THE BLOCK: Crypto. com and OG. com are rolling out regulated crypto perpetuals in the U.S. today with up to 5x leverage.</span>
+                                <span className="news-link-arrow">↗</span>
+                              </div>
+                            </div>
+
+                            <div style={{ marginTop: '8px' }}>
+                              <span style={{ fontSize: '11px', color: 'var(--color-iris)', cursor: 'pointer', fontWeight: 500 }}>3 more</span>
+                            </div>
+                          </div>
                         </div>
                       )}
 
@@ -1126,10 +1199,30 @@ export function Dashboard() {
                         <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" className={`step-chevron ${expandedSteps['decided'] ? 'rotated' : ''}`} aria-hidden="true"><polyline points="6 9 12 15 18 9" /></svg>
                       </div>
                       {expandedSteps['decided'] && (
-                        <div className="step-accordion-content">
-                          <p style={{ margin: 0, fontSize: '11.5px', color: 'var(--color-ink-2)' }}>
-                            Action evaluated: {CAROUSEL_ROUNDS[carouselIndex].action}. Risk parameters within standard tolerance ceiling. Paper liquidity protected.
-                          </p>
+                        <div className="step-accordion-content" style={{ padding: '4px 8px 12px 28px' }}>
+                          <div className="decided-bullets-stack">
+                            <div className="decided-bullet-row">
+                              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0, marginTop: '3px', color: 'var(--color-ink-3)' }}><polyline points="22 12 18 12 15 21 9 3 6 12 2 12" /></svg>
+                              <span>BTC and ETH 4h trend still down: price under both 4h EMAs with ADX 32.9 (BTC) and 39.1 (ETH)</span>
+                            </div>
+                            <div className="decided-bullet-row">
+                              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0, marginTop: '3px', color: 'var(--color-ink-3)' }}><polyline points="22 12 18 12 15 21 9 3 6 12 2 12" /></svg>
+                              <span>ETH tagged 2,335.3 and pulled back to 2,329.4 on the 13:00 bar after the strong-volume 12:00 push to 2,340.6</span>
+                            </div>
+                            <div className="decided-bullet-row">
+                              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0, marginTop: '3px', color: 'var(--color-ink-3)' }}><polyline points="22 12 18 12 15 21 9 3 6 12 2 12" /></svg>
+                              <span>1h volume above average on both (BTC 1.85x, ETH 2.59x) shows this bounce has real buying, so a short needs a clear rejection close</span>
+                            </div>
+                            <div className="decided-bullet-row">
+                              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0, marginTop: '3px', color: 'var(--color-ink-3)' }}><polyline points="22 12 18 12 15 21 9 3 6 12 2 12" /></svg>
+                              <span>Flat 0.9 hours after the ETH short stopped out at 12:48, leaving the 120-minute cooldown running until about 14:48</span>
+                            </div>
+                          </div>
+
+                          <div className="decided-narrative-block">
+                            <p><strong>What changed:</strong> Since 13:35 the bounce resumed: BTC rose from 80,015 to 80,190 and ETH from 2,322.5 to 2,329.4, with ETH tagging 2,335.3 before easing back. No 1h rejection close has printed and the cooldown is still running, so conviction in the short stays near 0.5; the setup still fits the live market.</p>
+                            <p><strong>Outlook:</strong> I expect the 4h downtrend to reassert once the 12:00 bounce fully stalls. On ETH, a stall into 2,340-2,344.4 that closes a 1h bar back under 2,335 on above-average volume opens a short toward 2,294 then 2,287, stopped above 2,348; a 1h close above 2,344.4 invalidates the fade and opens 2,363.6. On BTC, a stall into 80,469-80,835 that closes back under 80,050 opens a short toward 79,732, while a 1h close above 80,476 opens the 4h EMA near 81,080.</p>
+                          </div>
                         </div>
                       )}
 
@@ -1154,10 +1247,41 @@ export function Dashboard() {
                         <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" className={`step-chevron ${expandedSteps['setup'] ? 'rotated' : ''}`} aria-hidden="true"><polyline points="6 9 12 15 18 9" /></svg>
                       </div>
                       {expandedSteps['setup'] && (
-                        <div className="step-accordion-content">
-                          <p style={{ margin: 0, fontSize: '11.5px', color: 'var(--color-ink-2)' }}>
-                            Candidate trigger: {CAROUSEL_ROUNDS[carouselIndex].setup}. Radar token: {activeAnalysisToken}. Neon DB synced events: {dbSyncedCount}.
+                        <div className="step-accordion-content" style={{ padding: '4px 8px 12px 28px' }}>
+                          <p className="best-setup-lead">
+                            short ETH when a stall into 2,340-2,344.4 that closes a 1h bar back under 2,335 on above-average volume
                           </p>
+
+                          {/* 5-Column Grid */}
+                          <div className="best-setup-metric-grid">
+                            <div className="metric-grid-cell">
+                              <span className="metric-label">entry</span>
+                              <strong className="metric-val tabular">2,332.00</strong>
+                            </div>
+                            <div className="metric-grid-cell">
+                              <span className="metric-label">stop</span>
+                              <strong className="metric-val tabular">2,348.50</strong>
+                            </div>
+                            <div className="metric-grid-cell">
+                              <span className="metric-label">target</span>
+                              <strong className="metric-val tabular">2,294.00</strong>
+                            </div>
+                            <div className="metric-grid-cell">
+                              <span className="metric-label">reward to risk</span>
+                              <strong className="metric-val tabular">2.3</strong>
+                            </div>
+                            <div className="metric-grid-cell">
+                              <span className="metric-label">conviction</span>
+                              <strong className="metric-val tabular">50%</strong>
+                            </div>
+                          </div>
+
+                          <p className="best-setup-explanation">
+                            Flat and inside the 120-minute loss cooldown from the 12:48 ETH stop, which does not expire until about 14:48, so no new entry is permitted this round regardless of the setup. The 4h downtrend is intact on both coins (EMA50 under EMA200, ADX 32 on BTC and 39 on ETH) and ETH has stalled just under 2,344.4 without a confirmed rejection close, so the fade is still the trade to wait for rather than act on.
+                          </p>
+                          <div style={{ marginTop: '6px', fontSize: '11px', color: 'var(--color-ink-3)', fontFamily: 'var(--font-mono)' }}>
+                            Radar token: {activeAnalysisToken} · Neon DB synced events: {dbSyncedCount}
+                          </div>
                         </div>
                       )}
                     </div>
@@ -1188,23 +1312,118 @@ export function Dashboard() {
                   </div>
                 </div>
 
-                {/* Earlier Holds Node */}
-                <div className="timeline-round-entry" style={{ marginTop: '16px' }}>
-                  <span className="timeline-dot-node secondary" />
-                  <div className="holds-history-strip" onClick={() => setShowEarlierHolds(!showEarlierHolds)}>
-                    <div className="holds-meta-row">
-                      <div className="holds-meta-left">
-                        <span className="nowrap-text">02:48 to 06:34 UTC</span>
-                        <span className="meta-sep">·</span>
-                        <span className="nowrap-text">18m ago</span>
-                        <span className="meta-sep">·</span>
-                        <span className="nowrap-text holds-count-text">24 holds</span>
+                {/* Earlier Timeline History Nodes matching image copy 21.png */}
+                <div className="timeline-history-stream" style={{ marginTop: '16px', display: 'flex', flexDirection: 'column', gap: '14px' }}>
+                  {/* Node 1: 12:52 to 13:32 UTC · 13m ago · 5 holds */}
+                  <div className="timeline-round-entry">
+                    <span className="timeline-dot-node secondary" />
+                    <div className="holds-history-strip" onClick={() => setShowEarlierHolds(!showEarlierHolds)}>
+                      <div className="holds-meta-row">
+                        <div className="holds-meta-left">
+                          <span className="nowrap-text">12:52 to 13:32 UTC</span>
+                          <span className="meta-sep">·</span>
+                          <span className="nowrap-text">13m ago</span>
+                          <span className="meta-sep">·</span>
+                          <span className="nowrap-text holds-count-text">5 holds</span>
+                        </div>
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" className={`step-chevron ${showEarlierHolds ? 'rotated' : ''}`} aria-hidden="true"><polyline points="6 9 12 15 18 9" /></svg>
                       </div>
-                      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" className={`step-chevron ${showEarlierHolds ? 'rotated' : ''}`} aria-hidden="true"><polyline points="6 9 12 15 18 9" /></svg>
+                      <p className="holds-desc-text">
+                        waiting on short ETH, a fresh stall into 2,340-2,344.4 that closes a 1h bar back under 2,335 on above-average volume
+                      </p>
                     </div>
-                    <p className="holds-desc-text">
-                      waiting on $SOLCAT bonding curve volume spike, dev wallet holding under 4% supply
-                    </p>
+                  </div>
+
+                  {/* Node 2: 12:42 UTC · 1h ago · Hold */}
+                  <div className="timeline-round-entry">
+                    <span className="timeline-dot-node" />
+                    <div className="clay-inset round-card-expanded" style={{ padding: '12px 14px' }}>
+                      <div className="round-card-top" style={{ marginBottom: '8px' }}>
+                        <div className="round-card-meta-left">
+                          <span className="nowrap-text">12:42 UTC</span>
+                          <span className="meta-sep">·</span>
+                          <span className="nowrap-text">1h ago</span>
+                          <span className="meta-sep">·</span>
+                          <span className="nowrap-text round-decision-text">Hold</span>
+                        </div>
+                        <div className="round-card-meta-right">
+                          <span className="model-tag-pill">
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
+                              <path d="M20.24 12.24a6 6 0 0 0-8.49-8.49L5 10.5V19h8.5zM16 8 2 22M17.5 15H9" />
+                            </svg>
+                            <span>{aiModelLabel}</span>
+                          </span>
+                        </div>
+                      </div>
+                      <p style={{ margin: 0, fontSize: '12.5px', lineHeight: 1.6, color: 'var(--color-ink-2)' }}>
+                        Holding the ETH short on the 4h downtrend: the bounce from 2296 has extended to 2332 on real volume, but it has not closed a 1h bar above 2335 and is still a lower high under 2344.4, so I keep the trade inside its defined risk and let the 2337 stop and the 1h close decide.
+                      </p>
+                    </div>
+                  </div>
+
+                  {/* Node 3: 11:11 to 12:32 UTC · 1h ago · 9 holds */}
+                  <div className="timeline-round-entry">
+                    <span className="timeline-dot-node secondary" />
+                    <div className="holds-history-strip">
+                      <div className="holds-meta-row">
+                        <div className="holds-meta-left">
+                          <span className="nowrap-text">11:11 to 12:32 UTC</span>
+                          <span className="meta-sep">·</span>
+                          <span className="nowrap-text">1h ago</span>
+                          <span className="meta-sep">·</span>
+                          <span className="nowrap-text holds-count-text">9 holds</span>
+                        </div>
+                      </div>
+                      <p className="holds-desc-text">
+                        waiting on short BTC, a stall into 80360-80530 that closes a 1h bar back under 80250 on above-average volume, or a 1h close below 79430
+                      </p>
+                    </div>
+                  </div>
+
+                  {/* Node 4: 11:08 UTC · 2h ago · Short ETH */}
+                  <div className="timeline-round-entry">
+                    <span className="timeline-dot-node" />
+                    <div className="clay-inset round-card-expanded" style={{ padding: '12px 14px' }}>
+                      <div className="round-card-top" style={{ marginBottom: '8px' }}>
+                        <div className="round-card-meta-left">
+                          <span className="nowrap-text">11:08 UTC</span>
+                          <span className="meta-sep">·</span>
+                          <span className="nowrap-text">2h ago</span>
+                          <span className="meta-sep">·</span>
+                          <span className="nowrap-text round-decision-text" style={{ color: 'var(--color-short)' }}>Short ETH</span>
+                        </div>
+                        <div className="round-card-meta-right">
+                          <span className="model-tag-pill">
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
+                              <path d="M20.24 12.24a6 6 0 0 0-8.49-8.49L5 10.5V19h8.5zM16 8 2 22M17.5 15H9" />
+                            </svg>
+                            <span>{aiModelLabel}</span>
+                          </span>
+                        </div>
+                      </div>
+                      <p style={{ margin: 0, fontSize: '12.5px', lineHeight: 1.6, color: 'var(--color-ink-2)' }}>
+                        ETH&apos;s 4h downtrend is intact (price below its 4h EMAs, ADX near 40, lower highs since 2344.4) and the dip-buy rally off the 2296 low has stalled into the 2320-2323 supply zone on the session&apos;s lightest volume, a classic exhausted-buyer lower high. A short here into 2287 is with the trend and hedged against a hawkish-leaning Fed, firm dollar and near-5% yields.
+                      </p>
+                    </div>
+                  </div>
+
+                  {/* Node 5: 09:50 to 10:58 UTC · 2h ago · 8 holds */}
+                  <div className="timeline-round-entry">
+                    <span className="timeline-dot-node secondary" />
+                    <div className="holds-history-strip">
+                      <div className="holds-meta-row">
+                        <div className="holds-meta-left">
+                          <span className="nowrap-text">09:50 to 10:58 UTC</span>
+                          <span className="meta-sep">·</span>
+                          <span className="nowrap-text">2h ago</span>
+                          <span className="meta-sep">·</span>
+                          <span className="nowrap-text holds-count-text">8 holds</span>
+                        </div>
+                      </div>
+                      <p className="holds-desc-text">
+                        waiting on short ETH, a 1h close back under 2,310 after tagging 2,320-2,335, on above-average volume
+                      </p>
+                    </div>
                   </div>
                 </div>
 
