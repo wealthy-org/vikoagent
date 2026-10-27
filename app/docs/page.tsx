@@ -191,6 +191,23 @@ export default function DocsPage() {
         </div>
       </header>
 
+      {/* Mobile Sticky Horizontal Section Navigation (< 1024px) */}
+      <nav className="docs-mobile-pill-bar" aria-label="Documentation sections">
+        {SECTIONS.map(([id, title], idx) => (
+          <a
+            key={id}
+            href={`#${id}`}
+            onClick={() => setActiveSection(id)}
+            className={`docs-mobile-pill ${activeSection === id ? 'active' : ''}`}
+          >
+            <span style={{ opacity: 0.6, marginRight: '4px', fontFamily: 'var(--font-mono)' }}>
+              {String(idx + 1).padStart(2, '0')}
+            </span>
+            <span>{title}</span>
+          </a>
+        ))}
+      </nav>
+
       {/* 2. Main Two-Column Grid */}
       <div className="docs-main-grid">
         {/* Left Sticky Sidebar Nav */}
@@ -443,17 +460,19 @@ export default function DocsPage() {
               <span className="docs-h2-num">10</span>
               What it runs on
             </h2>
-            <table className="docs-table">
-              <tbody>
-                <TableRow k="Papertrade" v="the exchange every trade executes on" />
-                <TableRow k="Hyperliquid" v="the live price and the candles" />
-                <TableRow k="Orbio" v="the model gateway every thought runs through" />
-                <TableRow k="Levanto" v="Sage, the yes or no on every entry" />
-                <TableRow k="Synoptic" v="the live news streams" />
-                <TableRow k="Mosh" v={`where ${tokenSymbol} is launched, paired with ORBIO`} />
-                <TableRow k="Relay" v="the bridge between Robinhood Chain and HyperCore" />
-              </tbody>
-            </table>
+            <div className="docs-table-wrapper">
+              <table className="docs-table">
+                <tbody>
+                  <TableRow k="Papertrade" v="the exchange every trade executes on" />
+                  <TableRow k="Hyperliquid" v="the live price and the candles" />
+                  <TableRow k="Orbio" v="the model gateway every thought runs through" />
+                  <TableRow k="Levanto" v="Sage, the yes or no on every entry" />
+                  <TableRow k="Synoptic" v="the live news streams" />
+                  <TableRow k="Mosh" v={`where ${tokenSymbol} is launched, paired with ORBIO`} />
+                  <TableRow k="Relay" v="the bridge between Robinhood Chain and HyperCore" />
+                </tbody>
+              </table>
+            </div>
           </section>
 
           {/* 11 What can go wrong */}
@@ -484,48 +503,50 @@ export default function DocsPage() {
               <span className="docs-h2-num">12</span>
               Contracts and links
             </h2>
-            <table className="docs-table">
-              <tbody>
-                <ContractRow label={tokenSymbol} address={null} explorer={solanaExplorer} />
-                <ContractRow label="Staking" address={null} explorer={solanaExplorer} />
-                <ContractRow label="Mosh bundle" address={null} explorer={hyperExplorer} />
-                <ContractRow label="Operator" address={contracts.operator} explorer={solanaExplorer} />
-                <ContractRow label="Revenue vault" address={null} explorer={solanaExplorer} />
-                <ContractRow label="Papertrade exchange" address={contracts.exchange} explorer={hyperExplorer} />
-                <ContractRow label="PAPER" address={contracts.paper} explorer={hyperExplorer} />
-                <ContractRow label="PAPER staking" address={contracts.paperStaking} explorer={hyperExplorer} />
-                <TableRow
-                  k="X"
-                  v={
-                    <a
-                      href="https://x.com/kivoagentxyz"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="docs-table-link"
-                    >
-                      <svg
-                        width="12"
-                        height="12"
-                        viewBox="0 0 24 24"
-                        fill="currentColor"
-                        style={{ flexShrink: 0 }}
+            <div className="docs-table-wrapper">
+              <table className="docs-table">
+                <tbody>
+                  <ContractRow label={tokenSymbol} address={null} explorer={solanaExplorer} />
+                  <ContractRow label="Staking" address={null} explorer={solanaExplorer} />
+                  <ContractRow label="Mosh bundle" address={null} explorer={hyperExplorer} />
+                  <ContractRow label="Operator" address={contracts.operator} explorer={solanaExplorer} />
+                  <ContractRow label="Revenue vault" address={null} explorer={solanaExplorer} />
+                  <ContractRow label="Papertrade exchange" address={contracts.exchange} explorer={hyperExplorer} />
+                  <ContractRow label="PAPER" address={contracts.paper} explorer={hyperExplorer} />
+                  <ContractRow label="PAPER staking" address={contracts.paperStaking} explorer={hyperExplorer} />
+                  <TableRow
+                    k="X"
+                    v={
+                      <a
+                        href="https://x.com/kivoagentxyz"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="docs-table-link"
                       >
-                        <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
-                      </svg>
-                      <span>x.com/kivoagentxyz</span>
-                    </a>
-                  }
-                />
-                <TableRow
-                  k="Site"
-                  v={
-                    <Link href="/" className="docs-table-link">
-                      the live agent
-                    </Link>
-                  }
-                />
-              </tbody>
-            </table>
+                        <svg
+                          width="12"
+                          height="12"
+                          viewBox="0 0 24 24"
+                          fill="currentColor"
+                          style={{ flexShrink: 0 }}
+                        >
+                          <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+                        </svg>
+                        <span>x.com/kivoagentxyz</span>
+                      </a>
+                    }
+                  />
+                  <TableRow
+                    k="Site"
+                    v={
+                      <Link href="/" className="docs-table-link">
+                        the live agent
+                      </Link>
+                    }
+                  />
+                </tbody>
+              </table>
+            </div>
           </section>
         </article>
       </div>
