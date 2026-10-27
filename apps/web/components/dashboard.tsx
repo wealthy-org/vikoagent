@@ -433,7 +433,7 @@ export function Dashboard() {
                     if (aiRes && aiRes.reasoning) {
                       setCurrentAiThought(aiRes.reasoning);
                       setActiveAnalysisToken(`$${data.symbol}`);
-                      if (aiRes.model) setAiModelLabel(`🧠 ${aiRes.model.split('/')[1] || 'AI'} via OpenRouter`);
+                      if (aiRes.model) setAiModelLabel(`${aiRes.model.split('/')[1] || 'Llama 3'} via OpenRouter`);
                     }
                   })
                   .catch(() => undefined);
@@ -584,7 +584,12 @@ export function Dashboard() {
                 </span>. Zero real funds at risk with 100% public onchain telemetry.{' '}
                 <a href="#scanner-radar" className="hero-stake-btn">
                   <span>Explore Radar</span>
-                  <span className="btn-arrow-circle">→</span>
+                  <span className="btn-arrow-circle">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                      <line x1="5" y1="12" x2="19" y2="12" />
+                      <polyline points="12 5 19 12 12 19" />
+                    </svg>
+                  </span>
                 </a>
               </p>
             </div>
@@ -945,7 +950,7 @@ export function Dashboard() {
                           </svg>
                           <span>{aiModelLabel}</span>
                         </span>
-                        <span style={{ color: 'var(--color-ink-3)', fontSize: '11px', cursor: 'pointer' }}>⌄</span>
+                        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" style={{ color: 'var(--color-ink-3)', cursor: 'pointer' }} aria-hidden="true"><polyline points="6 9 12 15 18 9" /></svg>
                       </div>
                     </div>
 
@@ -959,13 +964,18 @@ export function Dashboard() {
                             </svg>
                           </span>
                           <span className="step-title-text">
-                            <span style={{ color: 'var(--color-iris)' }}>📊</span> Read the charts
+                            <span style={{ color: 'var(--color-iris)', display: 'inline-flex', verticalAlign: 'middle', marginRight: '6px' }}>
+                              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                                <polyline points="22 12 18 12 15 21 9 3 6 12 2 12" />
+                              </svg>
+                            </span>
+                            Read the charts
                           </span>
                           <span className="step-desc-text tabular">
                             $SOLCAT 42% · $MDV 76% · $RUGMOON 18%
                           </span>
                         </div>
-                        <span className={`step-chevron ${expandedSteps['charts'] ? 'rotated' : ''}`}>⌄</span>
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" className={`step-chevron ${expandedSteps['charts'] ? 'rotated' : ''}`} aria-hidden="true"><polyline points="6 9 12 15 18 9" /></svg>
                       </div>
                       {expandedSteps['charts'] && (
                         <div className="step-accordion-content">
@@ -985,13 +995,20 @@ export function Dashboard() {
                             </svg>
                           </span>
                           <span className="step-title-text">
-                            <span style={{ color: 'var(--color-iris)' }}>📰</span> News desk
+                            <span style={{ color: 'var(--color-iris)', display: 'inline-flex', verticalAlign: 'middle', marginRight: '6px' }}>
+                              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                                <path d="M4 11a9 9 0 0 1 9 9" />
+                                <path d="M4 4a16 16 0 0 1 16 16" />
+                                <circle cx="5" cy="19" r="1" />
+                              </svg>
+                            </span>
+                            News desk
                           </span>
                           <span className="step-desc-text">
                             kept 6 · Mostly neutral macro and crypto infrastructure news; ETF flows ...
                           </span>
                         </div>
-                        <span className={`step-chevron ${expandedSteps['news'] ? 'rotated' : ''}`}>⌄</span>
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" className={`step-chevron ${expandedSteps['news'] ? 'rotated' : ''}`} aria-hidden="true"><polyline points="6 9 12 15 18 9" /></svg>
                       </div>
                       {expandedSteps['news'] && (
                         <div className="step-accordion-content">
@@ -1012,13 +1029,19 @@ export function Dashboard() {
                             </svg>
                           </span>
                           <span className="step-title-text">
-                            <span style={{ color: 'var(--color-iris)' }}>⚡</span> Decided
+                            <span style={{ color: 'var(--color-iris)', display: 'inline-flex', verticalAlign: 'middle', marginRight: '6px' }}>
+                              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                                <circle cx="12" cy="12" r="10" />
+                                <path d="m9 12 2 2 4-4" />
+                              </svg>
+                            </span>
+                            Decided
                           </span>
                           <span className="step-desc-text" style={{ color: 'var(--color-ink)', fontWeight: 600 }}>
                             Hold · conviction 75%
                           </span>
                         </div>
-                        <span className={`step-chevron ${expandedSteps['decided'] ? 'rotated' : ''}`}>⌄</span>
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" className={`step-chevron ${expandedSteps['decided'] ? 'rotated' : ''}`} aria-hidden="true"><polyline points="6 9 12 15 18 9" /></svg>
                       </div>
                       {expandedSteps['decided'] && (
                         <div className="step-accordion-content">
@@ -1031,15 +1054,22 @@ export function Dashboard() {
                       {/* 4. Best setup */}
                       <div className="step-row-item" onClick={() => toggleStep('setup')}>
                         <div className="step-left-content">
-                          <span className="step-check-icon gray">○</span>
+                          <span className="step-check-icon gray"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true"><circle cx="12" cy="12" r="9" /></svg></span>
                           <span className="step-title-text">
-                            <span style={{ color: 'var(--color-iris)' }}>🎯</span> Best setup
+                            <span style={{ color: 'var(--color-iris)', display: 'inline-flex', verticalAlign: 'middle', marginRight: '6px' }}>
+                              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                                <circle cx="12" cy="12" r="10" />
+                                <circle cx="12" cy="12" r="6" />
+                                <circle cx="12" cy="12" r="2" />
+                              </svg>
+                            </span>
+                            Best setup
                           </span>
                           <span className="step-desc-text">
                             buy $SOLCAT · bonding curve breakout &gt;55% with &gt;25 SOL volume spike
                           </span>
                         </div>
-                        <span className={`step-chevron ${expandedSteps['setup'] ? 'rotated' : ''}`}>⌄</span>
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" className={`step-chevron ${expandedSteps['setup'] ? 'rotated' : ''}`} aria-hidden="true"><polyline points="6 9 12 15 18 9" /></svg>
                       </div>
                       {expandedSteps['setup'] && (
                         <div className="step-accordion-content">
@@ -1063,7 +1093,7 @@ export function Dashboard() {
                         className="why-toggle-btn"
                       >
                         <span>{showWhy ? 'Hide why' : 'Why'}</span>
-                        <span className={`why-chevron ${showWhy ? 'rotated' : ''}`}>⌄</span>
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" className={`why-chevron ${showWhy ? 'rotated' : ''}`} aria-hidden="true"><polyline points="6 9 12 15 18 9" /></svg>
                       </button>
                       {showWhy && (
                         <div className="why-breakdown-box">
@@ -1088,7 +1118,7 @@ export function Dashboard() {
                         <span className="meta-sep">·</span>
                         <span className="nowrap-text holds-count-text">24 holds</span>
                       </div>
-                      <span className={`step-chevron ${showEarlierHolds ? 'rotated' : ''}`}>⌄</span>
+                      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" className={`step-chevron ${showEarlierHolds ? 'rotated' : ''}`} aria-hidden="true"><polyline points="6 9 12 15 18 9" /></svg>
                     </div>
                     <p className="holds-desc-text">
                       waiting on $SOLCAT bonding curve volume spike, dev wallet holding under 4% supply
@@ -1109,11 +1139,11 @@ export function Dashboard() {
 
                 {/* Carousel Track Bar at the bottom */}
                 <div className="round-carousel-track">
-                  <button type="button" className="round-carousel-arrow" aria-label="Previous round">◀</button>
+                  <button type="button" className="round-carousel-arrow" aria-label="Previous round"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><polyline points="15 18 9 12 15 6" /></svg></button>
                   <div className="round-carousel-line">
                     <div className="round-carousel-thumb" />
                   </div>
-                  <button type="button" className="round-carousel-arrow" aria-label="Next round">▶</button>
+                  <button type="button" className="round-carousel-arrow" aria-label="Next round"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><polyline points="9 18 15 12 9 6" /></svg></button>
                 </div>
               </div>
             </div>
@@ -1183,13 +1213,20 @@ export function Dashboard() {
                       <span className="feed-item-time">{news.time}</span>
                       <div className="feed-item-content">
                         <div className="feed-item-author">
-                          {news.author.includes('Hyperliquid') ? (
-                            <span>𝕏 {news.author}</span>
-                          ) : news.author.includes('pump') ? (
-                            <span>𝕏 {news.author}</span>
-                          ) : (
-                            <span>🌐 {news.author}</span>
-                          )}
+                          <span style={{ display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
+                            {news.source === 'x.com' ? (
+                              <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                                <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+                              </svg>
+                            ) : (
+                              <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                                <circle cx="12" cy="12" r="10" />
+                                <line x1="2" y1="12" x2="22" y2="12" />
+                                <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
+                              </svg>
+                            )}
+                            {news.author}
+                          </span>
                         </div>
                         <div className="feed-item-headline">{news.headline}</div>
                       </div>
@@ -1357,7 +1394,7 @@ export function Dashboard() {
                 </div>
                 <p className="partner-desc">primary Solana memecoin launchpad</p>
               </div>
-              <span className="partner-arrow-icon">↗</span>
+              <span className="partner-arrow-icon"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><line x1="7" y1="17" x2="17" y2="7" /><polyline points="7 7 17 7 17 17" /></svg></span>
             </a>
 
             <a href="https://meteora.ag" target="_blank" rel="noopener noreferrer" className="glass partner-card-kivo">
@@ -1371,7 +1408,7 @@ export function Dashboard() {
                 </div>
                 <p className="partner-desc">dynamic bonding curve & DAMM pools</p>
               </div>
-              <span className="partner-arrow-icon">↗</span>
+              <span className="partner-arrow-icon"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><line x1="7" y1="17" x2="17" y2="7" /><polyline points="7 7 17 7 17 17" /></svg></span>
             </a>
 
             <a href="https://dexscreener.com/moonshot" target="_blank" rel="noopener noreferrer" className="glass partner-card-kivo">
@@ -1385,7 +1422,7 @@ export function Dashboard() {
                 </div>
                 <p className="partner-desc">DexScreener audited trending tokens</p>
               </div>
-              <span className="partner-arrow-icon">↗</span>
+              <span className="partner-arrow-icon"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><line x1="7" y1="17" x2="17" y2="7" /><polyline points="7 7 17 7 17 17" /></svg></span>
             </a>
 
             <a href="https://raydium.io" target="_blank" rel="noopener noreferrer" className="glass partner-card-kivo">
@@ -1399,7 +1436,7 @@ export function Dashboard() {
                 </div>
                 <p className="partner-desc">bonding curve graduation & liquidity venue</p>
               </div>
-              <span className="partner-arrow-icon">↗</span>
+              <span className="partner-arrow-icon"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><line x1="7" y1="17" x2="17" y2="7" /><polyline points="7 7 17 7 17 17" /></svg></span>
             </a>
           </div>
         </section>
@@ -1447,7 +1484,10 @@ export function Dashboard() {
                   className="footer-pill-link footer-pill-primary"
                 >
                   <span>Explore Stream</span>
-                  <span style={{ fontSize: '11px' }}>↗</span>
+                  <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ marginLeft: '4px' }} aria-hidden="true">
+                    <line x1="7" y1="17" x2="17" y2="7" />
+                    <polyline points="7 7 17 7 17 17" />
+                  </svg>
                 </a>
                 <a href="/docs" className="footer-pill-link footer-pill-white">
                   White paper
@@ -1461,7 +1501,12 @@ export function Dashboard() {
                   rel="noopener noreferrer"
                   className="footer-pill-link footer-pill-dark"
                 >
-                  <span>𝕏 Follow</span>
+                  <span style={{ display: 'inline-flex', alignItems: 'center', gap: '6px' }}>
+                    <svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                      <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+                    </svg>
+                    Follow
+                  </span>
                 </a>
               </div>
             </div>
