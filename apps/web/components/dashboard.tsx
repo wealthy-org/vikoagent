@@ -359,13 +359,24 @@ export function Dashboard() {
     }
   }
 
-  // Initial load DB count
+  const [solanaDevnetSlot, setSolanaDevnetSlot] = useState<number | null>(null);
+
+  // Initial load DB count and live Solana Devnet RPC Slot check
   useEffect(() => {
     fetch('/api/record-token')
       .then((res) => res.json())
       .then((data) => {
         if (data && typeof data.count === 'number') {
           setDbSyncedCount(data.count);
+        }
+      })
+      .catch(() => undefined);
+
+    fetch('/api/solana-status')
+      .then((res) => res.json())
+      .then((data) => {
+        if (data && typeof data.slot === 'number') {
+          setSolanaDevnetSlot(data.slot);
         }
       })
       .catch(() => undefined);
@@ -1038,7 +1049,7 @@ export function Dashboard() {
                             Read the charts
                           </span>
                           <span className="step-desc-text tabular">
-                            {CAROUSEL_ROUNDS[carouselIndex].charts}
+                            {solanaDevnetSlot ? `Slot ${solanaDevnetSlot.toLocaleString()} · Devnet Live` : CAROUSEL_ROUNDS[carouselIndex].charts}
                           </span>
                         </div>
                         <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" className={`step-chevron ${expandedSteps['charts'] ? 'rotated' : ''}`} aria-hidden="true"><polyline points="6 9 12 15 18 9" /></svg>
