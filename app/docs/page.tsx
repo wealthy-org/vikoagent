@@ -290,7 +290,7 @@ export default function DocsPage() {
               viko is not one model. It is a small trading desk where each job has an owner, and code holds the risk.
               A chart desk reads the market in numbers. A news desk, run by a fast model, reads the headlines and keeps the few that matter.
               The trader, a frontier model, weighs it all and makes the call. House rules, written in code, refuse anything reckless.
-              A separate decision model, Levanto&apos;s Sage, gives the final yes or no.
+              An internal Deterministic Risk Engine validates liquidity, token supply distribution, and order safety before any paper execution.
             </p>
             <p className="docs-paragraph">
               The agent chooses direction, timing, size, leverage, stop, target and when to get out early.
@@ -311,28 +311,28 @@ export default function DocsPage() {
                 { label: 'News desk' },
                 { label: 'Trader', tone: 'iris' },
                 { label: 'House rules' },
-                { label: 'Sage' },
+                { label: 'Risk Guard', tone: 'iris' },
                 { label: 'Order' },
               ]}
             />
 
             <p className="docs-paragraph">
-              <b>Charts.</b> On the 15 minute, 1 hour, 4 hour and daily charts for BTC, ETH, and SOL: trend, market structure (higher or lower highs and lows), momentum (RSI, MACD), volume against its average, RSI divergence, fair value (VWAP), bands, volatility, and support and resistance as zones with how many times price turned there. Plus funding and open interest.
+              <b>Scanner &amp; Charts.</b> On real-time bonding curves for Pump.fun and Meteora DBC: curve progress %, creator wallet supply, volume velocity, liquidity depth, and bonding graduation milestones.
             </p>
             <p className="docs-paragraph">
               <b>News desk.</b> The last six hours of market news from live streams, filtered to what could move crypto, then judged for direction, horizon and whether it is already priced in. Every headline keeps a link to its original post.
             </p>
             <p className="docs-paragraph">
-              <b>Trader.</b> It remembers its last twelve rounds, with the prices then and the outlook it left, one outlook an hour for the twelve hours before that, and its last three trades. Each round ends with an outlook of its own: the state it is waiting for and what it expects meanwhile, which the next rounds check against what happened. It can search the web and read any page through Orbio&apos;s tools, or search X, and must finish with one decision: open long, open short, close, or hold, with its own conviction from 0 to 1 and the two to four facts it rests on. A link in those facts is shown only if the trader was actually given it that round. While it thinks, its raw reasoning streams to the site as the model writes it.
+              <b>Trader.</b> It remembers its last twelve rounds, with the prices then and the outlook it left, one outlook an hour for the twelve hours before that, and its last three trades. Each round ends with an outlook of its own: the state it is waiting for and what it expects meanwhile, which the next rounds check against what happened. It can search the web and read any page via OpenRouter&apos;s free LLM models, and must finish with one decision: open long, open short, close, or hold, with its own conviction from 0 to 1 and the two to four facts it rests on. A link in those facts is shown only if the trader was actually given it that round. While it thinks, its raw reasoning streams to the site as the model writes it.
             </p>
             <p className="docs-paragraph">
               <b>House rules.</b> Size, leverage, stop distance, reward to risk, entries per day, a cooldown after a loss and a daily loss limit. One failed rule and there is no trade.
             </p>
             <p className="docs-paragraph">
-              <b>Sage.</b> A calibrated yes or no model that only ever sees the plan as structured numbers, never raw posts, so no headline can talk it into a trade. It acts as a veto: a no stops the trade, and a yes or an unsure answer lets it through to the order.
+              <b>Risk Guard.</b> A deterministic rule engine enforcing strict onchain safety limits: developer wallet holding &lt; 5% supply, minimum liquidity thresholds, and zero mint authority exploit risk.
             </p>
             <p className="docs-paragraph">
-              <b>Order.</b> The trade is signed and sent to Papertrade, which fills it at the spot mid.
+              <b>Order.</b> The paper trade is simulated against bonding curve spot prices and committed to our Neon DB ledger with public receipts.
             </p>
           </section>
 
@@ -343,10 +343,10 @@ export default function DocsPage() {
               Where it trades
             </h2>
             <p className="docs-paragraph">
-              Papertrade is an exchange for synthetic BTC, ETH and SOL perpetual futures on HyperEVM, priced at Hyperliquid&apos;s mid. Losses are paid in full, never past the margin. Wins are paid after a small cut that shrinks as the move grows: about 72% of a 0.1% move is kept, about 86% of a 1% move, and at most about 88%. Every losing trade mints PAPER, Papertrade&apos;s own token, to the trader.
+              Vikoagent operates natively on Solana Devnet, scanning new token mints from Pump.fun and Meteora DBC. Orders are simulated against real spot bonding curve prices with realistic slippage (1-2%) and priority fees (0.0005 SOL), with zero real capital at risk.
             </p>
             <p className="docs-paragraph">
-              Money reaches Papertrade from Robinhood Chain as USDG, bridged to USDC on HyperCore by Relay, and comes back the same way. On Solana, telemetry syncs against Devnet test token contracts.
+              Market data streams through PumpPortal WebSocket and Meteora public REST APIs, ensuring zero-dependency standalone execution on Solana Devnet.
             </p>
           </section>
 
@@ -361,10 +361,10 @@ export default function DocsPage() {
                 <tbody>
                   <TableRow k="Leverage" v="10x to 100x, and liquidation at least twice as far away as the stop" />
                   <TableRow k="Size" v="20% to 50% of the treasury per trade, sized by the trader's conviction, never more than $5,000 of margin" />
-                  <TableRow k="Positions" v="at most one per coin, BTC, ETH and SOL, never flipped in one move" />
+                  <TableRow k="Positions" v="at most three active concurrent positions across Pump.fun and Meteora DBC" />
                   <TableRow k="Stop and target" v="stop at least 0.3% away, target at least 0.5%, reward at least 1.5 times the risk" />
                   <TableRow k="Pace" v="three entries a day, two hours of cooldown after a loss, stop for the day at a 3% loss" />
-                  <TableRow k="Conviction" v="the trader at least 0.6, and no veto from Sage" />
+                  <TableRow k="Conviction" v="the trader at least 0.6, and all Risk Guard rules passed" />
                   <TableRow k="Starter" v="after 6 hours without a position, a 20% to 25% entry with the trader at 0.5; Sage and every other rule unchanged" />
                 </tbody>
               </table>
@@ -378,7 +378,7 @@ export default function DocsPage() {
               Watching the money
             </h2>
             <p className="docs-paragraph">
-              Prices come pushed from live feeds, the same price Papertrade fills at. The treasury&apos;s ground truth is Papertrade&apos;s own record of the account: its equity over time, every close with its fee, every deposit and withdrawal, the PAPER minted and what staking it has paid. viko rebuilds the treasury from those records, so profit is always equity minus the money put in, and a deposit is never mistaken for a win.
+              Prices stream directly from PumpPortal WebSocket and Meteora REST APIs. The treasury&apos;s ground truth is our internal Neon DB ledger tracking Devnet SOL balances, simulated paper positions, and verified PnL without third-party dependencies.
             </p>
             <p className="docs-paragraph">
               Everything the agent does is written to a public record the moment it happens and streamed to the site. Nothing is summarized after the fact. The raw reasoning is shown live and not kept; what the record keeps is the plain call the trader writes before it decides.
@@ -483,13 +483,12 @@ export default function DocsPage() {
             <div className="docs-table-wrapper docs-table-wrap">
               <table className="docs-table">
                 <tbody>
-                  <TableRow k="Papertrade" v="the exchange every trade executes on" />
-                  <TableRow k="Hyperliquid" v="the live price and the candles" />
-                  <TableRow k="Orbio" v="the model gateway every thought runs through" />
-                  <TableRow k="Levanto" v="Sage, the yes or no on every entry" />
-                  <TableRow k="Synoptic" v="the live news streams" />
-                  <TableRow k="Mosh" v={`where ${tokenSymbol} is launched, paired with ORBIO`} />
-                  <TableRow k="Relay" v="the bridge between Robinhood Chain and HyperCore" />
+                  <TableRow k="PumpPortal" v="real-time WebSocket stream for pump.fun mints" />
+                  <TableRow k="Meteora DBC" v="dynamic bonding curve &amp; DAMM pool metrics" />
+                  <TableRow k="OpenRouter" v="free LLM reasoning engine for thought stream" />
+                  <TableRow k="Risk Guard" v="deterministic risk rules &amp; safety filters" />
+                  <TableRow k="Solana RPC" v="public Devnet RPC for balance &amp; receipt verification" />
+                  <TableRow k="Neon DB" v="serverless PostgreSQL ledger for trades &amp; telemetry" />
                 </tbody>
               </table>
             </div>
@@ -506,10 +505,10 @@ export default function DocsPage() {
                 viko can lose. High leverage means a stopped trade costs a real share of the treasury.
               </li>
               <li className="docs-bullet-item">
-                Models can be wrong with confidence. The rules and Sage limit the damage, they do not remove it.
+                Models can be wrong with confidence. Deterministic risk rules and paper mode eliminate real fund loss.
               </li>
               <li className="docs-bullet-item">
-                Papertrade, Hyperliquid, the bridge and the chains are outside viko&apos;s control and can fail or change.
+                Solana Devnet cluster resets, RPC rate limits, and WebSocket reconnects are managed gracefully by our ingestor.
               </li>
               <li className="docs-bullet-item">
                 Past results do not predict future ones. There is no promised return and nothing here is financial advice.

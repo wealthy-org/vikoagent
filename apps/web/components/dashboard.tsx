@@ -219,11 +219,11 @@ const STEP_NODES = [
 ];
 
 const INCOMING_NEWS_FEED = [
-  { time: '2m', source: 'x.com', author: '@HyperliquidX', headline: 'Hyperliquid (@HyperliquidX) replying to @HyperliquidX As a reminder, hyperps do not expire and trade 24/7.' },
-  { time: '2m', source: 'x.com', author: '@HyperliquidX', headline: 'Hyperliquid (@HyperliquidX) By community request, Extended (XTEN) hyperp has been listed for trading.' },
-  { time: '12m', source: 'marketwatch.com', author: 'marketwatch.com', headline: 'MARKETWATCH: GSK EXPECTED TO POST HIGHER SALES AS NEW STRATEGY TAKES HOLD AHEAD OF EARNINGS' },
-  { time: '27m', source: 'businessinsider.com', author: 'businessinsider.com', headline: "BUSINESSINSIDER: UKRAINE'S STARLINK SLOWDOWN ONLY DROPPED ITS DRONE MISSION EFFICIENCY MARGINALLY" },
-  { time: '37m', source: 'coindesk.com', author: 'coindesk.com', headline: 'COINDESK.COM: ZCASH CO-FOUNDER PROPOSES ENDING GRANTS FUNDING IN FAVOR OF NEW REVENUE MODEL' },
+  { time: '2m', source: 'x.com', author: '@pumpfun', headline: 'Pump.fun: New bonding curve reached 100% capacity. Preparing Raydium CPMM migration event.' },
+  { time: '5m', source: 'x.com', author: '@MeteoraAG', headline: 'Meteora: Dynamic Bonding Curve (DBC) alpha pool initialized with automated fee tiering.' },
+  { time: '14m', source: 'solana.com', author: '@solana', headline: 'Solana Devnet: Cluster slot height 318,492,102 verified healthy with sub-second finality.' },
+  { time: '22m', source: 'pumpportal.fun', author: 'PumpPortal', headline: 'PumpPortal WS: Live WebSocket stream active with 1,420 token discovery events in the last hour.' },
+  { time: '35m', source: 'raydium.io', author: 'Raydium', headline: 'Raydium: Successful liquidity lock confirmed for graduating DBC pool mint 7xKX...JosgAsU.' },
 ];
 
 export function Dashboard() {
@@ -246,7 +246,7 @@ export function Dashboard() {
   }
 
   const [currentAiThought, setCurrentAiThought] = useState(
-    'BTC and ETH remain in 4h downtrends but are still holding above their breakdown levels on near-empty volume ahead of Wednesday\'s Fed decision. Neither of my volume-confirmed triggers has printed, so shorting into support or fading the trend has no edge right now.'
+    'Monitoring bonding curve velocity on $SOLCAT (42% bonded) and $MDV. Creator allocation verified under 4% supply with zero mint authority exploit risk. Holding paper entry until volume breakout confirms liquidity migration.'
   );
   const [aiModelLabel, setAiModelLabel] = useState('Llama 3 8B via OpenRouter');
   const [activeAnalysisToken, setActiveAnalysisToken] = useState('$SOLCAT');
@@ -864,7 +864,7 @@ export function Dashboard() {
                   <span style={{ position: 'relative', width: '10px', height: '10px', borderRadius: '50%', backgroundColor: 'var(--color-long)' }} />
                 </span>
                 <h2 className="mind-headline-text">
-                  Watching BTC and ETH for a setup
+                  Scanning Pump.fun &amp; Meteora DBC for setups
                 </h2>
                 <span className="mind-sub-pill tabular" suppressHydrationWarning>
                   next round in {Math.floor(roundCountdown / 60)}:{roundCountdown % 60 < 10 ? `0${roundCountdown % 60}` : roundCountdown % 60}
@@ -875,15 +875,15 @@ export function Dashboard() {
               </div>
             </div>
 
-            {/* Asset Price Badges matching Kivo BTC / ETH pills */}
+            {/* Asset Price Badges: Solana Devnet & Gas telemetry */}
             <div className="mind-prices-group">
-              <span className="price-tag-btc">
-                <span style={{ width: '8px', height: '8px', borderRadius: '50%', backgroundColor: '#f59e0b' }} />
-                79,614.5
+              <span className="price-tag-btc" style={{ background: '#ede9fe', color: '#6d28d9', borderColor: '#ddd6fe' }}>
+                <img src="/partners/solana.svg" alt="SOL" style={{ width: '10px', height: '9px', marginRight: '4px' }} />
+                SOL $184.50
               </span>
-              <span className="price-tag-eth">
-                <span style={{ width: '8px', height: '8px', borderRadius: '50%', backgroundColor: 'var(--color-iris)' }} />
-                2,304.65
+              <span className="price-tag-eth" style={{ background: '#dcfce7', color: '#15803d', borderColor: '#bbf7d0' }}>
+                <span style={{ width: '6px', height: '6px', borderRadius: '50%', backgroundColor: '#10b981', marginRight: '4px' }} />
+                DEVNET 100% FREE
               </span>
             </div>
           </div>
@@ -962,7 +962,7 @@ export function Dashboard() {
                             <span style={{ color: 'var(--color-iris)' }}>📊</span> Read the charts
                           </span>
                           <span className="step-desc-text tabular">
-                            BTC 79,701 ▼ · ETH 2,307 ▼
+                            $SOLCAT 42% · $MDV 76% · $RUGMOON 18%
                           </span>
                         </div>
                         <span className={`step-chevron ${expandedSteps['charts'] ? 'rotated' : ''}`}>⌄</span>
@@ -970,8 +970,8 @@ export function Dashboard() {
                       {expandedSteps['charts'] && (
                         <div className="step-accordion-content">
                           <div className="mini-chart-grid">
-                            <span><strong>BTC/USD:</strong> 15m Bear · 1h Range · 4h Down · RSI 44 · vol 1.8x 1h</span>
-                            <span><strong>ETH/USD:</strong> 15m Bear · 1h Range · 4h Down · RSI 41 · S 2,292 · R 2,340</span>
+                            <span><strong>$SOLCAT:</strong> 5m Bull · DBC 42% · Vol 142 SOL · Dev 3.8% · Liquidity Verified</span>
+                            <span><strong>$MDV:</strong> 15m Range · Meteora DBC 76% · Vol 318 SOL · Rug Risk Low</span>
                           </div>
                         </div>
                       )}
@@ -996,9 +996,9 @@ export function Dashboard() {
                       {expandedSteps['news'] && (
                         <div className="step-accordion-content">
                           <ul style={{ paddingLeft: '16px', margin: 0, fontSize: '11.5px', color: 'var(--color-ink-2)' }}>
-                            <li>ETF net inflow slowed across institutional trading desks.</li>
-                            <li>FOMC rate cut expectations priced at neutral 25bps.</li>
-                            <li>Network gas and validator TPS steady with no congestion events.</li>
+                            <li>PumpPortal WebSocket: 1,420 token discovery events ingested.</li>
+                            <li>Meteora DBC: Dynamic pool $MDV bonding velocity +18% over 15m.</li>
+                            <li>Solana Devnet: Cluster TPS steady at 2,840 with zero failed txs.</li>
                           </ul>
                         </div>
                       )}
@@ -1036,7 +1036,7 @@ export function Dashboard() {
                             <span style={{ color: 'var(--color-iris)' }}>🎯</span> Best setup
                           </span>
                           <span className="step-desc-text">
-                            short BTC · a 4h close below 79,347 on above-average volume · entry ...
+                            buy $SOLCAT · bonding curve breakout &gt;55% with &gt;25 SOL volume spike
                           </span>
                         </div>
                         <span className={`step-chevron ${expandedSteps['setup'] ? 'rotated' : ''}`}>⌄</span>
@@ -1044,7 +1044,7 @@ export function Dashboard() {
                       {expandedSteps['setup'] && (
                         <div className="step-accordion-content">
                           <p style={{ margin: 0, fontSize: '11.5px', color: 'var(--color-ink-2)' }}>
-                            Candidate trigger: 4h close below 79,347. Target: 76,800. Stop: 80,450. Radar token: {activeAnalysisToken}. Neon DB synced events: {dbSyncedCount}.
+                            Candidate trigger: $SOLCAT bonding curve reaches 55%. Target: 85% (Pre-migration). Stop: 30%. Radar token: {activeAnalysisToken}. Neon DB synced events: {dbSyncedCount}.
                           </p>
                         </div>
                       )}
@@ -1091,7 +1091,7 @@ export function Dashboard() {
                       <span className={`step-chevron ${showEarlierHolds ? 'rotated' : ''}`}>⌄</span>
                     </div>
                     <p className="holds-desc-text">
-                      waiting on short ETH, a 4h close below 2,292.6 on above-average volume
+                      waiting on $SOLCAT bonding curve volume spike, dev wallet holding under 4% supply
                     </p>
                   </div>
                 </div>
@@ -1129,11 +1129,11 @@ export function Dashboard() {
                   <span className="lastcall-conviction tabular">conviction 75%</span>
                 </div>
 
-                {/* Right: SAGE with 52px Circular Dial */}
+                {/* Right: RISK GUARD with 52px Circular Dial */}
                 <div className="sage-metric-group">
                   <div className="sage-text-wrap">
-                    <span className="sage-label">SAGE</span>
-                    <div className="sage-status">not asked</div>
+                    <span className="sage-label">RISK GUARD</span>
+                    <div className="sage-status" style={{ color: 'var(--color-long)' }}>PASS (Rule #2)</div>
                   </div>
                   <div style={{ position: 'relative', width: '52px', height: '52px', flexShrink: 0 }}>
                     <svg width="52" height="52" viewBox="0 0 52 52" style={{ transform: 'rotate(-90deg)', display: 'block' }}>
@@ -1155,13 +1155,13 @@ export function Dashboard() {
                         inset: 0,
                         display: 'grid',
                         placeItems: 'center',
-                        fontSize: '14px',
-                        fontWeight: 600,
-                        color: 'var(--color-ink-3)',
+                        fontSize: '13px',
+                        fontWeight: 700,
+                        color: 'var(--color-long)',
                         fontFamily: 'var(--font-mono)',
                       }}
                     >
-                      –
+                      ✓
                     </div>
                   </div>
                 </div>
