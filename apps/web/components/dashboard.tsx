@@ -204,19 +204,19 @@ const TIMEFRAME_DATA: Record<string, { nav: string; pnl: string; fees: string; t
 };
 
 const STEP_NODES = [
-  { x: 35, y: 145, label: '-$261 fees', isTrade: false },
-  { x: 58, y: 133, label: '+$171 fees', isTrade: false },
-  { x: 80, y: 118, label: '+$334 fees', isTrade: false },
-  { x: 104, y: 109, label: '+$179 fees', isTrade: false },
-  { x: 128, y: 102, label: '+$149 fees', isTrade: false },
-  { x: 152, y: 95, label: '+$123 fees', isTrade: false },
-  { x: 185, y: 88, label: '+$205 fees', isTrade: false },
-  { x: 205, y: 84, label: '+$113 fees', isTrade: false },
-  { x: 228, y: 78, label: '+$135 fees', isTrade: false },
-  { x: 285, y: 65, label: '+$190 fees', isTrade: false },
-  { x: 345, y: 54, label: '+$317 fees', isTrade: true }, // Prominent Green Dot
-  { x: 388, y: 45, label: '+$100 fees', isTrade: false },
-  { x: 420, y: 38, label: '+$100 fees', isTrade: false },
+  { x: 35.0, y: 153.0, label: '-$261 fees', isTrade: false },
+  { x: 59.3, y: 138.6, label: '+$171 fees', isTrade: false },
+  { x: 82.6, y: 129.0, label: '+$334 fees', isTrade: false },
+  { x: 107.9, y: 114.7, label: '+$179 fees', isTrade: false },
+  { x: 134.3, y: 105.1, label: '+$149 fees', isTrade: false },
+  { x: 159.7, y: 95.5, label: '+$123 fees', isTrade: false },
+  { x: 194.6, y: 90.7, label: '+$205 fees', isTrade: false },
+  { x: 214.6, y: 85.9, label: '+$113 fees', isTrade: false },
+  { x: 240.0, y: 81.1, label: '+$135 fees', isTrade: false },
+  { x: 301.3, y: 62.0, label: '+$190 fees', isTrade: false },
+  { x: 364.7, y: 52.4, label: '+$317 fees', isTrade: true }, // Prominent Green Dot
+  { x: 411.2, y: 42.8, label: '+$100 fees', isTrade: false },
+  { x: 445.0, y: 38.0, label: '+$100 fees', isTrade: false },
 ];
 
 const INCOMING_NEWS_FEED = [
@@ -626,13 +626,13 @@ export function Dashboard() {
 
                   {/* Stepped Gradient Area */}
                   <path
-                    d="M 15,175 L 15,162 L 35,162 L 35,145 L 58,145 L 58,133 L 80,133 L 80,118 L 104,118 L 104,109 L 128,109 L 128,102 L 152,102 L 152,95 L 185,95 L 185,88 L 205,88 L 205,84 L 228,84 L 228,78 L 285,78 L 285,65 L 345,65 L 345,54 L 388,54 L 388,45 L 420,45 L 420,38 L 445,38 L 445,175 Z"
+                    d="M 15,175 L 15,153 L 35,153 L 35,138.6 L 59.3,138.6 L 59.3,129 L 82.6,129 L 82.6,114.7 L 107.9,114.7 L 107.9,105.1 L 134.3,105.1 L 134.3,95.5 L 159.7,95.5 L 159.7,90.7 L 194.6,90.7 L 194.6,85.9 L 214.6,85.9 L 214.6,81.1 L 240,81.1 L 240,62 L 301.3,62 L 301.3,52.4 L 364.7,52.4 L 364.7,42.8 L 411.2,42.8 L 411.2,38 L 445,38 L 445,175 Z"
                     fill="url(#kivoAreaGradient)"
                   />
 
                   {/* Stepped Staircase Line */}
                   <path
-                    d="M 15,162 L 35,162 L 35,145 L 58,145 L 58,133 L 80,133 L 80,118 L 104,118 L 104,109 L 128,109 L 128,102 L 152,102 L 152,95 L 185,95 L 185,88 L 205,88 L 205,84 L 228,84 L 228,78 L 285,78 L 285,65 L 345,65 L 345,54 L 388,54 L 388,45 L 420,45 L 420,38 L 445,38"
+                    d="M 15,153 L 35,153 L 35,138.6 L 59.3,138.6 L 59.3,129 L 82.6,129 L 82.6,114.7 L 107.9,114.7 L 107.9,105.1 L 134.3,105.1 L 134.3,95.5 L 159.7,95.5 L 159.7,90.7 L 194.6,90.7 L 194.6,85.9 L 214.6,85.9 L 214.6,81.1 L 240,81.1 L 240,62 L 301.3,62 L 301.3,52.4 L 364.7,52.4 L 364.7,42.8 L 411.2,42.8 L 411.2,38 L 445,38"
                     fill="none"
                     stroke="#4f46e5"
                     strokeWidth="2.2"

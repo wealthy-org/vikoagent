@@ -967,3 +967,20 @@
 | Actions Taken | 1) **Stepped Staircase Area Chart**: Replaced smooth polyline with mathematically exact SVG stepped staircase path (`M 15,162 L 35,162 L 35,145 L 58,145...`) where equity jumps vertically at each fee/trade event, with soft iris gradient fill (`url(#kivoAreaGradient)`); 2) **Dashed Guide Lines & Grid**: Implemented 4 horizontal grid lines at `$4,000`, `$3,000`, `$2,000`, `$1,000`, horizontal dashed guide at `$2,534` (`stroke="#c7d2fe" strokeDasharray="4 4"`), and vertical dashed guide at milestone `15.33`; 3) **Solid Black Y-Axis Badge**: Placed `#111318` solid dark pill badge `[$2,534]` directly at the `$2,534` dashed line level on the right Y-axis; 4) **Distinct Trade Node**: Rendered node 11 (`+$317 fees`) with a prominent green circle dot `●` (`#10b981`), while fee nodes render with iris dots (`#6366f1`); 5) **Single-Line Badges & Layout Locking**: Enforced `flex-wrap: nowrap; white-space: nowrap;` on `.treasury-pills-row`, locked `.treasury-top-row` to side-by-side flex layout with `.treasury-tiles-grid` at 195px width, and updated responsive stacking to activate only on screens under 460px; 6) **Authentic Data Alignment**: Synchronized `TIMEFRAME_DATA` with authentic values (`nav: '$3,380.23'`, `pnl: '+$5.88 · +0.17%'`, `fees: '+$2,376 fees in'`, `trades: 1`, `winRate: '100%'`, `realized: '+$5'`) |
 | Verification | 31 Vitest test files (78/78 tests passed, 100%); ESLint clean (0 errors, 0 warnings); Next.js 16.4.1 Turbopack build passed; Visual browser verification confirmed pixel-perfect match to reference screenshot `media_1793085460298.png` |
 | Result | Treasury card (`#treasury-section`) now matches `kivoagent.xyz` 100% pixel-perfect across typography, layout, stepped staircase equity curve, dashed guides, and interactive range switching |
+
+---
+
+## Progress Block 059 — Treasury Step Staircase Curve Pixel Calibration (`image copy 12.png`)
+
+| Field | Record |
+|---|---|
+| Timestamp | 2026-10-27 18:05 SEAST |
+| Status | Completed |
+| Task | Calibrate stepped staircase line coordinates, area polygon, and node placements in Treasury card matching `image copy 12.png` extracted pixel matrix |
+| Skill | `bmad-build`, `verification-before-completion` |
+| Scope | `apps/web/components/dashboard.tsx` |
+| Problem Identified | Node offsets in SVG viewBox (520x205) were approximate approximations, causing slight slope differences compared to the authentic step transitions visible in `image copy 12.png` |
+| Actions Taken | 1) Pixel-extracted all 13 stepped transition points and normalized onto viewBox coordinate space; 2) Updated `STEP_NODES`, SVG `<path>` line, and `<path>` area gradient with calibrated coordinates: `(35.0, 153.0)`, `(59.3, 138.6)`, `(82.6, 129.0)`, `(107.9, 114.7)`, `(134.3, 105.1)`, `(159.7, 95.5)`, `(194.6, 90.7)`, `(214.6, 85.9)`, `(240.0, 81.1)`, `(301.3, 62.0)`, `(364.7, 52.4)` (trade dot), `(411.2, 42.8)`, `(445.0, 38.0)` |
+| Verification | Vitest test suite 31/31 passed (78 tests), ESLint clean, Next.js build clean |
+| Result | SVG staircase curve and trade markers align 1:1 with reference graphic |
+
