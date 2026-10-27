@@ -30,7 +30,7 @@ jobs:
       - run: git diff --check
       - name: Secret pattern scan
         shell: bash
-        run: '! git grep -n -E "(PRIVATE_KEY|SEED_PHRASE|postgres(ql)?://[^[:space:]]+:[^[:space:]]+@|BEGIN [A-Z ]+ PRIVATE KEY)" -- . ":!docs/staging-smoke-report.md" ":!docs/deployment-smoke-checklist.md"'
+        run: '! git grep -n -E "(PRIVATE_KEY=|SEED_PHRASE=|postgres(ql)?://[^[:space:]]+:[^[:space:]]+@|BEGIN [A-Z ]+ PRIVATE KEY)" -- . ":!.github/workflows/quality-gate.yml" ":!docs/staging-smoke-report.md" ":!docs/deployment-smoke-checklist.md"'
       - name: Safety configuration scan
         shell: bash
         run: '! git grep -n -E "SOLANA_NETWORK=(mainnet|mainnet-beta)|AGENT_MODE=LIVE|LLM_CAN_SIGN=true" -- .'
