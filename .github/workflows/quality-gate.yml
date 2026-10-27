@@ -1,0 +1,36 @@
+name: quality-gate
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    env:
+      SOLANA_NETWORK: devnet
+      AGENT_MODE: PAPER
+      LLM_CAN_SIGN: 'false'
+      PERSISTENCE: memory
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm test
+      - run: npm run lint
+      - run: npm run build
+      - run: npm audit --omit=dev
+      - run: git diff --check
+      - name: Secret pattern scan
+        shell: bash
+        run: '! git grep -n -E "(PRIVATE_KEY|SEED_PHRASE|postgres(ql)?://[^[:space:]]+:[^[:space:]]+@|BEGIN [A-Z ]+ PRIVATE KEY)" -- . ":!docs/staging-smoke-report.md" ":!docs/deployment-smoke-checklist.md"'
+      - name: Safety configuration scan
+        shell: bash
+        run: '! git grep -n -E "SOLANA_NETWORK=(mainnet|mainnet-beta)|AGENT_MODE=LIVE|LLM_CAN_SIGN=true" -- .'
