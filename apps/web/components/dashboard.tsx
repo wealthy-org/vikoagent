@@ -240,6 +240,55 @@ export function Dashboard() {
   const [showWhy, setShowWhy] = useState(false);
   const [showEarlierHolds, setShowEarlierHolds] = useState(false);
   const [viewMoreExpanded, setViewMoreExpanded] = useState(false);
+  const [carouselIndex, setCarouselIndex] = useState(0);
+
+  const CAROUSEL_ROUNDS = [
+    {
+      time: '06:44 UTC',
+      ago: '8m ago',
+      action: 'Hold',
+      conviction: '75%',
+      thesis: 'Monitoring bonding curve velocity on $SOLCAT (42% bonded) and $MDV. Creator allocation verified under 4% supply with zero mint authority exploit risk.',
+      charts: '$SOLCAT 42% · $MDV 76% · $RUGMOON 18%',
+      setup: 'buy $SOLCAT · bonding curve breakout >55% with >25 SOL volume spike'
+    },
+    {
+      time: '06:34 UTC',
+      ago: '18m ago',
+      action: 'Hold',
+      conviction: '72%',
+      thesis: 'RSI divergence detected on lower timeframes. Liquidity pool $MDV showing accumulation but spread remains above threshold.',
+      charts: '$SOLCAT 38% · $MDV 71% · $BONK 89%',
+      setup: 'buy $MDV · 15m range consolidation with >150 SOL daily volume'
+    },
+    {
+      time: '06:24 UTC',
+      ago: '28m ago',
+      action: 'Hold',
+      conviction: '68%',
+      thesis: 'Early volume spike detected on newly deployed pump token. Creator holding checked at 2.1%. Awaiting devnet paper order confirmation.',
+      charts: '$SOLCAT 35% · $MDV 66% · $PEPE 94%',
+      setup: 'buy $SOLCAT · breakout confirmation above 40% bonding curve'
+    },
+    {
+      time: '06:14 UTC',
+      ago: '38m ago',
+      action: 'Hold',
+      conviction: '70%',
+      thesis: 'Broad market trend sideways. Gas fees nominal on Devnet cluster. No aggressive entry justified under current risk rules.',
+      charts: '$SOLCAT 31% · $MDV 62% · $WIF 82%',
+      setup: 'buy $MDV · sudden liquidity injection >30 SOL from unique wallets'
+    },
+    {
+      time: '06:04 UTC',
+      ago: '48m ago',
+      action: 'Hold',
+      conviction: '74%',
+      thesis: 'Initial telemetry session initialized. Scanner radar actively streaming new tokens from PumpPortal WebSocket stream.',
+      charts: '$SOLCAT 28% · $MDV 58% · $JUP 91%',
+      setup: 'buy $SOLCAT · trend continuation with verified LP lock'
+    },
+  ];
 
   function toggleStep(id: string) {
     setExpandedSteps((prev) => ({ ...prev, [id]: !prev[id] }));
@@ -944,7 +993,7 @@ export function Dashboard() {
               <div className="timeline-tree-wrapper">
                 <span aria-hidden="true" className="timeline-vertical-guide" />
 
-                {/* Latest Round Node */}
+                {/* Latest Round Node (Syncs with carouselIndex) */}
                 <div className="timeline-round-entry">
                   <span className="timeline-dot-node" />
 
@@ -952,11 +1001,11 @@ export function Dashboard() {
                   <div className="clay-inset round-card-expanded">
                     <div className="round-card-top">
                       <div className="round-card-meta-left">
-                        <span className="nowrap-text">06:44 UTC</span>
+                        <span className="nowrap-text">{CAROUSEL_ROUNDS[carouselIndex].time}</span>
                         <span className="meta-sep">·</span>
-                        <span className="nowrap-text">8m ago</span>
+                        <span className="nowrap-text">{CAROUSEL_ROUNDS[carouselIndex].ago}</span>
                         <span className="meta-sep">·</span>
-                        <span className="nowrap-text round-decision-text">Hold</span>
+                        <span className="nowrap-text round-decision-text">{CAROUSEL_ROUNDS[carouselIndex].action}</span>
                       </div>
                       <div className="round-card-meta-right">
                         <span className="model-tag-pill">
@@ -987,7 +1036,7 @@ export function Dashboard() {
                             Read the charts
                           </span>
                           <span className="step-desc-text tabular">
-                            $SOLCAT 42% · $MDV 76% · $RUGMOON 18%
+                            {CAROUSEL_ROUNDS[carouselIndex].charts}
                           </span>
                         </div>
                         <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" className={`step-chevron ${expandedSteps['charts'] ? 'rotated' : ''}`} aria-hidden="true"><polyline points="6 9 12 15 18 9" /></svg>
@@ -1053,7 +1102,7 @@ export function Dashboard() {
                             Decided
                           </span>
                           <span className="step-desc-text" style={{ color: 'var(--color-ink)', fontWeight: 600 }}>
-                            Hold · conviction 75%
+                            {CAROUSEL_ROUNDS[carouselIndex].action} · conviction {CAROUSEL_ROUNDS[carouselIndex].conviction}
                           </span>
                         </div>
                         <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" className={`step-chevron ${expandedSteps['decided'] ? 'rotated' : ''}`} aria-hidden="true"><polyline points="6 9 12 15 18 9" /></svg>
@@ -1061,7 +1110,7 @@ export function Dashboard() {
                       {expandedSteps['decided'] && (
                         <div className="step-accordion-content">
                           <p style={{ margin: 0, fontSize: '11.5px', color: 'var(--color-ink-2)' }}>
-                            Action evaluated: Hold. Risk parameters within standard tolerance ceiling. Paper liquidity protected.
+                            Action evaluated: {CAROUSEL_ROUNDS[carouselIndex].action}. Risk parameters within standard tolerance ceiling. Paper liquidity protected.
                           </p>
                         </div>
                       )}
@@ -1081,7 +1130,7 @@ export function Dashboard() {
                             Best setup
                           </span>
                           <span className="step-desc-text">
-                            buy $SOLCAT · bonding curve breakout &gt;55% with &gt;25 SOL volume spike
+                            {CAROUSEL_ROUNDS[carouselIndex].setup}
                           </span>
                         </div>
                         <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" className={`step-chevron ${expandedSteps['setup'] ? 'rotated' : ''}`} aria-hidden="true"><polyline points="6 9 12 15 18 9" /></svg>
@@ -1089,7 +1138,7 @@ export function Dashboard() {
                       {expandedSteps['setup'] && (
                         <div className="step-accordion-content">
                           <p style={{ margin: 0, fontSize: '11.5px', color: 'var(--color-ink-2)' }}>
-                            Candidate trigger: $SOLCAT bonding curve reaches 55%. Target: 85% (Pre-migration). Stop: 30%. Radar token: {activeAnalysisToken}. Neon DB synced events: {dbSyncedCount}.
+                            Candidate trigger: {CAROUSEL_ROUNDS[carouselIndex].setup}. Radar token: {activeAnalysisToken}. Neon DB synced events: {dbSyncedCount}.
                           </p>
                         </div>
                       )}
@@ -1097,7 +1146,7 @@ export function Dashboard() {
 
                     {/* Thesis summary narrative */}
                     <p className="round-thought-summary">
-                      {currentAiThought}
+                      {carouselIndex === 0 ? currentAiThought : CAROUSEL_ROUNDS[carouselIndex].thesis}
                     </p>
 
                     {/* Interactive Why toggle button */}
@@ -1141,7 +1190,7 @@ export function Dashboard() {
                   </div>
                 </div>
 
-                {/* View more button */}
+                {/* View more button & Expanded Previous Rounds */}
                 <div style={{ paddingLeft: '8px', marginTop: '14px' }}>
                   <button
                     type="button"
@@ -1152,13 +1201,81 @@ export function Dashboard() {
                   </button>
                 </div>
 
-                {/* Carousel Track Bar at the bottom */}
-                <div className="round-carousel-track">
-                  <button type="button" className="round-carousel-arrow" aria-label="Previous round"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><polyline points="15 18 9 12 15 6" /></svg></button>
-                  <div className="round-carousel-line">
-                    <div className="round-carousel-thumb" />
+                {viewMoreExpanded && (
+                  <div className="view-more-rounds-list" style={{ marginTop: '14px', display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                    {CAROUSEL_ROUNDS.slice(1).map((round, idx) => (
+                      <div key={idx} className="clay-inset round-card-expanded" style={{ opacity: 0.9 }}>
+                        <div className="round-card-top">
+                          <div className="round-card-meta-left">
+                            <span className="nowrap-text">{round.time}</span>
+                            <span className="meta-sep">·</span>
+                            <span className="nowrap-text">{round.ago}</span>
+                            <span className="meta-sep">·</span>
+                            <span className="nowrap-text round-decision-text">{round.action}</span>
+                          </div>
+                          <div className="round-card-meta-right">
+                            <span className="lastcall-conviction tabular" style={{ fontSize: '10.5px' }}>
+                              conviction {round.conviction}
+                            </span>
+                          </div>
+                        </div>
+                        <p className="round-thought-summary" style={{ marginTop: '8px', fontSize: '12px' }}>
+                          {round.thesis}
+                        </p>
+                        <div style={{ fontSize: '11px', color: 'var(--color-ink-3)', marginTop: '4px', fontFamily: 'var(--font-mono)' }}>
+                          Setup: {round.setup}
+                        </div>
+                      </div>
+                    ))}
                   </div>
-                  <button type="button" className="round-carousel-arrow" aria-label="Next round"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><polyline points="9 18 15 12 9 6" /></svg></button>
+                )}
+
+                {/* Carousel Track Bar at the bottom with interactive arrows and draggable thumb */}
+                <div className="round-carousel-track">
+                  <button
+                    type="button"
+                    className="round-carousel-arrow"
+                    aria-label="Previous round"
+                    onClick={() => setCarouselIndex((prev) => Math.max(0, prev - 1))}
+                    disabled={carouselIndex === 0}
+                    style={{ opacity: carouselIndex === 0 ? 0.35 : 1, cursor: carouselIndex === 0 ? 'default' : 'pointer' }}
+                  >
+                    <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                      <polyline points="15 18 9 12 15 6" />
+                    </svg>
+                  </button>
+                  <div
+                    className="round-carousel-line"
+                    onClick={(e) => {
+                      const rect = e.currentTarget.getBoundingClientRect();
+                      if (!rect.width) return;
+                      const clickX = e.clientX - rect.left;
+                      const pct = Math.max(0, Math.min(1, clickX / rect.width));
+                      const nextIdx = Math.round(pct * (CAROUSEL_ROUNDS.length - 1));
+                      setCarouselIndex(nextIdx);
+                    }}
+                    style={{ cursor: 'pointer' }}
+                  >
+                    <div
+                      className="round-carousel-thumb"
+                      style={{
+                        left: `${(carouselIndex / (CAROUSEL_ROUNDS.length - 1)) * 80}%`,
+                        transition: 'left 0.2s cubic-bezier(0.4, 0, 0.2, 1)',
+                      }}
+                    />
+                  </div>
+                  <button
+                    type="button"
+                    className="round-carousel-arrow"
+                    aria-label="Next round"
+                    onClick={() => setCarouselIndex((prev) => Math.min(CAROUSEL_ROUNDS.length - 1, prev + 1))}
+                    disabled={carouselIndex === CAROUSEL_ROUNDS.length - 1}
+                    style={{ opacity: carouselIndex === CAROUSEL_ROUNDS.length - 1 ? 0.35 : 1, cursor: carouselIndex === CAROUSEL_ROUNDS.length - 1 ? 'default' : 'pointer' }}
+                  >
+                    <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                      <polyline points="9 18 15 12 9 6" />
+                    </svg>
+                  </button>
                 </div>
               </div>
             </div>
