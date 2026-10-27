@@ -30,8 +30,8 @@ export class NeonPaperRepositories implements AsyncPaperRepositories {
   }
 
   async upsertDecision(key: string, decision: Decision) {
-    const rows = await this.sql<Decision>`INSERT INTO decisions (id, token_event_id, decision_key, action, reason, created_at)
-      VALUES (${decision.id}, ${decision.tokenEventId}, ${key}, ${decision.action}, ${decision.reason}, ${decision.timestamp})
+    const rows = await this.sql<Decision>`INSERT INTO decisions (id, token_event_id, decision_key, mint, action, reason, created_at)
+      VALUES (${decision.id}, ${decision.tokenEventId}, ${key}, ${decision.mint}, ${decision.action}, ${decision.reason}, ${decision.timestamp})
       ON CONFLICT (decision_key) DO UPDATE SET decision_key = EXCLUDED.decision_key
       RETURNING id, token_event_id AS "tokenEventId", mint, action, reason, created_at AS timestamp`;
     return { created: rows[0].id === decision.id, record: rows[0] };

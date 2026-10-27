@@ -9,7 +9,10 @@ const MIGRATIONS = [
 ];
 
 export async function runInitialMigration(sql: NeonSql): Promise<void> {
-  for (const statement of MIGRATIONS) await sql([statement] as unknown as TemplateStringsArray);
+  for (const statement of MIGRATIONS) {
+    const templateStrings = Object.assign([statement], { raw: [statement] }) as unknown as TemplateStringsArray;
+    await sql(templateStrings);
+  }
 }
 
 export const migrationCount = MIGRATIONS.length;
