@@ -517,10 +517,10 @@ export function Dashboard() {
           <div className="nav-brand-wrap">
             <img
               src="/brand/viko-orb.jpeg"
-              alt="Vikoagent Logo"
+              alt="Viko Logo"
               className="nav-orb-img breathe"
             />
-            <span className="nav-brand-title">vikoagent</span>
+            <span className="nav-brand-title">viko</span>
           </div>
 
           <div className="nav-center-pill">
@@ -565,7 +565,7 @@ export function Dashboard() {
                 <span className="accent-text">sovereign trader.</span>
               </h1>
               <p className="hero-subtext">
-                It owns its treasury, pays for its own mind, and trades in public. vikoagent trades on{' '}
+                It owns its treasury, pays for its own mind, and trades in public. viko trades on{' '}
                 <span className="partner-tag-inline">
                   <span style={{ fontSize: '11px', background: '#fef3c7', padding: '1px 4px', borderRadius: '4px', marginRight: '3px' }}>p_</span>
                   <strong>Papertrade</strong>
@@ -1421,7 +1421,7 @@ export function Dashboard() {
           <div className="mountains-fade-top" />
 
           <div aria-hidden={true} className="kivo-giant-watermark">
-            <span>vikoagent</span>
+            <span>viko</span>
           </div>
 
           <div className="mountains-footer-content">
@@ -1436,7 +1436,7 @@ export function Dashboard() {
                   style={{ borderRadius: '50%', objectFit: 'cover' }}
                 />
                 <div>
-                  <div className="footer-brand-title">vikoagent</div>
+                  <div className="footer-brand-title">viko</div>
                   <div className="footer-brand-desc">The first sovereign trader on Solana.</div>
                 </div>
               </div>
@@ -1467,7 +1467,7 @@ export function Dashboard() {
             </div>
 
             <div className="footer-disclaimer-row">
-              <span>vikoagent executes paper trading on Solana Devnet. Zero real funds at risk.</span>
+              <span>viko executes paper trading on Solana Devnet. Zero real funds at risk.</span>
               <span className="tabular">last heartbeat 02:58 UTC</span>
             </div>
           </div>

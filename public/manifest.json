@@ -1,6 +1,6 @@
 {
-  "name": "Vikoagent - Sovereign Devnet Paper Trader",
-  "short_name": "Vikoagent",
+  "name": "Viko - Sovereign Devnet Paper Trader",
+  "short_name": "Viko",
   "description": "Autonomous AI Solana Devnet paper-trading telemetry system.",
   "start_url": "/",
   "id": "/",

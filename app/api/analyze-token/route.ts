@@ -26,7 +26,7 @@ export async function POST(req: Request) {
       });
     }
 
-    const prompt = `You are Vikoagent, an autonomous Solana onchain trading intelligence evaluating a newly minted token.
+    const prompt = `You are Viko, an autonomous Solana onchain trading intelligence evaluating a newly minted token.
 Token: $${safeSymbol}
 Liquidity: $${safeLiquidity}
 Bonding Curve Progress: ${safeBonding}%
@@ -47,7 +47,7 @@ Write a 2-sentence concise, professional onchain risk analysis explaining whethe
       body: JSON.stringify({
         model,
         messages: [
-          { role: 'system', content: 'You are Vikoagent, an autonomous Solana onchain trading intelligence.' },
+          { role: 'system', content: 'You are Viko, an autonomous Solana onchain trading intelligence.' },
           { role: 'user', content: prompt },
         ],
         max_tokens: 120,

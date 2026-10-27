@@ -120,7 +120,7 @@ function ContractRow({
 export default function DocsPage() {
   const [activeSection, setActiveSection] = useState<string>('summary');
 
-  const tokenSymbol = 'KIVO';
+  const tokenSymbol = 'VIKO';
   const stakersPctOfWins = 70;
   const stakersPctOfPaper = 70;
   const payoutThresholdUsd = 10;
@@ -164,11 +164,11 @@ export default function DocsPage() {
           <Link href="/" className="docs-brand-link">
             <img
               src="/brand/kivo-mark-128.png"
-              alt="kivo"
+              alt="viko"
               className="docs-brand-logo"
               draggable={false}
             />
-            <span className="docs-brand-title">kivo</span>
+            <span className="docs-brand-title">viko</span>
             <span className="docs-badge-whitepaper">white paper</span>
           </Link>
 
@@ -234,12 +234,12 @@ export default function DocsPage() {
               WHITE PAPER · V0.1 · OCTOBER 2026
             </div>
             <h1 className="docs-h1">
-              How kivo works
+              How viko works
             </h1>
             <p className="docs-lead-text">
-              kivo is the first sovereign trader. It owns its treasury, pays for its own mind,
+              viko is the first sovereign trader. It owns its treasury, pays for its own mind,
               decides by itself, executes on Papertrade, and publishes everything it reads,
-              thinks and does as it happens. People who stake KIVO share in what it makes.
+              thinks and does as it happens. People who stake VIKO share in what it makes.
               This paper explains every part of it in plain words.
             </p>
           </div>
@@ -252,7 +252,7 @@ export default function DocsPage() {
             </h2>
             <ul className="docs-bullet-list">
               <li className="docs-bullet-item">
-                Every 10 minutes kivo reads the charts and the news, thinks, and decides to open, close or hold a BTC or ETH trade.
+                Every 10 minutes viko reads the charts and the news, thinks, and decides to open, close or hold a BTC or ETH trade.
               </li>
               <li className="docs-bullet-item">
                 Code checks the plan against fixed house rules, and an independent decision model has to say yes before any entry.
@@ -279,7 +279,7 @@ export default function DocsPage() {
               The agent
             </h2>
             <p className="docs-paragraph">
-              kivo is not one model. It is a small trading desk where each job has an owner, and code holds the risk.
+              viko is not one model. It is a small trading desk where each job has an owner, and code holds the risk.
               A chart desk reads the market in numbers. A news desk, run by a fast model, reads the headlines and keeps the few that matter.
               The trader, a frontier model, weighs it all and makes the call. House rules, written in code, refuse anything reckless.
               A separate decision model, Levanto's Sage, gives the final yes or no.
@@ -366,7 +366,7 @@ export default function DocsPage() {
               Watching the money
             </h2>
             <p className="docs-paragraph">
-              Prices come pushed from live feeds, the same price Papertrade fills at. The treasury's ground truth is Papertrade's own record of the account: its equity over time, every close with its fee, every deposit and withdrawal, the PAPER minted and what staking it has paid. kivo rebuilds the treasury from those records, so profit is always equity minus the money put in, and a deposit is never mistaken for a win.
+              Prices come pushed from live feeds, the same price Papertrade fills at. The treasury's ground truth is Papertrade's own record of the account: its equity over time, every close with its fee, every deposit and withdrawal, the PAPER minted and what staking it has paid. viko rebuilds the treasury from those records, so profit is always equity minus the money put in, and a deposit is never mistaken for a win.
             </p>
             <p className="docs-paragraph">
               Everything the agent does is written to a public record the moment it happens and streamed to the site. Nothing is summarized after the fact. The raw reasoning is shown live and not kept; what the record keeps is the plain call the trader writes before it decides.
@@ -380,10 +380,10 @@ export default function DocsPage() {
               The token
             </h2>
             <p className="docs-paragraph">
-              {tokenSymbol} is launched through Mosh on Robinhood Chain, paired with ORBIO. kivo funded its own Mosh bundle, so it holds the bundle's claim on the token's creator fees: 80% of them, paid in ORBIO, collectable at any time. Holding {tokenSymbol} does nothing on its own; staking it is what earns.
+              {tokenSymbol} is launched through Mosh on Robinhood Chain, paired with ORBIO. viko funded its own Mosh bundle, so it holds the bundle's claim on the token's creator fees: 80% of them, paid in ORBIO, collectable at any time. Holding {tokenSymbol} does nothing on its own; staking it is what earns.
             </p>
             <p className="docs-paragraph">
-              Every {harvestMinutes} minutes kivo collects those fees and splits them:
+              Every {harvestMinutes} minutes viko collects those fees and splits them:
             </p>
             <StepFlow
               steps={[
@@ -397,7 +397,7 @@ export default function DocsPage() {
                 { label: 'ORBIO fees' },
                 { label: `${orbioSplit.inferencePct}% sold to USDG` },
                 { label: 'CREDIT on Orbio', tone: 'long' },
-                { label: 'kivo thinks with it' },
+                { label: 'viko thinks with it' },
               ]}
             />
             <StepFlow
@@ -436,7 +436,7 @@ export default function DocsPage() {
               <b>Profits.</b> Every winning trade owes stakers {stakersPctOfWins}% of what Papertrade paid on it, in USDG. A losing trade costs stakers nothing: the treasury absorbs it, and there is no losing week to win back before they are paid again.
             </p>
             <p className="docs-paragraph">
-              <b>PAPER.</b> Every losing trade mints PAPER to kivo. PAPER cannot be transferred yet, so kivo's ledger allocates {stakersPctOfPaper}% of it to stakers, weighted by how long each has staked, exactly as the contract weighs a USDG payout. The USDC that staking kivo's own PAPER earns on Papertrade stays with kivo.
+              <b>PAPER.</b> Every losing trade mints PAPER to viko. PAPER cannot be transferred yet, so kivo's ledger allocates {stakersPctOfPaper}% of it to stakers, weighted by how long each has staked, exactly as the contract weighs a USDG payout. The USDC that staking kivo's own PAPER earns on Papertrade stays with viko.
             </p>
           </section>
 
@@ -483,7 +483,7 @@ export default function DocsPage() {
             </h2>
             <ul className="docs-bullet-list">
               <li className="docs-bullet-item">
-                kivo can lose. High leverage means a stopped trade costs a real share of the treasury.
+                viko can lose. High leverage means a stopped trade costs a real share of the treasury.
               </li>
               <li className="docs-bullet-item">
                 Models can be wrong with confidence. The rules and Sage limit the damage, they do not remove it.

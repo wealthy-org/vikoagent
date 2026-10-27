@@ -2,13 +2,13 @@ import type { Metadata, Viewport } from 'next';
 import './globals.css';
 
 export const metadata: Metadata = {
-  title: 'Vikoagent | Sovereign Devnet Paper Trader',
+  title: 'Viko | Sovereign Devnet Paper Trader',
   description: 'Devnet paper trading telemetry and sovereign autonomous agent dashboard.',
   manifest: '/manifest.json',
   appleWebApp: {
     capable: true,
     statusBarStyle: 'default',
-    title: 'Vikoagent',
+    title: 'Viko',
   },
   icons: {
     icon: '/brand/kivo-mark-128.png',
