@@ -254,6 +254,52 @@ export function Dashboard() {
   const [connectedAddress, setConnectedAddress] = useState<string | null>(null);
   const [isConnecting, setIsConnecting] = useState(false);
 
+  // Hover state for interactive Treasury chart
+  const [chartHover, setChartHover] = useState<{
+    x: number;
+    y: number;
+    nav: string;
+    date: string;
+  } | null>(null);
+
+  // Interactive chart steps mapping X coordinate to step Y and values
+  const CHART_STEPS_LOOKUP = [
+    { xMin: 0, xMax: 58.7, y: 153.0, nav: '$800.00', date: '02.01 04:00' },
+    { xMin: 58.7, xMax: 81.7, y: 141.9, nav: '$1,078.00', date: '04.01 12:00' },
+    { xMin: 81.7, xMax: 106.9, y: 125.7, nav: '$1,483.00', date: '07.01 08:30' },
+    { xMin: 106.9, xMax: 133.6, y: 114.7, nav: '$1,758.00', date: '10.01 16:15' },
+    { xMin: 133.6, xMax: 158.8, y: 103.6, nav: '$2,035.00', date: '13.01 22:40' },
+    { xMin: 158.8, xMax: 193.7, y: 98.5, nav: '$2,163.00', date: '16.01 09:10' },
+    { xMin: 193.7, xMax: 213.7, y: 92.5, nav: '$2,313.00', date: '19.01 14:05' },
+    { xMin: 213.7, xMax: 238.9, y: 87.4, nav: '$2,440.00', date: '22.01 18:50' },
+    { xMin: 238.9, xMax: 299.7, y: 65.3, nav: '$2,993.00', date: '25.01 06:20' },
+    { xMin: 299.7, xMax: 362.7, y: 54.2, nav: '$3,270.00', date: '27.01 15:33' },
+    { xMin: 362.7, xMax: 408.7, y: 43.1, nav: '$3,548.00', date: '29.01 11:45' },
+    { xMin: 408.7, xMax: 520.0, y: 38.0, nav: '$3,380.23', date: '30.01 23:59' },
+  ];
+
+  function handleChartMouseMove(e: React.MouseEvent<SVGSVGElement>) {
+    const rect = e.currentTarget.getBoundingClientRect();
+    if (!rect.width) return;
+    const clientX = e.clientX - rect.left;
+    const svgX = (clientX / rect.width) * 520;
+    
+    // Clamp to valid range
+    const clampedX = Math.max(15, Math.min(445, svgX));
+    const step = CHART_STEPS_LOOKUP.find((s) => clampedX >= s.xMin && clampedX < s.xMax) || CHART_STEPS_LOOKUP[CHART_STEPS_LOOKUP.length - 1];
+    
+    setChartHover({
+      x: clampedX,
+      y: step.y,
+      nav: step.nav,
+      date: step.date,
+    });
+  }
+
+  function handleChartMouseLeave() {
+    setChartHover(null);
+  }
+
   // Solana Devnet Read-Only Wallet Connect
   async function handleConnectWallet() {
     if (connectedAddress) {
@@ -564,7 +610,7 @@ export function Dashboard() {
                   </div>
 
                   <div className="treasury-big-nav tabular">
-                    {currentChart.nav}
+                    {chartHover ? chartHover.nav : currentChart.nav}
                   </div>
 
                   <div className="treasury-pills-row">
@@ -603,7 +649,14 @@ export function Dashboard() {
 
               {/* Exact Timeline SVG Stepped Staircase Curve with Area Gradient & Fee Annotations */}
               <div className="chart-area-wrap">
-                <svg viewBox="0 0 520 205" className="chart-svg-element" aria-label="Treasury NAV chart">
+                <svg
+                  viewBox="0 0 520 205"
+                  className="chart-svg-element"
+                  aria-label="Treasury NAV chart"
+                  onMouseMove={handleChartMouseMove}
+                  onMouseLeave={handleChartMouseLeave}
+                  style={{ cursor: 'crosshair' }}
+                >
                   <defs>
                     <linearGradient id="kivoAreaGradient" x1="0" y1="0" x2="0" y2="1">
                       <stop offset="0%" stopColor="#818cf8" stopOpacity="0.22" />
@@ -617,11 +670,29 @@ export function Dashboard() {
                   <line x1="15" y1="105" x2="445" y2="105" stroke="#f1f5f9" strokeWidth="1" />
                   <line x1="15" y1="145" x2="445" y2="145" stroke="#f1f5f9" strokeWidth="1" />
 
-                  {/* Dashed Horizontal Guide Line at $2,534 */}
-                  <line x1="15" y1="84" x2="445" y2="84" stroke="#c7d2fe" strokeWidth="1.2" strokeDasharray="4 4" />
+                  {/* Horizontal Dashed Guide Line: either following hover Y or default $2,534 at y=84 */}
+                  <line
+                    x1="15"
+                    y1={chartHover ? chartHover.y : 84}
+                    x2="455"
+                    y2={chartHover ? chartHover.y : 84}
+                    stroke="#c7d2fe"
+                    strokeWidth="1.2"
+                    strokeDasharray="4 4"
+                    style={{ transition: 'y1 0.15s ease-out, y2 0.15s ease-out' }}
+                  />
 
-                  {/* Dashed Vertical Guide Line at 15.33 */}
-                  <line x1="205" y1="18" x2="205" y2="175" stroke="#c7d2fe" strokeWidth="1.2" strokeDasharray="4 4" />
+                  {/* Vertical Dashed Guide Line: either following hover X or default 15.33 milestone at x=205 */}
+                  <line
+                    x1={chartHover ? chartHover.x : 205}
+                    y1="18"
+                    x2={chartHover ? chartHover.x : 205}
+                    y2="175"
+                    stroke="#c7d2fe"
+                    strokeWidth="1.2"
+                    strokeDasharray="4 4"
+                    style={{ transition: 'x1 0.08s ease-out, x2 0.08s ease-out' }}
+                  />
 
                   {/* Stepped Gradient Area */}
                   <path
@@ -661,18 +732,81 @@ export function Dashboard() {
                     </g>
                   ))}
 
+                  {/* Hover Cursor Marker Circle on the Curve */}
+                  {chartHover && (
+                    <g>
+                      <circle
+                        cx={chartHover.x}
+                        cy={chartHover.y}
+                        r="6"
+                        fill="rgba(99, 102, 241, 0.25)"
+                      />
+                      <circle
+                        cx={chartHover.x}
+                        cy={chartHover.y}
+                        r="3.5"
+                        fill="#4f46e5"
+                        stroke="#ffffff"
+                        strokeWidth="1.5"
+                      />
+                    </g>
+                  )}
+
                   {/* Y-Axis Labels on the Right */}
                   <text x="505" y="29" fill="#94a3b8" fontSize="10" textAnchor="end" fontFamily="var(--font-mono)">$4,000</text>
                   <text x="505" y="69" fill="#94a3b8" fontSize="10" textAnchor="end" fontFamily="var(--font-mono)">$3,000</text>
 
-                  {/* $2,534 Solid Black Badge on Y-Axis */}
-                  <rect x="455" y="73" width="50" height="22" rx="4" fill="#111318" />
-                  <text x="480" y="88" fill="#ffffff" fontSize="11" fontWeight="700" textAnchor="middle" fontFamily="var(--font-mono)">
-                    {currentChart.badgeVal || '$2,534'}
-                  </text>
+                  {/* Dynamic Y-Axis Solid Black Badge: animates up/down following cursor hover */}
+                  <g style={{ transition: 'transform 0.12s ease-out' }}>
+                    <rect
+                      x="455"
+                      y={chartHover ? chartHover.y - 11 : 73}
+                      width="52"
+                      height="22"
+                      rx="4"
+                      fill="#111318"
+                    />
+                    <text
+                      x="481"
+                      y={chartHover ? chartHover.y + 4 : 88}
+                      fill="#ffffff"
+                      fontSize="11"
+                      fontWeight="700"
+                      textAnchor="middle"
+                      fontFamily="var(--font-mono)"
+                    >
+                      {chartHover ? chartHover.nav.replace('.00', '') : (currentChart.badgeVal || '$2,534')}
+                    </text>
+                  </g>
 
                   <text x="505" y="109" fill="#94a3b8" fontSize="10" textAnchor="end" fontFamily="var(--font-mono)">$2,000</text>
                   <text x="505" y="149" fill="#94a3b8" fontSize="10" textAnchor="end" fontFamily="var(--font-mono)">$1,000</text>
+
+                  {/* Dynamic Tooltip on Hover showing Date and Value */}
+                  {chartHover && (
+                    <g transform={`translate(${Math.max(35, Math.min(380, chartHover.x - 45))}, ${Math.max(16, chartHover.y - 28)})`}>
+                      <rect
+                        width="90"
+                        height="20"
+                        rx="4"
+                        fill="#ffffff"
+                        stroke="#c7d2fe"
+                        strokeWidth="1"
+                        style={{ filter: 'drop-shadow(0 2px 4px rgba(17, 19, 24, 0.08))' }}
+                      />
+                      <text
+                        x="45"
+                        y="14"
+                        fill="#4f46e5"
+                        fontSize="9"
+                        fontWeight="600"
+                        textAnchor="middle"
+                        fontFamily="var(--font-mono)"
+                      >
+                        {chartHover.date}
+                      </text>
+                    </g>
+                  )}
 
                   {/* X-Axis Date Labels along Bottom (02.01, 09.01, 16.01, 23.01, 30.01) */}
                   <text x="60.9" y="196" fill="#94a3b8" fontSize="10" textAnchor="middle" fontFamily="var(--font-mono)">02.01</text>

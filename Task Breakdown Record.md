@@ -1000,4 +1000,21 @@
 | Verification | 31 Vitest test files (78/78 tests passed, 100%); ESLint clean; Next.js 16.4.1 Turbopack build passed in 1110ms |
 | Result | Lower half of Treasury chart aligns 100% pixel-perfect with `image copy 13.png` |
 
+---
+
+## Progress Block 061 — Interactive Treasury Chart Hover & Dynamic Crosshair Following (`image copy 14.png`)
+
+| Field | Record |
+|---|---|
+| Timestamp | 2026-10-27 18:40 SEAST |
+| Status | Completed |
+| Task | Implement interactive crosshair hover animation on Treasury chart diagram (`image copy 14.png`): numbers dynamically follow cursor, solid black Y-axis badge animates up/down along right axis, vertical and horizontal dashed guide lines track cursor, and main big NAV display reflects step value |
+| Skill | `bmad-ux`, `bmad-build`, `verification-before-completion` |
+| Scope | `apps/web/components/dashboard.tsx` |
+| Problem Identified | Previously Treasury chart was completely static; cursor had no effect, big NAV remained frozen at `$3,380.23`, black badge sat fixed at `$2,534`, and dashed guide lines were static, deviating from authentic interactive Lightweight Charts behavior in `image copy 14.png` |
+| Actions Taken | 1) Built interactive step lookup `CHART_STEPS_LOOKUP` matching all 12 staircase intervals with exact X intervals, step Y, NAV value, and date timestamp; 2) Added `handleChartMouseMove` and `handleChartMouseLeave` handlers tracking mouse relative to SVG viewBox with `cursor: crosshair`; 3) Dynamically updated `.treasury-big-nav` to display hover value; 4) Dynamic solid black Y-axis badge `rect` & `text` tracking hover Y level smoothly (`transition: transform 0.12s ease-out`); 5) Animated vertical dashed guide tracking cursor X (`x1`, `x2`) and horizontal dashed guide tracking step Y (`y1`, `y2`); 6) Rendered glowing target circle dot `●` on curve at exact cursor step; 7) Added floating date tooltip pill badge over curve showing date timestamp (`02.01 04:00` .. `30.01 23:59`) |
+| Verification | 31 Vitest test files (78/78 tests passed, 100%); ESLint clean; Next.js 16.4.1 Turbopack build passed in 974ms |
+| Result | Treasury chart diagram is fully interactive with fluid cursor-following animations matching reference `kivoagent.xyz` |
+
+
 
