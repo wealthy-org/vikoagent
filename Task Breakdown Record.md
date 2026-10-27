@@ -717,5 +717,21 @@
 | Uncommitted owner diff | `packages/persistence/src/migration-runner.ts` and `packages/persistence/src/neon-repositories.ts` remain unstaged; no overwrite performed |
 | Release status | Local PAPER/DEVNET release candidate verified; live provider certification and production deployment remain blocked |
 
+---
+
+## Progress Block 044 — Phase 1 Final Local Release Closure
+
+| Field | Record |
+|---|---|
+| Timestamp | 2026-10-27 11:20 SEAST |
+| Status | Local Scope Complete; Live Gate Blocked |
+| Task | Finalize verified persistence, migration, PumpPortal boundary, security, dashboard, and release work |
+| Result | Committed all reviewed verified changes; migration SQL template execution fixed; Neon decision persists `mint`; PumpPortal unsafe URL, subscription, reconnect, stop, and retry-cap tests expanded |
+| Verification | `30` test files passed; `71` tests passed; lint clean; build passed; audit passed; diff check passed; working tree clean |
+| Ticket tree | `28/28` stories done; no remaining chain, unpinned prerequisite, undeclared prerequisite, or order conflict |
+| Live gate | PumpPortal live URL absent; live WebSocket/subscription/provider event not executed; deployment secret-manager validation remains external |
+| Safety | `DEVNET` + `PAPER`; no mainnet, signing, broadcast, wallet, trade, swap, or real-fund path enabled |
+| Final status | Phase 1 local release candidate complete. Production release not certified until live PumpPortal and approved deployment smoke evidence exist |
+
 
 ---
