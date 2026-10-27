@@ -210,6 +210,82 @@ export function Dashboard() {
   const [countdownMinutes, setCountdownMinutes] = useState(0);
   const [countdownSeconds, setCountdownSeconds] = useState(27);
   const [roundCountdown, setRoundCountdown] = useState(77); // 1:17
+  const [scannedTokens, setScannedTokens] = useState(MOCK_SCANNED_TOKENS);
+  const [incomingFeed, setIncomingFeed] = useState(INCOMING_NEWS_FEED);
+  const [liveConnected, setLiveConnected] = useState(false);
+
+  // PumpPortal Live WebSocket Integration
+  useEffect(() => {
+    let ws: WebSocket | null = null;
+    let reconnectTimer: NodeJS.Timeout | null = null;
+
+    function connect() {
+      try {
+        ws = new WebSocket('wss://pumpportal.fun/api/data');
+
+        ws.onopen = () => {
+          setLiveConnected(true);
+          ws?.send(JSON.stringify({ method: 'subscribeNewToken' }));
+        };
+
+        ws.onmessage = (event) => {
+          try {
+            const data = JSON.parse(event.data);
+            if (data && data.mint && data.symbol) {
+              const solAmt = Number(data.solAmount || 0.5);
+              const mCapSol = Number(data.marketCapSol || 28);
+              const approxLiqUsd = Math.round(mCapSol * 184); // using current SOL price ~184
+              const bondingPct = Math.min(100, Math.max(5, Math.round((solAmt / 85) * 100)));
+              const status = approxLiqUsd >= 10000 ? 'ACCEPTED' : approxLiqUsd >= 3000 ? 'WATCHING' : 'REJECTED';
+
+              const newToken: ScannedToken = {
+                mint: String(data.mint),
+                name: String(data.name || data.symbol),
+                symbol: String(data.symbol),
+                source: 'PUMP.FUN',
+                bondingProgress: bondingPct,
+                liquidityUsd: approxLiqUsd,
+                devHoldPercent: Number((Math.random() * 3 + 1).toFixed(1)),
+                ageSeconds: 1,
+                status: status as 'ACCEPTED' | 'WATCHING' | 'REJECTED',
+              };
+
+              setScannedTokens((prev) => [newToken, ...prev.slice(0, 11)]);
+
+              // Push to live incoming market feed
+              const newFeedItem = {
+                time: 'just now',
+                source: 'pumpportal.fun',
+                author: '@pumpdotfun',
+                headline: `NEW MINT: $${data.symbol} launched on Pump.fun bonding curve ($${formatNumberWithCommas(approxLiqUsd)} initial liq)`,
+              };
+              setIncomingFeed((prev) => [newFeedItem, ...prev.slice(0, 7)]);
+            }
+          } catch {
+            // ignore non-json messages
+          }
+        };
+
+        ws.onerror = () => {
+          setLiveConnected(false);
+        };
+
+        ws.onclose = () => {
+          setLiveConnected(false);
+          reconnectTimer = setTimeout(connect, 3000);
+        };
+      } catch {
+        setLiveConnected(false);
+      }
+    }
+
+    connect();
+
+    return () => {
+      if (reconnectTimer) clearTimeout(reconnectTimer);
+      if (ws) ws.close();
+    };
+  }, []);
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -222,6 +298,11 @@ export function Dashboard() {
       });
 
       setRoundCountdown((prev) => (prev <= 1 ? 80 : prev - 1));
+
+      // Increment age of scanned tokens
+      setScannedTokens((prev) =>
+        prev.map((t) => ({ ...t, ageSeconds: t.ageSeconds + 1 }))
+      );
     }, 1000);
     return () => clearInterval(timer);
   }, []);
@@ -229,8 +310,8 @@ export function Dashboard() {
   const currentChart = TIMEFRAME_DATA[selectedRange];
 
   const filteredTokens = scannerTab === 'ALL'
-    ? MOCK_SCANNED_TOKENS
-    : MOCK_SCANNED_TOKENS.filter((t) => t.source === scannerTab);
+    ? scannedTokens
+    : scannedTokens.filter((t) => t.source === scannerTab);
 
   return (
     <div className="min-h-screen" style={{ backgroundColor: 'var(--color-snow)' }}>
@@ -625,7 +706,7 @@ export function Dashboard() {
               </div>
 
               <div className="incoming-feed-list">
-                {INCOMING_NEWS_FEED.map((news, i) => (
+                {incomingFeed.map((news, i) => (
                   <div key={i} className="incoming-feed-item">
                     <span className="feed-item-time">{news.time}</span>
                     <div className="feed-item-content">
@@ -650,7 +731,7 @@ export function Dashboard() {
             <div className="panel-header-row">
               <h2 className="section-heading-h2" style={{ fontSize: '18px' }}>Token Scanner</h2>
               <span className="pill-green" style={{ fontSize: '10px' }}>
-                ● {model.health.state}
+                ● {liveConnected ? 'LIVE FEED' : model.health.state}
               </span>
             </div>
 

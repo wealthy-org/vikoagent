@@ -4,3 +4,4 @@ node_modules/
 !.env.example
 ss/
 kredensial.md
+vercel-env.txt
