@@ -1032,6 +1032,40 @@
 | Verification | 1) 31 Vitest test files (78/78 tests passed, 100%); 2) ESLint zero errors/warnings; 3) Next.js 16.4.1 Turbopack production build passed (`npm run build`, exit 0); 4) Multi-viewport visual inspection via browser subagent on Mobile (375x667), Tablet (768x1024), and Desktop (1280x800) confirming zero overflow, clean single-row capsule nav, fluid SVG chart, sticky docs pill bar, and valid PWA endpoints |
 | Result | All pages are 100% responsive, sleek, mobile-friendly, and PWA-ready across all device form factors with zero regressions |
 
+---
+
+## Progress Block 063 — Fix Docs Layout Breakdown & Classname Desynchronization on Production
+
+| Field | Record |
+|---|---|
+| Timestamp | 2026-10-27 16:22 SEAST |
+| Status | Completed |
+| Task | Fix unstyled docs layout collapse on `/docs` where navigation items smashed into raw blue inline links and content collapsed into vertical unstyled text on Vercel desktop |
+| Skill | `bmad-ux`, `bmad-build`, `verification-before-completion` |
+| Scope | `apps/web/app/globals.css`, `app/docs/page.tsx` |
+| Problem Identified | In commit `e672ecc`, JSX markup classnames in `app/docs/page.tsx` were replaced with `.docs-layout-container`, `.docs-sidebar`, `.docs-article-body`, and `.docs-mobile-nav` which had no matching CSS rules in `apps/web/app/globals.css`. Furthermore, `.docs-mobile-nav` lacked `display: none` on desktop (>1024px), causing mobile section links to spill out at the top of desktop viewports as an unstyled continuous row of raw blue anchor tags |
+| Actions Taken | 1) Harmonized `app/docs/page.tsx` with clean semantic classes and dual alias support (`.docs-main-grid docs-layout-container`, `.docs-sidebar-nav docs-sidebar`, `.docs-content-column docs-article-body`); 2) Updated `apps/web/app/globals.css` with comprehensive CSS coverage for all docs containers, sidebars, typography (`.docs-h1`, `.docs-h2`, `.docs-eyebrow`, `.docs-bullet-list`, `.docs-paragraph`), tables, and step-flow badges; 3) Enforced `display: none` on desktop for `.docs-mobile-pill-bar, .docs-mobile-nav` so mobile navigation pills never leak onto desktop screens; 4) Fixed section typography to ensure numerical indicators (`01`, `02`, etc.) align inline on baseline with section headings |
+| Verification | 1) 31 Vitest test files (78/78 tests passed, 100%); 2) ESLint clean (0 errors, 0 warnings); 3) Next.js 16.4.1 Turbopack production build passed (`npm run build`, exit code 0); 4) Visual browser subagent inspection confirmed desktop sticky sidebar in 220px column, pristine blueprint grid, styled headings and bullet items, and responsive sticky pill bar on mobile |
+| Result | `/docs` page visual styling is 100% restored, responsive across all viewports, and identical to the reference `kivoagent.xyz/docs` |
+
+---
+
+## Progress Block 064 — Rename Brand & Token to "viko" / "VIKO" across Documentation Page
+
+| Field | Record |
+|---|---|
+| Timestamp | 2026-10-27 16:30 SEAST |
+| Status | Completed |
+| Task | Update all branding, headers, narrative copy, token symbols, and social links on `/docs` from "kivo" / "KIVO" to "viko" / "VIKO"; upgrade Service Worker cache navigation strategy to network-first |
+| Skill | `bmad-ux`, `bmad-build`, `verification-before-completion` |
+| Scope | `app/docs/page.tsx`, `public/sw.js` |
+| Problem Identified | 1) The documentation page previously had residual references to "kivo" and "KIVO" throughout headers, paragraphs, and contracts; 2) The Service Worker's cache-first navigation strategy served stale cached HTML on page updates |
+| Actions Taken | 1) Updated `app/docs/page.tsx` replacing all occurrences of `kivo` and `KIVO` with `viko` and `VIKO` (navbar brand title, `alt="viko"`, `tokenSymbol = 'VIKO'`, `How viko works`, staker rewards copy, treasury references, and `x.com/vikoagentxyz`); 2) Upgraded `public/sw.js` to version 2 (`vikoagent-cache-v2`) and switched navigation requests to network-first with cache fallback so fresh deployments reflect instantly in browsers while preserving offline PWA resilience |
+| Verification | 1) 31 Vitest test files (78/78 tests passed, 100%); 2) ESLint zero errors/warnings; 3) Next.js 16.4.1 Turbopack build passed (`npm run build`, exit code 0); 4) Visual browser subagent inspection verified `viko` in header brand, `How viko works` main title, `VIKO` token symbol, and 0 stale "kivo" occurrences in DOM |
+| Result | Documentation page now consistently uses "viko" and "VIKO" branding across all copy and navigation with automatic cache freshness |
+
+
+
 
 
 

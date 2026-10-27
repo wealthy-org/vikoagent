@@ -1,5 +1,5 @@
 /* eslint-disable */
-const CACHE_NAME = 'vikoagent-cache-v1';
+const CACHE_NAME = 'vikoagent-cache-v2';
 const STATIC_ASSETS = [
   '/',
   '/docs',
@@ -46,7 +46,23 @@ self.addEventListener('fetch', (event) => {
     return;
   }
 
-  // Static shell and assets: cache first, fallback to network
+  // Navigation requests (HTML pages): network-first so updates are immediately visible, fallback to cache
+  if (event.request.mode === 'navigate') {
+    event.respondWith(
+      fetch(event.request)
+        .then((response) => {
+          if (response && response.status === 200) {
+            const copy = response.clone();
+            caches.open(CACHE_NAME).then((cache) => cache.put(event.request, copy));
+          }
+          return response;
+        })
+        .catch(() => caches.match(event.request).then((cached) => cached || caches.match('/')))
+    );
+    return;
+  }
+
+  // Static assets (images, manifest): cache first, fallback to network
   event.respondWith(
     caches.match(event.request).then((cached) => {
       if (cached) return cached;
@@ -59,10 +75,6 @@ self.addEventListener('fetch', (event) => {
         }
         return response;
       });
-    }).catch(() => {
-      if (event.request.mode === 'navigate') {
-        return caches.match('/');
-      }
     })
   );
 });
