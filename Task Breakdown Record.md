@@ -1064,6 +1064,22 @@
 | Verification | 1) 31 Vitest test files (78/78 tests passed, 100%); 2) ESLint zero errors/warnings; 3) Next.js 16.4.1 Turbopack build passed (`npm run build`, exit code 0); 4) Visual browser subagent inspection verified `viko` in header brand, `How viko works` main title, `VIKO` token symbol, and 0 stale "kivo" occurrences in DOM |
 | Result | Documentation page now consistently uses "viko" and "VIKO" branding across all copy and navigation with automatic cache freshness |
 
+---
+
+## Progress Block 065 — Responsive Layout Fix for Mind Stream Round Card & Earlier Holds Strip on Mobile
+
+| Field | Record |
+|---|---|
+| Timestamp | 2026-10-27 17:05 SEAST |
+| Status | Completed |
+| Task | Repair mobile layout breakdown and responsive styling in Mind Stream decision card header, checklist items, and earlier holds strip on <= 400px viewports (iPhone SE 375x667) |
+| Skill | `bmad-ux`, `bmad-build`, `verification-before-completion` |
+| Scope | `apps/web/components/dashboard.tsx`, `apps/web/app/globals.css`, `app/globals.css` |
+| Problem Identified | 1) On narrow mobile viewports (e.g. iPhone SE 375x667), the round card header text (`06:44 UTC · 8m ago · Hold · [🧠 AI via OpenRouter] ⌄`) awkwardly wrapped individual words into two vertical lines (`06:44` over `UTC`, `8m` over `ago`, and `🧠 AI via` over `OpenRouter`) due to missing nowrap protection and excessive nesting padding; 2) Checklist step titles had a hardcoded `min-width: 130px;` which consumed more than half of the available mobile card width (~247px), causing descriptions like `BTC 79,701 ▼ · ETH 2,307 ▼` to be aggressively truncated into `BTC 7...`; 3) Earlier holds strip metadata (`02:48 to 06:34 UTC · 18m ago · 24 holds`) lacked semantic flex grouping and nowrap protection, causing words to stack vertically and the chevron arrow `⌄` to wrap onto a separate line; 4) `app/globals.css` (root runtime entry) had desynchronized from `apps/web/app/globals.css` |
+| Actions Taken | 1) Added `.nowrap-text`, `.meta-sep`, `.round-card-meta-left`, `.round-card-meta-right`, and `.round-decision-text` utility and component classes preventing unwanted word wrapping; 2) In `apps/web/components/dashboard.tsx`, refactored the round card header and the earlier holds strip with structured classes (`.holds-meta-row`, `.holds-meta-left`, `.nowrap-text`, `.meta-sep`, `.holds-count-text`, `.holds-desc-text`); 3) In `@media (max-width: 640px)` and `@media (max-width: 400px)`: reduced nesting padding (`.round-card-expanded` from 24px to 14px/10px, `.timeline-tree-wrapper` from 24px to 18px/14px), reclaiming ~40px of width on 375px screens; changed `.step-title-text` to `min-width: auto; white-space: nowrap; flex-shrink: 0;`, allowing titles to shrink to exact text width and `.step-desc-text` with `flex: 1; min-width: 0;` to expand across the full remaining row width without premature truncation; styled `.holds-meta-row` and `.holds-meta-left` so `02:48 to 06:34 UTC · 18m ago · 24 holds` stays intact on one line with the chevron `⌄` aligned on the far right; 4) Synchronized `app/globals.css` with `apps/web/app/globals.css` ensuring dev server and production builds reflect the identical responsive styling |
+| Verification | 1) 31 Vitest test files (78/78 tests passed, 100%); 2) ESLint clean (0 errors, 0 warnings); 3) Next.js 16.4.1 Turbopack build passed (`npm run build`, exit code 0); 4) Visual browser verification via subagent on 375x667 (iPhone SE) confirming header `06:44 UTC · 8m ago · Hold` and `[🧠 AI via OpenRouter] ⌄` are completely on one line without text fragmentation, checklist items show both BTC & ETH prices clearly, and earlier holds strip displays neatly on a single line with right-aligned chevron |
+| Result | Mind Stream section is 100% responsive, sleek, and visually aligned across all mobile device viewports with zero regressions |
+
 
 
 

@@ -931,19 +931,19 @@ export function Dashboard() {
                   {/* Checklist Step Card (Read the charts, News desk, Decided, Best setup) */}
                   <div className="clay-inset round-card-expanded">
                     <div className="round-card-top">
-                      <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                        <span>06:44 UTC</span>
-                        <span>·</span>
-                        <span>8m ago</span>
-                        <span>·</span>
-                        <span style={{ fontWeight: 600, color: 'var(--color-ink-2)' }}>Hold</span>
+                      <div className="round-card-meta-left">
+                        <span className="nowrap-text">06:44 UTC</span>
+                        <span className="meta-sep">·</span>
+                        <span className="nowrap-text">8m ago</span>
+                        <span className="meta-sep">·</span>
+                        <span className="nowrap-text round-decision-text">Hold</span>
                       </div>
-                      <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                      <div className="round-card-meta-right">
                         <span className="model-tag-pill">
                           <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
                             <path d="M20.24 12.24a6 6 0 0 0-8.49-8.49L5 10.5V19h8.5zM16 8 2 22M17.5 15H9" />
                           </svg>
-                          {aiModelLabel}
+                          <span>{aiModelLabel}</span>
                         </span>
                         <span style={{ color: 'var(--color-ink-3)', fontSize: '11px', cursor: 'pointer' }}>⌄</span>
                       </div>
@@ -1080,17 +1080,17 @@ export function Dashboard() {
                 <div className="timeline-round-entry" style={{ marginTop: '16px' }}>
                   <span className="timeline-dot-node secondary" />
                   <div className="holds-history-strip" onClick={() => setShowEarlierHolds(!showEarlierHolds)}>
-                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                      <div style={{ display: 'flex', gap: '8px', fontSize: '11px', color: 'var(--color-ink-3)', fontFamily: 'var(--font-mono)' }}>
-                        <span>02:48 to 06:34 UTC</span>
-                        <span>·</span>
-                        <span>18m ago</span>
-                        <span>·</span>
-                        <span style={{ fontWeight: 600, color: 'var(--color-ink-2)' }}>24 holds</span>
+                    <div className="holds-meta-row">
+                      <div className="holds-meta-left">
+                        <span className="nowrap-text">02:48 to 06:34 UTC</span>
+                        <span className="meta-sep">·</span>
+                        <span className="nowrap-text">18m ago</span>
+                        <span className="meta-sep">·</span>
+                        <span className="nowrap-text holds-count-text">24 holds</span>
                       </div>
                       <span className={`step-chevron ${showEarlierHolds ? 'rotated' : ''}`}>⌄</span>
                     </div>
-                    <p style={{ margin: '6px 0 0', fontSize: '13px', color: 'var(--color-ink-2)' }}>
+                    <p className="holds-desc-text">
                       waiting on short ETH, a 4h close below 2,292.6 on above-average volume
                     </p>
                   </div>
