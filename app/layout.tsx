@@ -11,8 +11,8 @@ export const metadata: Metadata = {
     title: 'Viko',
   },
   icons: {
-    icon: '/brand/kivo-mark-128.png',
-    apple: '/brand/kivo-mark-256.png',
+    icon: '/brand/viko-orb.jpeg',
+    apple: '/brand/viko-orb.jpeg',
   },
 };
 
@@ -28,7 +28,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en">
       <head>
-        <link rel="apple-touch-icon" href="/brand/kivo-mark-256.png" />
+        <link rel="apple-touch-icon" href="/brand/viko-orb.jpeg" />
       </head>
       <body suppressHydrationWarning>
         {children}

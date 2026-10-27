@@ -10,12 +10,12 @@ const SECTIONS = [
   ['venue', 'Where it trades'],
   ['rules', 'The house rules'],
   ['tracking', 'Watching the money'],
-  ['token', 'The token'],
-  ['staking', 'What stakers earn'],
-  ['payouts', 'How payouts work'],
+  ['ingestion', 'Market ingestion'],
+  ['risk', 'Deterministic risk rules'],
+  ['execution', 'Paper trading engine'],
   ['stack', 'What it runs on'],
   ['risks', 'What can go wrong'],
-  ['contracts', 'Contracts and links'],
+  ['contracts', 'Programs and endpoints'],
 ] as const;
 
 interface PillProps {
@@ -120,24 +120,7 @@ function ContractRow({
 export default function DocsPage() {
   const [activeSection, setActiveSection] = useState<string>('summary');
 
-  const tokenSymbol = 'VIKO';
-  const stakersPctOfWins = 70;
-  const stakersPctOfPaper = 70;
-  const payoutThresholdUsd = 10;
-  const harvestMinutes = 5;
-  const streamDays = 7;
-  const bridgeThresholdUsd = 100;
-  const orbioSplit = { tradingPct: 50, inferencePct: 10, revenuePct: 40 };
-
   const solanaExplorer = 'https://explorer.solana.com';
-  const hyperExplorer = 'https://hyperevmscan.io';
-
-  const contracts = {
-    exchange: '0x6cd5661646289fb6e65ea5c032310fded797d0a2',
-    paper: '0xe40f17915daa230324030003a197cdaef2261c0e',
-    paperStaking: '0xaad6c7b0cc3014fc80ffedae0ed7ce5967b0f016',
-    operator: '7xKXt99vP8uEHQ73yV8gQjWj8U3vGk3Wq7oP29L42As',
-  };
 
   useEffect(() => {
     const handleScroll = () => {
@@ -163,7 +146,7 @@ export default function DocsPage() {
         <div className="docs-header-inner">
           <Link href="/" className="docs-brand-link">
             <img
-              src="/brand/kivo-mark-128.png"
+              src="/brand/viko-orb.jpeg"
               alt="viko"
               className="docs-brand-logo"
               draggable={false}
@@ -385,92 +368,88 @@ export default function DocsPage() {
             </p>
           </section>
 
-          {/* 07 The token */}
-          <section id="token" className="docs-content-section">
+          {/* 07 Market ingestion */}
+          <section id="ingestion" className="docs-content-section">
             <h2 className="docs-h2">
               <span className="docs-h2-num">07</span>
-              The token
+              Market ingestion
             </h2>
             <p className="docs-paragraph">
-              {tokenSymbol} is launched through Mosh on Robinhood Chain, paired with ORBIO. viko funded its own Mosh bundle, so it holds the bundle&apos;s claim on the token&apos;s creator fees: 80% of them, paid in ORBIO, collectable at any time. Holding {tokenSymbol} does nothing on its own; staking it is what earns.
+              Vikoagent ingests real-time market data across Solana launchpads without third-party protocol dependencies. Pump.fun mints are streamed directly via PumpPortal WebSocket, while Meteora Dynamic Bonding Curves (DBC) and DAMM v2 liquidity pools are tracked via public Swagger REST endpoints.
             </p>
             <p className="docs-paragraph">
-              Every {harvestMinutes} minutes viko collects those fees and splits them:
+              Every token discovery event triggers instantaneous validation across liquidity, bonding curve completion %, and creator allocation:
             </p>
 
             <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem', margin: '1.25rem 0' }}>
               <StepFlow
                 steps={[
-                  { label: 'ORBIO fees' },
-                  { label: `${orbioSplit.tradingPct}% sold to USDG`, tone: 'long' },
-                  { label: 'trading treasury' },
+                  { label: 'PumpPortal WS' },
+                  { label: 'Token Ingestor', tone: 'long' },
+                  { label: 'Neon DB Ledger' },
                 ]}
               />
               <StepFlow
                 steps={[
-                  { label: 'ORBIO fees' },
-                  { label: `${orbioSplit.inferencePct}% sold to USDG`, tone: 'iris' },
-                  { label: 'CREDIT on Orbio' },
-                  { label: 'viko thinks with it' },
-                ]}
-              />
-              <StepFlow
-                steps={[
-                  { label: 'ORBIO fees' },
-                  { label: `${orbioSplit.revenuePct}% kept as ORBIO` },
-                  { label: 'revenue vault' },
+                  { label: 'Meteora REST' },
+                  { label: 'DBC Bonding Curve', tone: 'iris' },
+                  { label: 'Risk Evaluation' },
                 ]}
               />
             </div>
 
             <p className="docs-paragraph">
-              Sales go through the deeper of the two ORBIO/USDG pools on Uniswap, refused if the pools disagree on the price or the sale would move it too far. The trading share crosses to Papertrade once ${bridgeThresholdUsd} has gathered. The inference share buys CREDIT on Orbio&apos;s book and activates it to viko&apos;s own account, which is the balance every model call the agent makes is paid from.
+              Discovered mints are recorded in serverless PostgreSQL (Neon DB). The ingestion pipeline auto-reconnects on dropouts and handles high-frequency launch bursts with zero latency bottlenecks.
             </p>
           </section>
 
-          {/* 08 What stakers earn */}
-          <section id="staking" className="docs-content-section">
+          {/* 08 Deterministic risk rules */}
+          <section id="risk" className="docs-content-section">
             <h2 className="docs-h2">
               <span className="docs-h2-num">08</span>
-              What stakers earn
+              Deterministic risk rules
             </h2>
 
             <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem', margin: '1.25rem 0' }}>
               <StepFlow
                 steps={[
-                  { label: 'A winning trade', tone: 'long' },
-                  { label: `${stakersPctOfWins}% to stakers`, tone: 'long' },
-                  { label: `${100 - stakersPctOfWins}% stays in trading` },
-                ]}
-              />
-              <StepFlow
-                steps={[
-                  { label: 'A losing trade', tone: 'short' },
-                  { label: 'mints PAPER' },
-                  { label: `${stakersPctOfPaper}% to stakers`, tone: 'iris' },
+                  { label: 'Launch Event' },
+                  { label: 'Risk Rules #1-5', tone: 'iris' },
+                  { label: 'PASS / REJECT', tone: 'long' },
                 ]}
               />
             </div>
 
             <p className="docs-paragraph">
-              <b>Profits.</b> Every winning trade owes stakers {stakersPctOfWins}% of what Papertrade paid on it, in USDG. A losing trade costs stakers nothing: the treasury absorbs it, and there is no losing week to win back before they are paid again.
+              <b>Automated Filtering.</b> Order execution is strictly governed by deterministic code, never delegated solely to LLM output. Before any entry, the agent verifies:
             </p>
+            <ul className="docs-bullet-list" style={{ marginTop: '0.5rem', marginBottom: '1rem' }}>
+              <li className="docs-bullet-item">
+                <b>Dev Allocation:</b> Creator wallet must hold less than 4% of total token supply.
+              </li>
+              <li className="docs-bullet-item">
+                <b>Mint Authority:</b> Exploit risk verified and revoked onchain.
+              </li>
+              <li className="docs-bullet-item">
+                <b>Bonding Curve Velocity:</b> Verified spot liquidity and minimum transaction density.
+              </li>
+            </ul>
             <p className="docs-paragraph">
-              <b>PAPER.</b> Every losing trade mints PAPER to viko. PAPER cannot be transferred yet, so viko&apos;s ledger allocates {stakersPctOfPaper}% of it to stakers, weighted by how long each has staked, exactly as the contract weighs a USDG payout. The USDC that staking viko&apos;s own PAPER earns on Papertrade stays with viko.
+              If any risk rule fails, the token is automatically tagged as <b>REJECTED</b>, logging the exact rule violated to public telemetry.
             </p>
           </section>
 
-          {/* 09 How payouts work */}
-          <section id="payouts" className="docs-content-section">
+          {/* 09 Paper trading engine */}
+          <section id="execution" className="docs-content-section">
             <h2 className="docs-h2">
               <span className="docs-h2-num">09</span>
-              How payouts work
+              Paper trading engine
             </h2>
             <p className="docs-paragraph">
-              Once stakers are owed ${payoutThresholdUsd}, viko pays it: first from trading USDG already on Robinhood Chain, then by withdrawing the rest from Papertrade&apos;s free balance and bridging it back, never from margin an open trade is using. The USDG goes into the staking contract, which streams it to stakers pro rata over the next {streamDays} days, second by second, so staking the minute before a payout earns only that minute. Rewards can be claimed at any time.
+              Vikoagent operates exclusively on Solana Devnet with zero real capital risk. Orders are calculated against live bonding curve spot prices, factoring in realistic simulated slippage (1–2%) and priority fees (0.0005 SOL).
             </p>
             <p className="docs-paragraph">
-              The contract has no pause and no lock: a stake can always be withdrawn. It is upgradeable, so whoever holds the owner key could change its code; that key is meant to move to a cold wallet or a multisig, and every upgrade is public on the chain.
+              Every simulated trade produces an immutable cryptographic execution receipt (e.g., <code>RCPT-DEVNET-0042</code>) recorded in Neon DB and streamed live to the public telemetry ledger. Staking, token contracts, and real fund exposure are strictly excluded in Phase 1.
             </p>
           </section>
 
@@ -525,14 +504,10 @@ export default function DocsPage() {
             <div className="docs-table-wrapper docs-table-wrap">
               <table className="docs-table">
                 <tbody>
-                  <ContractRow label={tokenSymbol} address={null} explorer={hyperExplorer} />
-                  <ContractRow label="Staking" address={null} explorer={hyperExplorer} />
-                  <ContractRow label="Mosh bundle" address={null} explorer={hyperExplorer} />
-                  <ContractRow label="Operator" address={contracts.operator} explorer={solanaExplorer} />
-                  <ContractRow label="Revenue vault" address={null} explorer={hyperExplorer} />
-                  <ContractRow label="Papertrade exchange" address={contracts.exchange} explorer={hyperExplorer} />
-                  <ContractRow label="PAPER" address={contracts.paper} explorer={hyperExplorer} />
-                  <ContractRow label="PAPER staking" address={contracts.paperStaking} explorer={hyperExplorer} />
+                  <ContractRow label="Solana Devnet RPC" address="api.devnet.solana.com" explorer={solanaExplorer} />
+                  <ContractRow label="Pump.fun Program" address="6EF8rrecthR5Dkzon8Nwu78hRvfCKubJ14M5uBEwF6P" explorer={solanaExplorer} />
+                  <ContractRow label="Meteora DBC Program" address="Eo7WjKq67rjJQSZxS6z3YkapzY3eMj6Xy8X5EQVn5UaB" explorer={solanaExplorer} />
+                  <ContractRow label="Telemetry Ledger" address="Neon Serverless Postgres" explorer={solanaExplorer} />
                   <TableRow
                     k="X"
                     v={

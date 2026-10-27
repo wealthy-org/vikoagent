@@ -76,7 +76,7 @@ function ParticleSphere({ size = 88 }: { size?: number }) {
         const alpha = Math.max(0.18, Math.min(1, 0.25 + depthNormalized * 0.75));
         const dotRadius = Math.max(0.7, 0.8 + depthNormalized * 1.4);
 
-        ctx.fillStyle = `rgba(108, 123, 255, ${alpha})`;
+        ctx.fillStyle = `rgba(139, 92, 246, ${alpha})`;
         ctx.beginPath();
         ctx.arc(p.px, p.py, dotRadius, 0, Math.PI * 2);
         ctx.fill();
@@ -1596,8 +1596,8 @@ export function Dashboard() {
             <div className="footer-capsule-glass">
               <div className="footer-brand-left">
                 <img
-                  src="/brand/kivo-mark-128.png"
-                  alt=""
+                  src="/brand/viko-orb.jpeg"
+                  alt="Viko"
                   width={40}
                   height={40}
                   draggable={false}
