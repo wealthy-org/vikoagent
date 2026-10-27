@@ -293,7 +293,7 @@ PORT=3000
 NODE_ENV=development
 
 # Database (Neon Serverless Postgres)
-DATABASE_URL=postgres://user:password@ep-xyz.neon.tech/neondb?sslmode=require
+DATABASE_URL=<secret-manager-value>
 
 # LLM Reasoning (OpenRouter Free Model)
 OPENROUTER_API_KEY=sk-or-v1-xxxxxxxxxxxx
@@ -310,7 +310,7 @@ PUMPPORTAL_WS_URL=wss://pumpportal.fun/api/data
 AGENT_MODE=PAPER
 
 # Hot Wallet (DEVNET ONLY — NEVER USE REAL MAINNET PRIVATE KEYS!)
-DEVNET_WALLET_PRIVATE_KEY=[123,45,67,...]
+# Wallet signing is disabled; no private-key variable is supported
 ```
 
 ---
