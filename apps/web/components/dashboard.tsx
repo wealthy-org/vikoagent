@@ -646,7 +646,11 @@ export function Dashboard() {
                   <div className="clay-inset stat-inset-tile">
                     <span className="stat-tile-label">ACTIVE POSITIONS</span>
                     <span className="stat-tile-val tabular" style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
-                      <span style={{ fontSize: '10px', background: '#ede9fe', border: '1px solid #ddd6fe', color: '#6d28d9', padding: '1px 3px', borderRadius: '3px', fontWeight: 600 }}>⚡</span> 3
+                      <span style={{ fontSize: '10px', background: '#ede9fe', border: '1px solid #ddd6fe', color: '#6d28d9', padding: '1px 4px', borderRadius: '4px', fontWeight: 600, display: 'inline-flex', alignItems: 'center', gap: '3px' }}>
+                        <img src="/partners/solana.svg" alt="" style={{ width: '9px', height: '7px' }} />
+                        SOL
+                      </span>
+                      3
                     </span>
                   </div>
                 </div>
@@ -837,7 +841,12 @@ export function Dashboard() {
             <h2 className="mascot-reasoning-title">
               Reason<span style={{ fontWeight: 700 }}>ing</span>
             </h2>
-            <div className="mascot-down-arrow">↓</div>
+            <div className="mascot-down-arrow" style={{ display: 'flex', justifyContent: 'center' }}>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                <line x1="12" y1="5" x2="12" y2="19" />
+                <polyline points="19 12 12 19 5 12" />
+              </svg>
+            </div>
 
             <div className="mascot-countdown-capsule tabular" suppressHydrationWarning>
               next look in {countdownMinutes}:{countdownSeconds < 10 ? `0${countdownSeconds}` : countdownSeconds}
@@ -1185,13 +1194,12 @@ export function Dashboard() {
                         inset: 0,
                         display: 'grid',
                         placeItems: 'center',
-                        fontSize: '13px',
-                        fontWeight: 700,
                         color: 'var(--color-long)',
-                        fontFamily: 'var(--font-mono)',
                       }}
                     >
-                      ✓
+                      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                        <polyline points="20 6 9 17 4 12" />
+                      </svg>
                     </div>
                   </div>
                 </div>
