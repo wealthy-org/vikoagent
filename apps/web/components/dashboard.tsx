@@ -236,19 +236,23 @@ export function Dashboard() {
   useEffect(() => {
     let ws: WebSocket | null = null;
     let reconnectTimer: NodeJS.Timeout | null = null;
+    let isDisposed = false;
     let lastRecordTime = 0;
     let lastAiAnalysisTime = 0;
 
     function connect() {
+      if (isDisposed) return;
       try {
         ws = new WebSocket('wss://pumpportal.fun/api/data');
 
         ws.onopen = () => {
+          if (isDisposed) return;
           setLiveConnected(true);
           ws?.send(JSON.stringify({ method: 'subscribeNewToken' }));
         };
 
         ws.onmessage = (event) => {
+          if (isDisposed) return;
           try {
             const data = JSON.parse(event.data);
             if (data && data.mint && data.symbol) {
@@ -299,7 +303,7 @@ export function Dashboard() {
                 })
                   .then((r) => r.json())
                   .then((res) => {
-                    if (res && res.totalCount) setDbSyncedCount(res.totalCount);
+                    if (!isDisposed && res && res.totalCount) setDbSyncedCount(res.totalCount);
                   })
                   .catch(() => undefined);
               }
@@ -319,6 +323,7 @@ export function Dashboard() {
                 })
                   .then((r) => r.json())
                   .then((aiRes) => {
+                    if (isDisposed) return;
                     if (aiRes && aiRes.reasoning) {
                       setCurrentAiThought(aiRes.reasoning);
                       setActiveAnalysisToken(`$${data.symbol}`);
@@ -334,14 +339,17 @@ export function Dashboard() {
         };
 
         ws.onerror = () => {
+          if (isDisposed) return;
           setLiveConnected(false);
         };
 
         ws.onclose = () => {
+          if (isDisposed) return;
           setLiveConnected(false);
           reconnectTimer = setTimeout(connect, 3000);
         };
       } catch {
+        if (isDisposed) return;
         setLiveConnected(false);
       }
     }
@@ -349,8 +357,15 @@ export function Dashboard() {
     connect();
 
     return () => {
+      isDisposed = true;
       if (reconnectTimer) clearTimeout(reconnectTimer);
-      if (ws) ws.close();
+      if (ws) {
+        ws.onopen = null;
+        ws.onmessage = null;
+        ws.onerror = null;
+        ws.onclose = null;
+        ws.close();
+      }
     };
   }, []);
 
@@ -399,7 +414,7 @@ export function Dashboard() {
               alt="Vikoagent Logo"
               className="nav-orb-img breathe"
             />
-            <span className="nav-brand-title">kivo</span>
+            <span className="nav-brand-title">vikoagent</span>
           </div>
 
           <div className="nav-center-pill">
@@ -438,7 +453,7 @@ export function Dashboard() {
                 <span className="accent-text">sovereign trader.</span>
               </h1>
               <p className="hero-subtext">
-                It owns its treasury, pays for its own mind, and trades in public. kivo trades on{' '}
+                It owns its treasury, pays for its own mind, and trades in public. vikoagent trades on{' '}
                 <span className="partner-tag-inline">
                   <span style={{ fontSize: '11px', background: '#fef3c7', padding: '1px 4px', borderRadius: '4px', marginRight: '3px' }}>p_</span>
                   <strong>Papertrade</strong>
@@ -1009,7 +1024,7 @@ export function Dashboard() {
           <div className="mountains-fade-top" />
 
           <div aria-hidden={true} className="kivo-giant-watermark">
-            <span>kivo</span>
+            <span>vikoagent</span>
           </div>
 
           <div className="mountains-footer-content">
@@ -1024,26 +1039,24 @@ export function Dashboard() {
                   style={{ borderRadius: '50%', objectFit: 'cover' }}
                 />
                 <div>
-                  <div className="footer-brand-title">kivo</div>
-                  <div className="footer-brand-desc">The first sovereign trader.</div>
+                  <div className="footer-brand-title">vikoagent</div>
+                  <div className="footer-brand-desc">The first sovereign trader on Solana.</div>
                 </div>
               </div>
 
               <div className="footer-actions-right">
                 <a
-                  href="https://ponsfamily.com"
-                  target="_blank"
-                  rel="noopener noreferrer"
+                  href="#scanner-radar"
                   className="footer-pill-link footer-pill-primary"
                 >
-                  <span>Trade KIVO</span>
+                  <span>Explore Stream</span>
                   <span style={{ fontSize: '11px' }}>↗</span>
                 </a>
-                <a href="#docs" className="footer-pill-link footer-pill-white">
-                  White paper
+                <a href="#mind-stream" className="footer-pill-link footer-pill-white">
+                  Telemetry
                 </a>
-                <a href="#stake" className="footer-pill-link footer-pill-white">
-                  Stake
+                <a href="#treasury-section" className="footer-pill-link footer-pill-white">
+                  Treasury
                 </a>
                 <a
                   href="https://x.com"
@@ -1057,7 +1070,7 @@ export function Dashboard() {
             </div>
 
             <div className="footer-disclaimer-row">
-              <span>kivo trades on Papertrade at Hyperliquid prices. It can lose money.</span>
+              <span>vikoagent executes paper trading on Solana Devnet. Zero real funds at risk.</span>
               <span className="tabular">last heartbeat 02:58 UTC</span>
             </div>
           </div>
