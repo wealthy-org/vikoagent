@@ -672,5 +672,20 @@
 | Limitation | PumpPortal URL not provided to workspace; no live socket opened; no production certification claimed |
 | Next Step | Obtain approved read-only `wss://` URL through secret manager, wire config into transport startup, and run staging-only connection smoke test |
 
+---
+
+## Progress Block 041 — PumpPortal Startup Configuration Wired
+
+| Field | Record |
+|---|---|
+| Timestamp | 2026-10-27 10:20 SEAST |
+| Status | In Progress |
+| Task | Wire validated PumpPortal URL into transport startup without opening live connection locally |
+| Result | Added `pumpportal-runtime.ts`; approved `wss://` URL now passes through config guard into socket factory; no URL present in workspace |
+| Verification | `30` test files passed; `69` tests passed; lint, build, and diff check passed |
+| Limitation | Live provider connection remains unexecuted; requires secret-manager-injected approved URL and staging window |
+| Workspace | Existing unstaged changes in `packages/persistence/src/migration-runner.ts` and `packages/persistence/src/neon-repositories.ts` preserved, not overwritten |
+| Next Step | Run live PumpPortal read-only smoke test in approved staging environment, then review preserved persistence diff before commit |
+
 
 ---

@@ -1,7 +1,7 @@
 import type { AdapterHealth, RawMarketEvent } from './adapter';
 import { parsePumpPortalNewToken, PUMPPORTAL_NEW_TOKEN_SUBSCRIPTION, pumpPortalHealth } from './pumpportal';
 
-type SocketLike = { send(data: string): void; close(): void; onmessage: ((event: {data: unknown}) => void) | null; onclose: (() => void) | null; onerror: (() => void) | null };
+export type SocketLike = { send(data: string): void; close(): void; onmessage: ((event: {data: unknown}) => void) | null; onclose: (() => void) | null; onerror: (() => void) | null };
 export type PumpPortalTransport = { start(): void; stop(): void; health(): AdapterHealth; reconnectDelay(attempt: number): number };
 export const PUMPPORTAL_RECONNECT = Object.freeze({ baseMs: 250, maxMs: 10_000, maxAttempts: 8 });
 
