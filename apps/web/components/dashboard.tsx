@@ -236,6 +236,8 @@ export function Dashboard() {
   useEffect(() => {
     let ws: WebSocket | null = null;
     let reconnectTimer: NodeJS.Timeout | null = null;
+    let lastRecordTime = 0;
+    let lastAiAnalysisTime = 0;
 
     function connect() {
       try {
@@ -279,26 +281,32 @@ export function Dashboard() {
               };
               setIncomingFeed((prev) => [newFeedItem, ...prev.slice(0, 7)]);
 
-              // OPSI 2: Record to Neon PostgreSQL
-              fetch('/api/record-token', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                  mint: data.mint,
-                  symbol: data.symbol,
-                  source: 'PUMPPORTAL',
-                  liquidityUsd: approxLiqUsd,
-                  payload: { name: data.name, bondingPct, status },
-                }),
-              })
-                .then((r) => r.json())
-                .then((res) => {
-                  if (res && res.totalCount) setDbSyncedCount(res.totalCount);
-                })
-                .catch(() => undefined);
+              const now = Date.now();
 
-              // OPSI 1: Ask OpenRouter AI for dynamic reasoning on latest token
-              if (Math.random() > 0.4) {
+              // OPSI 2: Record to Neon PostgreSQL with 3s throttling to prevent pool saturation
+              if (now - lastRecordTime >= 3000) {
+                lastRecordTime = now;
+                fetch('/api/record-token', {
+                  method: 'POST',
+                  headers: { 'Content-Type': 'application/json' },
+                  body: JSON.stringify({
+                    mint: data.mint,
+                    symbol: data.symbol,
+                    source: 'PUMPPORTAL',
+                    liquidityUsd: approxLiqUsd,
+                    payload: { name: data.name, bondingPct, status },
+                  }),
+                })
+                  .then((r) => r.json())
+                  .then((res) => {
+                    if (res && res.totalCount) setDbSyncedCount(res.totalCount);
+                  })
+                  .catch(() => undefined);
+              }
+
+              // OPSI 1: Ask OpenRouter AI for dynamic reasoning with 8s throttling
+              if (now - lastAiAnalysisTime >= 8000) {
+                lastAiAnalysisTime = now;
                 fetch('/api/analyze-token', {
                   method: 'POST',
                   headers: { 'Content-Type': 'application/json' },

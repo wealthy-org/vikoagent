@@ -856,3 +856,18 @@
 | Actions | Encapsulated floating background blobs into `.bg-fixed-blobs-wrap` (`position: fixed; inset: 0; overflow: hidden; -z-10`); mountain landscape footer is now the absolute final boundary of the document; verified all authentic SVG partner logos, typography sizes, and capsule padding |
 | Verification | Local `30` test files / `71` tests passed; ESLint clean; Next.js 16.4.1 Turbopack build passed |
 | Result | `image copy 7.png` overflow completely eliminated; footer sits flush at the very bottom of the document matching `image copy 5.png` |
+
+---
+
+## Progress Block 053 — Full BMAD Review Hardening & Automated Testing Suite Added
+
+| Field | Record |
+|---|---|
+| Timestamp | 2026-10-27 15:25 SEAST |
+| Status | Completed |
+| Task | Implement hardening recommendations from BMAD Multi-Lens Review |
+| Skill | `bmad-review`, `bmad-build` |
+| Scope | `apps/web/components/dashboard.tsx`, `app/api/analyze-token/route.ts`, `tests/api-routes.test.ts` |
+| Improvements | 1) Throttled WebSocket client recording to Neon DB (max 1 hit per 3s) and OpenRouter reasoning (max 1 hit per 8s); 2) Added AbortSignal 6s timeout and input parameter sanitization to `/api/analyze-token` to stop prompt injection; 3) Added 4 comprehensive automated tests covering `/api/analyze-token` and `/api/record-token` in `tests/api-routes.test.ts` |
+| Verification | 31 Vitest test files (75 tests passed, 100%); ESLint clean; Next.js Turbopack build passed (5 routes compiled) |
+| Result | Production deployment hardened against high-velocity Pump.fun token waves and API timeouts; full test coverage across entire stack |
