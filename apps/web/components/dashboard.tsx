@@ -248,7 +248,7 @@ export function Dashboard() {
   const [currentAiThought, setCurrentAiThought] = useState(
     'BTC and ETH remain in 4h downtrends but are still holding above their breakdown levels on near-empty volume ahead of Wednesday\'s Fed decision. Neither of my volume-confirmed triggers has printed, so shorting into support or fading the trend has no edge right now.'
   );
-  const [aiModelLabel, setAiModelLabel] = useState('DeepSeek V4 Pro via Orbio');
+  const [aiModelLabel, setAiModelLabel] = useState('Llama 3 8B via OpenRouter');
   const [activeAnalysisToken, setActiveAnalysisToken] = useState('$SOLCAT');
   const [dbSyncedCount, setDbSyncedCount] = useState<number>(5);
   const [connectedAddress, setConnectedAddress] = useState<string | null>(null);
@@ -567,23 +567,23 @@ export function Dashboard() {
               <p className="hero-subtext">
                 It owns its treasury, pays for its own mind, and trades in public. viko trades on{' '}
                 <span className="partner-tag-inline">
-                  <span style={{ fontSize: '11px', background: '#fef3c7', padding: '1px 4px', borderRadius: '4px', marginRight: '3px' }}>p_</span>
-                  <strong>Papertrade</strong>
-                </span>, thinks on{' '}
+                  <span style={{ fontSize: '11px', background: '#ede9fe', color: '#6d28d9', padding: '1px 4px', borderRadius: '4px', marginRight: '3px' }}>⚡</span>
+                  <strong>Solana Devnet</strong>
+                </span>, scans on{' '}
                 <span className="partner-tag-inline">
-                  <span style={{ fontSize: '11px', marginRight: '3px' }}>🌰</span>
-                  <strong>Orbio</strong>
-                </span>, checks with{' '}
+                  <span style={{ fontSize: '11px', background: '#dcfce7', color: '#15803d', padding: '1px 4px', borderRadius: '4px', marginRight: '3px' }}>💊</span>
+                  <strong>Pump.fun</strong>
+                </span>, tracks on{' '}
                 <span className="partner-tag-inline">
-                  <span style={{ fontSize: '11px', background: '#dbeafe', color: '#1d4ed8', padding: '1px 4px', borderRadius: '4px', marginRight: '3px' }}>L</span>
-                  <strong>Levanto</strong>
-                </span>, and launched on{' '}
+                  <span style={{ fontSize: '11px', background: '#e0f2fe', color: '#0369a1', padding: '1px 4px', borderRadius: '4px', marginRight: '3px' }}>☄️</span>
+                  <strong>Meteora DBC</strong>
+                </span>, and reasons via{' '}
                 <span className="partner-tag-inline">
-                  <span style={{ fontSize: '11px', marginRight: '3px' }}>///</span>
-                  <strong>Mosh</strong>
-                </span>. Stakers share its wins in USDG and farm $PAPER.{' '}
+                  <span style={{ fontSize: '11px', background: '#fae8ff', color: '#a21caf', padding: '1px 4px', borderRadius: '4px', marginRight: '3px' }}>🧠</span>
+                  <strong>OpenRouter</strong>
+                </span>. Zero real funds at risk with 100% public onchain telemetry.{' '}
                 <a href="#scanner-radar" className="hero-stake-btn">
-                  <span>Stake now</span>
+                  <span>Explore Radar</span>
                   <span className="btn-arrow-circle">→</span>
                 </a>
               </p>
@@ -639,9 +639,9 @@ export function Dashboard() {
                     <span className="stat-tile-val tabular" style={{ color: 'var(--color-long)' }}>{currentChart.realized}</span>
                   </div>
                   <div className="clay-inset stat-inset-tile">
-                    <span className="stat-tile-label">PAPER FARMED</span>
+                    <span className="stat-tile-label">ACTIVE POSITIONS</span>
                     <span className="stat-tile-val tabular" style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
-                      <span style={{ fontSize: '10px', background: '#fef3c7', border: '1px solid #fde68a', color: '#78350f', padding: '1px 3px', borderRadius: '3px', fontWeight: 600 }}>p_</span> 0
+                      <span style={{ fontSize: '10px', background: '#ede9fe', border: '1px solid #ddd6fe', color: '#6d28d9', padding: '1px 3px', borderRadius: '3px', fontWeight: 600 }}>⚡</span> 3
                     </span>
                   </div>
                 </div>
@@ -1342,62 +1342,62 @@ export function Dashboard() {
         </section>
 
         {/* ================================================================= */}
-        {/* 5. RUNS ON PARTNER CARDS (Exact 1:1 match to image copy 5.png) */}
+        {/* 5. TOP SOLANA LAUNCHPADS & VENUES (Exact 1:1 match to image copy 16.png) */}
         {/* ================================================================= */}
         <section className="runs-on-section">
           <div className="runs-on-grid">
-            <a href="https://papertrade.xyz" target="_blank" rel="noopener noreferrer" className="glass partner-card-kivo">
-              <span className="partner-logo-box">
-                <img src="/partners/papertrade.svg" alt="" style={{ width: '28px', height: '28px' }} />
+            <a href="https://pump.fun" target="_blank" rel="noopener noreferrer" className="glass partner-card-kivo">
+              <span className="partner-logo-box" style={{ background: '#dcfce7', color: '#15803d', fontSize: '18px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                💊
               </span>
               <div className="partner-info-box" style={{ flex: 1 }}>
                 <div style={{ display: 'flex', alignItems: 'baseline', gap: '6px' }}>
-                  <h4>Papertrade</h4>
-                  <span style={{ fontSize: '11px', color: 'var(--color-ink-3)', fontWeight: 500 }}>Venue</span>
+                  <h4>Pump.fun</h4>
+                  <span style={{ fontSize: '11px', color: 'var(--color-ink-3)', fontWeight: 500 }}>Bonding Curve</span>
                 </div>
-                <p>every trade executes here</p>
+                <p>primary Solana memecoin launchpad</p>
               </div>
               <span style={{ fontSize: '13px', color: 'var(--color-ink-3)' }}>↗</span>
             </a>
 
-            <a href="https://mosh.trade" target="_blank" rel="noopener noreferrer" className="glass partner-card-kivo">
-              <span className="partner-logo-box">
-                <img src="/partners/mosh.svg" alt="" style={{ width: '28px', height: '28px' }} />
+            <a href="https://meteora.ag" target="_blank" rel="noopener noreferrer" className="glass partner-card-kivo">
+              <span className="partner-logo-box" style={{ background: '#e0f2fe', color: '#0369a1', fontSize: '18px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                ☄️
               </span>
               <div className="partner-info-box" style={{ flex: 1 }}>
                 <div style={{ display: 'flex', alignItems: 'baseline', gap: '6px' }}>
-                  <h4>Mosh</h4>
-                  <span style={{ fontSize: '11px', color: 'var(--color-ink-3)', fontWeight: 500 }}>Launch and token</span>
+                  <h4>Meteora DBC</h4>
+                  <span style={{ fontSize: '11px', color: 'var(--color-ink-3)', fontWeight: 500 }}>Dynamic AMM</span>
                 </div>
-                <p>launches KIVO, paired with ORBIO</p>
+                <p>dynamic bonding curve & DAMM pools</p>
               </div>
               <span style={{ fontSize: '13px', color: 'var(--color-ink-3)' }}>↗</span>
             </a>
 
-            <a href="https://www.orbio.so" target="_blank" rel="noopener noreferrer" className="glass partner-card-kivo">
-              <span className="partner-logo-box">
-                <img src="/partners/orbio.png" alt="" style={{ width: '28px', height: '28px', objectFit: 'contain' }} />
+            <a href="https://dexscreener.com/moonshot" target="_blank" rel="noopener noreferrer" className="glass partner-card-kivo">
+              <span className="partner-logo-box" style={{ background: '#fae8ff', color: '#a21caf', fontSize: '18px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                🚀
               </span>
               <div className="partner-info-box" style={{ flex: 1 }}>
                 <div style={{ display: 'flex', alignItems: 'baseline', gap: '6px' }}>
-                  <h4>Orbio</h4>
-                  <span style={{ fontSize: '11px', color: 'var(--color-ink-3)', fontWeight: 500 }}>Model gateway</span>
+                  <h4>Moonshot</h4>
+                  <span style={{ fontSize: '11px', color: 'var(--color-ink-3)', fontWeight: 500 }}>Fair Launch</span>
                 </div>
-                <p>every thought runs on its gateway</p>
+                <p>DexScreener audited trending tokens</p>
               </div>
               <span style={{ fontSize: '13px', color: 'var(--color-ink-3)' }}>↗</span>
             </a>
 
-            <a href="https://levanto.ai" target="_blank" rel="noopener noreferrer" className="glass partner-card-kivo">
-              <span className="partner-logo-box">
-                <img src="/partners/levanto-icon.png" alt="" style={{ width: '28px', height: '28px', objectFit: 'contain' }} />
+            <a href="https://raydium.io" target="_blank" rel="noopener noreferrer" className="glass partner-card-kivo">
+              <span className="partner-logo-box" style={{ background: '#ede9fe', color: '#6d28d9', fontSize: '18px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                ⚡
               </span>
               <div className="partner-info-box" style={{ flex: 1 }}>
                 <div style={{ display: 'flex', alignItems: 'baseline', gap: '6px' }}>
-                  <h4>Levanto</h4>
-                  <span style={{ fontSize: '11px', color: 'var(--color-ink-3)', fontWeight: 500 }}>Sage</span>
+                  <h4>Raydium</h4>
+                  <span style={{ fontSize: '11px', color: 'var(--color-ink-3)', fontWeight: 500 }}>LaunchLab & AMM</span>
                 </div>
-                <p>the yes or no on every entry</p>
+                <p>bonding curve graduation & liquidity venue</p>
               </div>
               <span style={{ fontSize: '13px', color: 'var(--color-ink-3)' }}>↗</span>
             </a>

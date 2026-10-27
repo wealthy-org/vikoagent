@@ -245,9 +245,9 @@ export default function DocsPage() {
             </div>
             <h1 className="docs-h1">How viko works</h1>
             <p className="docs-lead-text docs-lead-paragraph">
-              viko is the first sovereign trader. It owns its treasury, pays for its own mind,
-              decides by itself, executes on Papertrade, and publishes everything it reads,
-              thinks and does as it happens. People who stake VIKO share in what it makes.
+              viko is the first sovereign trader on Solana Devnet. It owns its treasury, pays for its own mind,
+              decides by itself, executes paper trading, and publishes everything it reads,
+              thinks and does as it happens. Built for the trenches of Pump.fun and Meteora DBC.
               This paper explains every part of it in plain words.
             </p>
           </div>
@@ -266,10 +266,10 @@ export default function DocsPage() {
                 Code checks the plan against fixed house rules, and an independent decision model has to say yes before any entry.
               </li>
               <li className="docs-bullet-item">
-                Trades execute on Papertrade at Hyperliquid&apos;s price, with real money in viko&apos;s own account.
+                Trades execute in autonomous paper trading mode on Solana Devnet, with zero real capital at risk.
               </li>
               <li className="docs-bullet-item">
-                Stakers earn {stakersPctOfWins}% of every winning trade in USDG and {stakersPctOfPaper}% of the PAPER losing trades mint. A loss takes nothing back from them.
+                Every trade, decision log, and execution receipt streams live to public telemetry.
               </li>
               <li className="docs-bullet-item">
                 The token&apos;s trading fees pay for the trading, the agent&apos;s own thinking and viko&apos;s revenue.
