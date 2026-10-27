@@ -164,48 +164,72 @@ const MOCK_SCANNED_TOKENS: ScannedToken[] = [
   },
 ];
 
-const TIMEFRAME_DATA: Record<string, { nav: string; pnl: string; fees: string; points: string; area: string }> = {
+const TIMEFRAME_DATA: Record<string, { nav: string; pnl: string; fees: string; trades: number; winRate: string; realized: string; badgeVal: string }> = {
   '1D': {
-    nav: '$3,280.07',
+    nav: '$3,380.23',
     pnl: '+$5.88 · +0.17%',
-    fees: '+$2,275 fees in',
-    points: '10,75 45,68 85,71 125,56 165,58 205,44 245,46 285,34 325,28 365,18 410,12',
-    area: '10,88 10,75 45,68 85,71 125,56 165,58 205,44 245,46 285,34 325,28 365,18 410,12 410,88',
+    fees: '+$2,376 fees in',
+    trades: 1,
+    winRate: '100%',
+    realized: '+$5',
+    badgeVal: '$2,534',
   },
   '1W': {
     nav: '$4,120.50',
     pnl: '+$245.00 · +6.3%',
     fees: '+$2,850 fees in',
-    points: '10,80 45,74 85,67 125,62 165,49 205,45 245,37 285,35 325,23 365,15 410,8',
-    area: '10,88 10,80 45,74 85,67 125,62 165,49 205,45 245,37 285,35 325,23 365,15 410,8 410,88',
+    trades: 4,
+    winRate: '100%',
+    realized: '+$24',
+    badgeVal: '$3,120',
   },
   '1M': {
     nav: '$5,890.10',
     pnl: '+$890.00 · +17.8%',
     fees: '+$3,640 fees in',
-    points: '10,82 45,78 85,70 125,54 165,55 205,39 245,31 285,25 325,19 365,11 410,6',
-    area: '10,88 10,82 45,78 85,70 125,54 165,55 205,39 245,31 285,25 325,19 365,11 410,6 410,88',
+    trades: 12,
+    winRate: '92%',
+    realized: '+$115',
+    badgeVal: '$4,280',
   },
   'ALL': {
-    nav: '$10,240.00',
-    pnl: '+$2,240.00 · +28.0%',
-    fees: '+$4,210 fees in',
-    points: '10,85 45,80 85,69 125,59 165,47 205,36 245,27 285,19 325,13 365,9 410,4',
-    area: '10,88 10,85 45,80 85,69 125,59 165,47 205,36 245,27 285,19 325,13 365,9 410,4 410,88',
+    nav: '$3,380.23',
+    pnl: '+$5.88 · +0.17%',
+    fees: '+$2,376 fees in',
+    trades: 1,
+    winRate: '100%',
+    realized: '+$5',
+    badgeVal: '$2,534',
   },
 };
 
+const STEP_NODES = [
+  { x: 35, y: 145, label: '-$261 fees', isTrade: false },
+  { x: 58, y: 133, label: '+$171 fees', isTrade: false },
+  { x: 80, y: 118, label: '+$334 fees', isTrade: false },
+  { x: 104, y: 109, label: '+$179 fees', isTrade: false },
+  { x: 128, y: 102, label: '+$149 fees', isTrade: false },
+  { x: 152, y: 95, label: '+$123 fees', isTrade: false },
+  { x: 185, y: 88, label: '+$205 fees', isTrade: false },
+  { x: 205, y: 84, label: '+$113 fees', isTrade: false },
+  { x: 228, y: 78, label: '+$135 fees', isTrade: false },
+  { x: 285, y: 65, label: '+$190 fees', isTrade: false },
+  { x: 345, y: 54, label: '+$317 fees', isTrade: true }, // Prominent Green Dot
+  { x: 388, y: 45, label: '+$100 fees', isTrade: false },
+  { x: 420, y: 38, label: '+$100 fees', isTrade: false },
+];
+
 const INCOMING_NEWS_FEED = [
-  { time: '9m', source: 'pumpportal.fun', author: '@pumpdotfun', headline: 'NEW MINT: $SOLCAT launched on Pump.fun bonding curve ($14,250 initial liq)' },
-  { time: '13m', source: 'x.com/solana', author: '@solana', headline: 'Solana Devnet epoch 742 operating at steady 3,250 TPS across global nodes' },
-  { time: '19m', source: 'meteora.ag', author: '@MeteoraAG', headline: 'DAMM v2 dynamic fee liquidity curve successfully initialized for SOL/USDC' },
-  { time: '20m', source: 'x.com/pumpdotfun', author: '@pumpdotfun', headline: '$NTDOGE reached 100% bonding curve, graduating automatically to Raydium' },
-  { time: '26m', source: 'solscan.io', author: '@solscan', headline: 'Treasury paper execution wallet confirmed 0.05 SOL allocation receipt' },
+  { time: '2m', source: 'x.com', author: '@HyperliquidX', headline: 'Hyperliquid (@HyperliquidX) replying to @HyperliquidX As a reminder, hyperps do not expire and trade 24/7.' },
+  { time: '2m', source: 'x.com', author: '@HyperliquidX', headline: 'Hyperliquid (@HyperliquidX) By community request, Extended (XTEN) hyperp has been listed for trading.' },
+  { time: '12m', source: 'marketwatch.com', author: 'marketwatch.com', headline: 'MARKETWATCH: GSK EXPECTED TO POST HIGHER SALES AS NEW STRATEGY TAKES HOLD AHEAD OF EARNINGS' },
+  { time: '27m', source: 'businessinsider.com', author: 'businessinsider.com', headline: "BUSINESSINSIDER: UKRAINE'S STARLINK SLOWDOWN ONLY DROPPED ITS DRONE MISSION EFFICIENCY MARGINALLY" },
+  { time: '37m', source: 'coindesk.com', author: 'coindesk.com', headline: 'COINDESK.COM: ZCASH CO-FOUNDER PROPOSES ENDING GRANTS FUNDING IN FAVOR OF NEW REVENUE MODEL' },
 ];
 
 export function Dashboard() {
   const model = getDashboardReadModel();
-  const [selectedRange, setSelectedRange] = useState<'1D' | '1W' | '1M' | 'ALL'>('1D');
+  const [selectedRange, setSelectedRange] = useState<'1D' | '1W' | '1M' | 'ALL'>('ALL');
   const [scannerTab, setScannerTab] = useState<'ALL' | 'PUMP.FUN' | 'METEORA DBC' | 'MIGRATED'>('ALL');
   const [countdownMinutes, setCountdownMinutes] = useState(0);
   const [countdownSeconds, setCountdownSeconds] = useState(27);
@@ -213,10 +237,19 @@ export function Dashboard() {
   const [scannedTokens, setScannedTokens] = useState<ScannedToken[]>(MOCK_SCANNED_TOKENS);
   const [incomingFeed, setIncomingFeed] = useState(INCOMING_NEWS_FEED);
   const [liveConnected, setLiveConnected] = useState(false);
+  const [expandedSteps, setExpandedSteps] = useState<Record<string, boolean>>({});
+  const [showWhy, setShowWhy] = useState(false);
+  const [showEarlierHolds, setShowEarlierHolds] = useState(false);
+  const [viewMoreExpanded, setViewMoreExpanded] = useState(false);
+
+  function toggleStep(id: string) {
+    setExpandedSteps((prev) => ({ ...prev, [id]: !prev[id] }));
+  }
+
   const [currentAiThought, setCurrentAiThought] = useState(
-    'Pump.fun bonding curve metrics show healthy organic liquidity influx. Dev wallet holds 2.8% supply, well below our 4% risk ceiling. Top 10 non-bonding holders control under 12% total supply. Paper entry executed deterministically at spot price.'
+    'BTC and ETH remain in 4h downtrends but are still holding above their breakdown levels on near-empty volume ahead of Wednesday\'s Fed decision. Neither of my volume-confirmed triggers has printed, so shorting into support or fading the trend has no edge right now.'
   );
-  const [aiModelLabel, setAiModelLabel] = useState('🧠 Llama 3 via OpenRouter');
+  const [aiModelLabel, setAiModelLabel] = useState('DeepSeek V4 Pro via Orbio');
   const [activeAnalysisToken, setActiveAnalysisToken] = useState('$SOLCAT');
   const [dbSyncedCount, setDbSyncedCount] = useState<number>(5);
   const [connectedAddress, setConnectedAddress] = useState<string | null>(null);
@@ -550,100 +583,106 @@ export function Dashboard() {
                 <div className="treasury-tiles-grid">
                   <div className="clay-inset stat-inset-tile">
                     <span className="stat-tile-label">TRADES</span>
-                    <span className="stat-tile-val tabular">1</span>
+                    <span className="stat-tile-val tabular">{currentChart.trades}</span>
                   </div>
                   <div className="clay-inset stat-inset-tile">
                     <span className="stat-tile-label">WIN RATE</span>
-                    <span className="stat-tile-val tabular" style={{ color: 'var(--color-long)' }}>100%</span>
+                    <span className="stat-tile-val tabular" style={{ color: 'var(--color-long)' }}>{currentChart.winRate}</span>
                   </div>
                   <div className="clay-inset stat-inset-tile">
                     <span className="stat-tile-label">REALIZED</span>
-                    <span className="stat-tile-val tabular" style={{ color: 'var(--color-long)' }}>+$5</span>
+                    <span className="stat-tile-val tabular" style={{ color: 'var(--color-long)' }}>{currentChart.realized}</span>
                   </div>
                   <div className="clay-inset stat-inset-tile">
                     <span className="stat-tile-label">PAPER FARMED</span>
                     <span className="stat-tile-val tabular" style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
-                      <span style={{ fontSize: '10px', background: '#fef3c7', padding: '1px 3px', borderRadius: '3px' }}>p_</span> 0
+                      <span style={{ fontSize: '10px', background: '#fef3c7', border: '1px solid #fde68a', color: '#78350f', padding: '1px 3px', borderRadius: '3px', fontWeight: 600 }}>p_</span> 0
                     </span>
                   </div>
                 </div>
               </div>
 
-              {/* Exact Timeline SVG Curve with Area Gradient & Fee Annotations */}
+              {/* Exact Timeline SVG Stepped Staircase Curve with Area Gradient & Fee Annotations */}
               <div className="chart-area-wrap">
-                <div style={{ display: 'flex', position: 'relative' }}>
-                  <svg viewBox="0 0 420 95" preserveAspectRatio="none" className="chart-svg-element" style={{ flex: 1 }}>
-                    <defs>
-                      <linearGradient id="kivoAreaGradient" x1="0" y1="0" x2="0" y2="1">
-                        <stop offset="0%" stopColor="#818cf8" stopOpacity="0.22" />
-                        <stop offset="100%" stopColor="#818cf8" stopOpacity="0.0" />
-                      </linearGradient>
-                    </defs>
+                <svg viewBox="0 0 520 205" className="chart-svg-element" aria-label="Treasury NAV chart">
+                  <defs>
+                    <linearGradient id="kivoAreaGradient" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="0%" stopColor="#818cf8" stopOpacity="0.22" />
+                      <stop offset="100%" stopColor="#818cf8" stopOpacity="0.0" />
+                    </linearGradient>
+                  </defs>
 
-                    {/* Gradient Area */}
-                    <polygon
-                      points={currentChart.area}
-                      fill="url(#kivoAreaGradient)"
-                    />
+                  {/* Horizontal Grid Lines */}
+                  <line x1="15" y1="25" x2="445" y2="25" stroke="#f1f5f9" strokeWidth="1" />
+                  <line x1="15" y1="65" x2="445" y2="65" stroke="#f1f5f9" strokeWidth="1" />
+                  <line x1="15" y1="105" x2="445" y2="105" stroke="#f1f5f9" strokeWidth="1" />
+                  <line x1="15" y1="145" x2="445" y2="145" stroke="#f1f5f9" strokeWidth="1" />
 
-                    {/* Polyline Curve */}
-                    <polyline
-                      points={currentChart.points}
-                      fill="none"
-                      stroke="#6c7bff"
-                      strokeWidth="2.4"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    />
+                  {/* Dashed Horizontal Guide Line at $2,534 */}
+                  <line x1="15" y1="84" x2="445" y2="84" stroke="#c7d2fe" strokeWidth="1.2" strokeDasharray="4 4" />
 
-                    {/* Timeline Node Dots & Fee Text Pills matching Kivo screenshot */}
-                    <circle cx="45" cy="68" r="2.8" fill="#6c7bff" />
-                    <text x="45" y="58" fontSize="7.5" fill="#6c7bff" textAnchor="middle" fontFamily="var(--font-mono)">+$261 fees</text>
+                  {/* Dashed Vertical Guide Line at 15.33 */}
+                  <line x1="205" y1="18" x2="205" y2="175" stroke="#c7d2fe" strokeWidth="1.2" strokeDasharray="4 4" />
 
-                    <circle cx="85" cy="71" r="2.8" fill="#6c7bff" />
-                    <text x="85" y="61" fontSize="7.5" fill="#6c7bff" textAnchor="middle" fontFamily="var(--font-mono)">+$334 fees</text>
+                  {/* Stepped Gradient Area */}
+                  <path
+                    d="M 15,175 L 15,162 L 35,162 L 35,145 L 58,145 L 58,133 L 80,133 L 80,118 L 104,118 L 104,109 L 128,109 L 128,102 L 152,102 L 152,95 L 185,95 L 185,88 L 205,88 L 205,84 L 228,84 L 228,78 L 285,78 L 285,65 L 345,65 L 345,54 L 388,54 L 388,45 L 420,45 L 420,38 L 445,38 L 445,175 Z"
+                    fill="url(#kivoAreaGradient)"
+                  />
 
-                    <circle cx="125" cy="56" r="2.8" fill="#6c7bff" />
-                    <text x="125" y="46" fontSize="7.5" fill="#6c7bff" textAnchor="middle" fontFamily="var(--font-mono)">+$179 fees</text>
+                  {/* Stepped Staircase Line */}
+                  <path
+                    d="M 15,162 L 35,162 L 35,145 L 58,145 L 58,133 L 80,133 L 80,118 L 104,118 L 104,109 L 128,109 L 128,102 L 152,102 L 152,95 L 185,95 L 185,88 L 205,88 L 205,84 L 228,84 L 228,78 L 285,78 L 285,65 L 345,65 L 345,54 L 388,54 L 388,45 L 420,45 L 420,38 L 445,38"
+                    fill="none"
+                    stroke="#4f46e5"
+                    strokeWidth="2.2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
 
-                    <circle cx="165" cy="58" r="2.8" fill="#6c7bff" />
-                    <text x="165" y="48" fontSize="7.5" fill="#6c7bff" textAnchor="middle" fontFamily="var(--font-mono)">+$149 fees</text>
+                  {/* Step Nodes and Labels */}
+                  {STEP_NODES.map((node, i) => (
+                    <g key={i}>
+                      <circle
+                        cx={node.x}
+                        cy={node.y}
+                        r={node.isTrade ? 3.6 : 2.6}
+                        fill={node.isTrade ? '#10b981' : '#6366f1'}
+                      />
+                      <text
+                        x={node.x}
+                        y={node.y - 7}
+                        fontSize="7.5"
+                        fill="#818cf8"
+                        textAnchor="middle"
+                        fontFamily="var(--font-mono)"
+                      >
+                        {node.label}
+                      </text>
+                    </g>
+                  ))}
 
-                    <circle cx="205" cy="44" r="2.8" fill="#6c7bff" />
-                    <text x="205" y="34" fontSize="7.5" fill="#6c7bff" textAnchor="middle" fontFamily="var(--font-mono)">+$123 fees</text>
+                  {/* Y-Axis Labels on the Right */}
+                  <text x="505" y="29" fill="#94a3b8" fontSize="10" textAnchor="end" fontFamily="var(--font-mono)">$4,000</text>
+                  <text x="505" y="69" fill="#94a3b8" fontSize="10" textAnchor="end" fontFamily="var(--font-mono)">$3,000</text>
 
-                    <circle cx="245" cy="46" r="2.8" fill="#6c7bff" />
-                    <text x="245" y="36" fontSize="7.5" fill="#6c7bff" textAnchor="middle" fontFamily="var(--font-mono)">+$205 fees</text>
+                  {/* $2,534 Solid Black Badge on Y-Axis */}
+                  <rect x="455" y="73" width="50" height="22" rx="4" fill="#111318" />
+                  <text x="480" y="88" fill="#ffffff" fontSize="11" fontWeight="700" textAnchor="middle" fontFamily="var(--font-mono)">
+                    {currentChart.badgeVal || '$2,534'}
+                  </text>
 
-                    <circle cx="285" cy="34" r="2.8" fill="#6c7bff" />
-                    <text x="285" y="24" fontSize="7.5" fill="#6c7bff" textAnchor="middle" fontFamily="var(--font-mono)">+$113 fees</text>
+                  <text x="505" y="109" fill="#94a3b8" fontSize="10" textAnchor="end" fontFamily="var(--font-mono)">$2,000</text>
+                  <text x="505" y="149" fill="#94a3b8" fontSize="10" textAnchor="end" fontFamily="var(--font-mono)">$1,000</text>
 
-                    <circle cx="325" cy="28" r="2.8" fill="#6c7bff" />
-                    <text x="325" y="18" fontSize="7.5" fill="#6c7bff" textAnchor="middle" fontFamily="var(--font-mono)">+$135 fees</text>
-
-                    <circle cx="365" cy="18" r="3" fill="#17b07a" />
-                    <text x="365" y="8" fontSize="7.5" fill="#17b07a" textAnchor="middle" fontFamily="var(--font-mono)">+$190 fees</text>
-
-                    <circle cx="410" cy="12" r="3.2" fill="#17b07a" />
-                    <text x="410" y="2" fontSize="7.5" fill="#17b07a" textAnchor="middle" fontFamily="var(--font-mono)">+$317 fees</text>
-                  </svg>
-
-                  {/* Y-Axis Value Labels on Right */}
-                  <div style={{ width: '45px', textAlign: 'right', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', fontFamily: 'var(--font-mono)', fontSize: '9px', color: 'var(--color-ink-3)', paddingBottom: '10px' }}>
-                    <span>$4,000</span>
-                    <span>$2,000</span>
-                    <span>$0</span>
-                  </div>
-                </div>
-
-                <div className="chart-date-axis">
-                  <span>09.01</span>
-                  <span>12.01</span>
-                  <span>15.01</span>
-                  <span>18.02</span>
-                  <span>20.02</span>
-                  <span style={{ fontWeight: 700, color: 'var(--color-ink)' }}>27</span>
-                </div>
+                  {/* X-Axis Date Labels along Bottom */}
+                  <text x="35" y="196" fill="#94a3b8" fontSize="10" fontFamily="var(--font-mono)">07.01</text>
+                  <text x="128" y="196" fill="#94a3b8" fontSize="10" fontFamily="var(--font-mono)">12.01</text>
+                  <text x="205" y="196" fill="#94a3b8" fontSize="10" textAnchor="middle" fontFamily="var(--font-mono)">15.33</text>
+                  <text x="270" y="196" fill="#94a3b8" fontSize="10" fontFamily="var(--font-mono)">18.02</text>
+                  <text x="370" y="196" fill="#111827" fontSize="11" fontWeight="700" textAnchor="middle" fontFamily="var(--font-mono)">27</text>
+                  <text x="445" y="196" fill="#94a3b8" fontSize="10" textAnchor="end" fontFamily="var(--font-mono)">07.05</text>
+                </svg>
               </div>
             </article>
           </div>
@@ -670,38 +709,49 @@ export function Dashboard() {
         </section>
 
         {/* ================================================================= */}
-        {/* 3. THE MIND MASTER SECTION (Exact 1:1 match to image copy 4.png) */}
+        {/* 3. THE MIND MASTER SECTION (Exact 1:1 match to kivoagent.xyz) */}
         {/* ================================================================= */}
         <section className="clay mind-master-card" id="mind-stream">
           {/* Top Bar with MIND badge and live asset price indicators */}
           <div className="mind-top-bar">
             <div>
-              <div className="mind-badge-label">
-                <span>🧠</span>
-                <span>Mind Stream</span>
+              <div className="mind-badge-label" title="Mind Stream">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <circle cx="12" cy="12" r="10" />
+                  <path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20" />
+                  <path d="M2 12h20" />
+                </svg>
+                <span>MIND</span>
+                <span className="sr-only" style={{ position: 'absolute', width: '1px', height: '1px', padding: 0, margin: '-1px', overflow: 'hidden', clip: 'rect(0, 0, 0, 0)', whiteSpace: 'nowrap', border: 0 }}>
+                  Mind Stream
+                </span>
               </div>
               <div className="mind-status-headline">
-                <span className="pulse-dot" style={{ backgroundColor: 'var(--color-long)' }} />
-                <span className="mind-headline-text">
-                  Watching Pump.fun and Meteora for a setup
+                <span style={{ position: 'relative', display: 'flex', width: '10px', height: '10px' }}>
+                  <span style={{ position: 'absolute', width: '100%', height: '100%', borderRadius: '50%', backgroundColor: 'var(--color-long)', opacity: 0.6, animation: 'ping 1.5s cubic-bezier(0, 0, 0.2, 1) infinite' }} />
+                  <span style={{ position: 'relative', width: '10px', height: '10px', borderRadius: '50%', backgroundColor: 'var(--color-long)' }} />
                 </span>
-                <div className="mind-pill-timing tabular" suppressHydrationWarning>
-                  <span>next round in {Math.floor(roundCountdown / 60)}:{roundCountdown % 60 < 10 ? `0${roundCountdown % 60}` : roundCountdown % 60}</span>
-                  <span>·</span>
-                  <span>active 6h 7m</span>
-                </div>
+                <h2 className="mind-headline-text">
+                  Watching BTC and ETH for a setup
+                </h2>
+                <span className="mind-sub-pill tabular" suppressHydrationWarning>
+                  next round in {Math.floor(roundCountdown / 60)}:{roundCountdown % 60 < 10 ? `0${roundCountdown % 60}` : roundCountdown % 60}
+                </span>
+                <span className="mind-sub-pill tabular">
+                  flat 10h 2m · starter offered
+                </span>
               </div>
             </div>
 
             {/* Asset Price Badges matching Kivo BTC / ETH pills */}
             <div className="mind-prices-group">
-              <span className="price-tag-sol">
+              <span className="price-tag-btc">
                 <span style={{ width: '8px', height: '8px', borderRadius: '50%', backgroundColor: '#f59e0b' }} />
-                SOL 184.50
+                79,614.5
               </span>
               <span className="price-tag-eth">
                 <span style={{ width: '8px', height: '8px', borderRadius: '50%', backgroundColor: 'var(--color-iris)' }} />
-                PUMP 0.0042
+                2,304.65
               </span>
             </div>
           </div>
@@ -713,126 +763,307 @@ export function Dashboard() {
               {Array.from({ length: 14 }).map((_, i) => (
                 <span
                   key={i}
-                  className={`round-dot ${i === 12 ? 'active' : ''}`}
+                  className={`round-dot ${i === 12 ? 'active-capsule' : ''}`}
+                  title={i === 12 ? 'active round' : `round ${i + 1}`}
                 />
               ))}
             </div>
             <span className="rounds-every-text">every 10 min</span>
           </div>
 
-          {/* Split Row: Round Detail (Left) vs Incoming News Live (Right) */}
+          {/* Split Row: Round Detail (Left) vs Right Column Stack (Right) */}
           <div className="mind-split-grid">
-            {/* Left Column: Listening Pill + Checklist Card */}
+            {/* Left Column: Listening Pill + Timeline Tree Card */}
             <div className="round-detail-column">
-              <div className="listening-header-row">
+              {/* Standalone Listening Capsule with 3D Fibonacci Particle Sphere */}
+              <div>
                 <div className="listening-pill-badge">
-                  <div style={{ width: '28px', height: '28px' }}>
-                    <ParticleSphere size={28} />
+                  <div style={{ width: '36px', height: '36px', display: 'grid', placeItems: 'center', flexShrink: 0 }}>
+                    <ParticleSphere size={34} />
                   </div>
                   <div>
-                    <div className="listening-title">Listening to the market...</div>
+                    <div className="listening-title">Listening to the market…</div>
                     <div className="listening-time">last round 8m ago</div>
-                  </div>
-                </div>
-
-                <div className="last-call-group">
-                  <div className="clay-inset call-metric-box">
-                    <small>LAST CALL</small>
-                    <strong style={{ color: 'var(--color-long)' }}>Accept</strong>
-                  </div>
-                  <div className="clay-inset call-metric-box">
-                    <small>RISK SCORE</small>
-                    <strong style={{ color: 'var(--color-iris)' }}>96 / 100</strong>
                   </div>
                 </div>
               </div>
 
-              {/* Checklist Step Card (Read the charts, News desk, Decided, Best setup) */}
-              <div className="clay-inset round-card-expanded">
-                <div className="round-card-top">
-                  <span>02:48 UTC · Live round · Accept</span>
-                  <span style={{ background: '#ffffff', padding: '2px 8px', borderRadius: '999px', border: '1px solid var(--color-line)' }}>
-                    {aiModelLabel}
-                  </span>
+              {/* Timeline Tree with vertical guide line */}
+              <div className="timeline-tree-wrapper">
+                <span aria-hidden="true" className="timeline-vertical-guide" />
+
+                {/* Latest Round Node */}
+                <div className="timeline-round-entry">
+                  <span className="timeline-dot-node" />
+
+                  {/* Checklist Step Card (Read the charts, News desk, Decided, Best setup) */}
+                  <div className="clay-inset round-card-expanded">
+                    <div className="round-card-top">
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                        <span>06:44 UTC</span>
+                        <span>·</span>
+                        <span>8m ago</span>
+                        <span>·</span>
+                        <span style={{ fontWeight: 600, color: 'var(--color-ink-2)' }}>Hold</span>
+                      </div>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                        <span className="model-tag-pill">
+                          <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M20.24 12.24a6 6 0 0 0-8.49-8.49L5 10.5V19h8.5zM16 8 2 22M17.5 15H9" />
+                          </svg>
+                          {aiModelLabel}
+                        </span>
+                        <span style={{ color: 'var(--color-ink-3)', fontSize: '11px', cursor: 'pointer' }}>⌄</span>
+                      </div>
+                    </div>
+
+                    <div className="step-checklist-stack">
+                      {/* 1. Read the charts */}
+                      <div className="step-row-item" onClick={() => toggleStep('charts')}>
+                        <div className="step-left-content">
+                          <span className="step-check-icon green">
+                            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round">
+                              <polyline points="20 6 9 17 4 12" />
+                            </svg>
+                          </span>
+                          <span className="step-title-text">
+                            <span style={{ color: 'var(--color-iris)' }}>📊</span> Read the charts
+                          </span>
+                          <span className="step-desc-text tabular">
+                            BTC 79,701 ▼ · ETH 2,307 ▼
+                          </span>
+                        </div>
+                        <span className={`step-chevron ${expandedSteps['charts'] ? 'rotated' : ''}`}>⌄</span>
+                      </div>
+                      {expandedSteps['charts'] && (
+                        <div className="step-accordion-content">
+                          <div className="mini-chart-grid">
+                            <span><strong>BTC/USD:</strong> 15m Bear · 1h Range · 4h Down · RSI 44 · vol 1.8x 1h</span>
+                            <span><strong>ETH/USD:</strong> 15m Bear · 1h Range · 4h Down · RSI 41 · S 2,292 · R 2,340</span>
+                          </div>
+                        </div>
+                      )}
+
+                      {/* 2. News desk */}
+                      <div className="step-row-item" onClick={() => toggleStep('news')}>
+                        <div className="step-left-content">
+                          <span className="step-check-icon green">
+                            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round">
+                              <polyline points="20 6 9 17 4 12" />
+                            </svg>
+                          </span>
+                          <span className="step-title-text">
+                            <span style={{ color: 'var(--color-iris)' }}>📰</span> News desk
+                          </span>
+                          <span className="step-desc-text">
+                            kept 6 · Mostly neutral macro and crypto infrastructure news; ETF flows ...
+                          </span>
+                        </div>
+                        <span className={`step-chevron ${expandedSteps['news'] ? 'rotated' : ''}`}>⌄</span>
+                      </div>
+                      {expandedSteps['news'] && (
+                        <div className="step-accordion-content">
+                          <ul style={{ paddingLeft: '16px', margin: 0, fontSize: '11.5px', color: 'var(--color-ink-2)' }}>
+                            <li>ETF net inflow slowed across institutional trading desks.</li>
+                            <li>FOMC rate cut expectations priced at neutral 25bps.</li>
+                            <li>Network gas and validator TPS steady with no congestion events.</li>
+                          </ul>
+                        </div>
+                      )}
+
+                      {/* 3. Decided */}
+                      <div className="step-row-item" onClick={() => toggleStep('decided')}>
+                        <div className="step-left-content">
+                          <span className="step-check-icon green">
+                            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round">
+                              <polyline points="20 6 9 17 4 12" />
+                            </svg>
+                          </span>
+                          <span className="step-title-text">
+                            <span style={{ color: 'var(--color-iris)' }}>⚡</span> Decided
+                          </span>
+                          <span className="step-desc-text" style={{ color: 'var(--color-ink)', fontWeight: 600 }}>
+                            Hold · conviction 75%
+                          </span>
+                        </div>
+                        <span className={`step-chevron ${expandedSteps['decided'] ? 'rotated' : ''}`}>⌄</span>
+                      </div>
+                      {expandedSteps['decided'] && (
+                        <div className="step-accordion-content">
+                          <p style={{ margin: 0, fontSize: '11.5px', color: 'var(--color-ink-2)' }}>
+                            Action evaluated: Hold. Risk parameters within standard tolerance ceiling. Paper liquidity protected.
+                          </p>
+                        </div>
+                      )}
+
+                      {/* 4. Best setup */}
+                      <div className="step-row-item" onClick={() => toggleStep('setup')}>
+                        <div className="step-left-content">
+                          <span className="step-check-icon gray">○</span>
+                          <span className="step-title-text">
+                            <span style={{ color: 'var(--color-iris)' }}>🎯</span> Best setup
+                          </span>
+                          <span className="step-desc-text">
+                            short BTC · a 4h close below 79,347 on above-average volume · entry ...
+                          </span>
+                        </div>
+                        <span className={`step-chevron ${expandedSteps['setup'] ? 'rotated' : ''}`}>⌄</span>
+                      </div>
+                      {expandedSteps['setup'] && (
+                        <div className="step-accordion-content">
+                          <p style={{ margin: 0, fontSize: '11.5px', color: 'var(--color-ink-2)' }}>
+                            Candidate trigger: 4h close below 79,347. Target: 76,800. Stop: 80,450. Radar token: {activeAnalysisToken}. Neon DB synced events: {dbSyncedCount}.
+                          </p>
+                        </div>
+                      )}
+                    </div>
+
+                    {/* Thesis summary narrative */}
+                    <p className="round-thought-summary">
+                      {currentAiThought}
+                    </p>
+
+                    {/* Interactive Why toggle button */}
+                    <div style={{ marginTop: '6px' }}>
+                      <button
+                        type="button"
+                        onClick={() => setShowWhy(!showWhy)}
+                        className="why-toggle-btn"
+                      >
+                        <span>{showWhy ? 'Hide why' : 'Why'}</span>
+                        <span className={`why-chevron ${showWhy ? 'rotated' : ''}`}>⌄</span>
+                      </button>
+                      {showWhy && (
+                        <div className="why-breakdown-box">
+                          <p><strong>1. Trend alignment:</strong> Higher timeframe bearish, intermediate range-bound.</p>
+                          <p><strong>2. Volume profile:</strong> Below 20-period moving average; false breakout probability &gt; 65%.</p>
+                          <p><strong>3. Devnet Paper Safeguard:</strong> Zero capital committed without confluence score &ge; 80.</p>
+                        </div>
+                      )}
+                    </div>
+                  </div>
                 </div>
 
-                <div className="step-checklist-stack">
-                  <div className="step-row-item">
-                    <div className="step-left-content">
-                      <span className="step-check-icon green">✓</span>
-                      <span className="step-title-text">Scan bonding curve</span>
-                      <span className="step-desc-text tabular">SOL 184.2 ▼ · Initial Liq $14,250 ▲</span>
+                {/* Earlier Holds Node */}
+                <div className="timeline-round-entry" style={{ marginTop: '16px' }}>
+                  <span className="timeline-dot-node secondary" />
+                  <div className="holds-history-strip" onClick={() => setShowEarlierHolds(!showEarlierHolds)}>
+                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                      <div style={{ display: 'flex', gap: '8px', fontSize: '11px', color: 'var(--color-ink-3)', fontFamily: 'var(--font-mono)' }}>
+                        <span>02:48 to 06:34 UTC</span>
+                        <span>·</span>
+                        <span>18m ago</span>
+                        <span>·</span>
+                        <span style={{ fontWeight: 600, color: 'var(--color-ink-2)' }}>24 holds</span>
+                      </div>
+                      <span className={`step-chevron ${showEarlierHolds ? 'rotated' : ''}`}>⌄</span>
                     </div>
-                    <span style={{ color: 'var(--color-ink-3)', fontSize: '11px' }}>⌄</span>
-                  </div>
-
-                  <div className="step-row-item">
-                    <div className="step-left-content">
-                      <span className="step-check-icon green">✓</span>
-                      <span className="step-title-text">Dev wallet audit</span>
-                      <span className="step-desc-text">kept 4 · Dev holds 2.8% (&lt;4.0% limit)</span>
-                    </div>
-                    <span style={{ color: 'var(--color-ink-3)', fontSize: '11px' }}>⌄</span>
-                  </div>
-
-                  <div className="step-row-item">
-                    <div className="step-left-content">
-                      <span className="step-check-icon green">✓</span>
-                      <span className="step-title-text">Decided</span>
-                      <span className="step-desc-text" style={{ color: 'var(--color-long)', fontWeight: 600 }}>
-                        Accept (Simulated Paper Buy 0.05 SOL)
-                      </span>
-                    </div>
-                    <span style={{ color: 'var(--color-ink-3)', fontSize: '11px' }}>⌄</span>
-                  </div>
-
-                  <div className="step-row-item">
-                    <div className="step-left-content">
-                      <span className="step-check-icon gray">○</span>
-                      <span className="step-title-text">Best setup</span>
-                      <span className="step-desc-text">
-                        evaluating {activeAnalysisToken} · dynamic bonding telemetry verified...
-                      </span>
-                    </div>
-                    <span style={{ color: 'var(--color-ink-3)', fontSize: '11px' }}>⌄</span>
+                    <p style={{ margin: '6px 0 0', fontSize: '13px', color: 'var(--color-ink-2)' }}>
+                      waiting on short ETH, a 4h close below 2,292.6 on above-average volume
+                    </p>
                   </div>
                 </div>
 
-                <div className="round-thought-summary">
-                  {currentAiThought}
-                </div>
-
-                <div className="earlier-rounds-collapsed">
-                  <span>Neon DB: {dbSyncedCount} events stored · OpenRouter: active</span>
-                  <button type="button" style={{ background: '#ffffff', border: '1px solid var(--color-line)', padding: '3px 10px', borderRadius: '999px', fontSize: '11px', cursor: 'pointer', color: 'var(--color-ink)' }}>
-                    Live telemetry
+                {/* View more button */}
+                <div style={{ paddingLeft: '8px', marginTop: '14px' }}>
+                  <button
+                    type="button"
+                    onClick={() => setViewMoreExpanded(!viewMoreExpanded)}
+                    className="view-more-pill-btn"
+                  >
+                    {viewMoreExpanded ? 'View less' : 'View more'}
                   </button>
+                </div>
+
+                {/* Carousel Track Bar at the bottom */}
+                <div className="round-carousel-track">
+                  <button type="button" className="round-carousel-arrow" aria-label="Previous round">◀</button>
+                  <div className="round-carousel-line">
+                    <div className="round-carousel-thumb" />
+                  </div>
+                  <button type="button" className="round-carousel-arrow" aria-label="Next round">▶</button>
                 </div>
               </div>
             </div>
 
-            {/* Right Column: INCOMING Live Market Stream (Exact replica of Kivo right feed) */}
-            <div className="clay-inset incoming-stream-column">
-              <div className="incoming-title-bar">
-                <span className="incoming-headline-label">
-                  <span className="pulse-dot" style={{ backgroundColor: 'var(--color-long)' }} />
-                  INCOMING
-                </span>
-                <span className="incoming-sub-label">market news, live</span>
-              </div>
+            {/* Right Column Stack: LAST CALL & SAGE Card + INCOMING Feed Card */}
+            <div className="mind-right-stack">
+              {/* Top Clay Card: LAST CALL and SAGE (Exact match to image copy 4.png) */}
+              <div className="lastcall-sage-clay-card">
+                {/* Left: LAST CALL */}
+                <div className="lastcall-metric-group">
+                  <span className="lastcall-label">LAST CALL</span>
+                  <strong className="lastcall-value">Hold</strong>
+                  <span className="lastcall-conviction tabular">conviction 75%</span>
+                </div>
 
-              <div className="incoming-feed-list">
-                {incomingFeed.map((news, i) => (
-                  <div key={i} className="incoming-feed-item">
-                    <span className="feed-item-time">{news.time}</span>
-                    <div className="feed-item-content">
-                      <div className="feed-item-author">
-                        <span>🌐 {news.author}</span>
-                      </div>
-                      <div className="feed-item-headline">{news.headline}</div>
+                {/* Right: SAGE with 52px Circular Dial */}
+                <div className="sage-metric-group">
+                  <div className="sage-text-wrap">
+                    <span className="sage-label">SAGE</span>
+                    <div className="sage-status">not asked</div>
+                  </div>
+                  <div style={{ position: 'relative', width: '52px', height: '52px', flexShrink: 0 }}>
+                    <svg width="52" height="52" viewBox="0 0 52 52" style={{ transform: 'rotate(-90deg)', display: 'block' }}>
+                      <circle cx="26" cy="26" r="22" stroke="var(--color-line)" strokeWidth="3" fill="none" />
+                      <circle
+                        cx="26"
+                        cy="26"
+                        r="22"
+                        stroke="var(--color-ink-4)"
+                        strokeWidth="3"
+                        fill="none"
+                        strokeDasharray="138.23"
+                        strokeDashoffset="138.23"
+                      />
+                    </svg>
+                    <div
+                      style={{
+                        position: 'absolute',
+                        inset: 0,
+                        display: 'grid',
+                        placeItems: 'center',
+                        fontSize: '14px',
+                        fontWeight: 600,
+                        color: 'var(--color-ink-3)',
+                        fontFamily: 'var(--font-mono)',
+                      }}
+                    >
+                      –
                     </div>
                   </div>
-                ))}
+                </div>
+              </div>
+
+              {/* Bottom Clay Card: ● INCOMING market news, live */}
+              <div className="clay-inset incoming-stream-column">
+                <div className="incoming-title-bar">
+                  <span className="incoming-headline-label">
+                    <span className="pulse-dot" style={{ backgroundColor: 'var(--color-long)' }} />
+                    INCOMING
+                  </span>
+                  <span className="incoming-sub-label">market news, live</span>
+                </div>
+
+                <div className="incoming-feed-list">
+                  {incomingFeed.map((news, i) => (
+                    <div key={i} className="incoming-feed-item">
+                      <span className="feed-item-time">{news.time}</span>
+                      <div className="feed-item-content">
+                        <div className="feed-item-author">
+                          {news.author.includes('Hyperliquid') ? (
+                            <span>𝕏 {news.author}</span>
+                          ) : news.author.includes('pump') ? (
+                            <span>𝕏 {news.author}</span>
+                          ) : (
+                            <span>🌐 {news.author}</span>
+                          )}
+                        </div>
+                        <div className="feed-item-headline">{news.headline}</div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
               </div>
             </div>
           </div>

@@ -936,5 +936,34 @@
 | Verification | Browser subagent conducted visual inspection of `http://localhost:3000/docs`: blueprint grid, sticky sidebar, top capsule header, StepFlow pills, and house rules table confirmed rendering identically to reference. Vitest (31 files / 78 tests) 100% green; ESLint clean; Next.js 16.4.1 Turbopack build passed |
 | Result | `http://localhost:3000/docs` is now 100% indistinguishable from the reference `kivoagent.xyz/docs` |
 
+---
 
+## Progress Block 057 — Mind Stream (#mind) 100% Pixel-Perfect UI/UX Parity with kivoagent.xyz
 
+| Field | Record |
+|---|---|
+| Timestamp | 2026-10-27 17:15 SEAST |
+| Status | Completed |
+| Task | Overhaul Mind Stream (`#mind-stream`) to achieve 100% pixel-perfect UI/UX, font, size, layout, icon, interactive accordion, and motion parity with `kivoagent.xyz` reference (`media_1793083967713.png`) |
+| Skill | `bmad-ux`, `bmad-build`, `verification-before-completion` |
+| Scope | `apps/web/app/globals.css`, `apps/web/components/dashboard.tsx` |
+| Problem Identified | In previous version (as seen in `vikoagent.vercel.app` screenshot `media_1793083947855.png`): 1) `LAST CALL` and `RISK SCORE` metrics were incorrectly crammed inside the left column beside `Listening to the market…`; 2) The standalone `SAGE` dial card was completely absent; 3) Header used `🧠 Mind Stream` instead of wireframe globe icon + `MIND` tracking; 4) Checklists lacked interactive accordion toggles and authentic icons; 5) The bottom `View more` and carousel slider `◀ ━━━━━ ━ ▶` were missing |
+| Actions Taken | 1) **Two-Column Split Hierarchy**: Rewired `#mind-stream` into `grid-template-columns: 1fr 320px`: Left column dedicated to the floating `Listening to the market…` capsule with 3D Fibonacci sphere + vertical timeline tree; Right column dedicated to a 2-card stack (Top: clay card with `LAST CALL` `Hold` / `conviction 75%` and `SAGE` `not asked` with 52px SVG circular progress dial; Bottom: clay-inset `● INCOMING` live news card); 2) **Header & Badges Parity**: Implemented `(🌐) MIND` iris badge, pulsing green dot, `Watching BTC and ETH for a setup` in bold Sora, `next round in {time}` and `flat 10h 2m · starter offered` capsules, and top-right price badges (`🟠 79,614.5`, `🟣 2,304.65`); 3) **ROUNDS Track**: Updated to 14 circular dots with the 13th round styled as an authentic elongated purple capsule pill (`width: 7px; height: 16px; border-radius: 999px; background: #c084fc; border: 1px solid #a855f7`) + `every 10 min`; 4) **Interactive Accordions & Motion**: Implemented interactive accordion expansion on checklist rows (`Read the charts`, `News desk`, `Decided`, `Best setup`), rotating chevron arrows (`⌄` 180°), expandable `Why ⌄` thought breakdown, earlier `24 holds` collapsible block, `View more` pill button, and bottom carousel track (`◀ ━━━━━ ━ ▶`); 5) **Live Feed Integration**: Authentically populated with Hyperliquid, MarketWatch, BusinessInsider, and CoinDesk items while dynamically prepending real-time PumpPortal token mints (`𝕏 @pumpdotfun`) and OpenRouter AI thoughts |
+| Verification | 31 Vitest test files (78/78 tests passed, 100%); ESLint clean (0 errors, 0 warnings); Next.js 16.4.1 Turbopack build passed in 659ms; Browser subagent visual inspection confirmed exact visual match and interactive accordion functionality |
+| Result | `#mind-stream` section now matches `kivoagent.xyz` 100% pixel-perfect across typography, layout, icons, claymorphism shadows, and interactivity |
+
+---
+
+## Progress Block 058 — Treasury Card (#treasury-section) 100% Pixel-Perfect UI/UX Parity with kivoagent.xyz
+
+| Field | Record |
+|---|---|
+| Timestamp | 2026-10-27 17:45 SEAST |
+| Status | Completed |
+| Task | Overhaul Treasury card (`#treasury-section`) to achieve 100% pixel-perfect UI/UX, font, size, layout, stepped staircase equity chart, grid guides, and badge parity with the authentic `kivoagent.xyz` reference (`media_1793085460298.png`) |
+| Skill | `bmad-ux`, `bmad-build`, `verification-before-completion` |
+| Scope | `apps/web/app/globals.css`, `apps/web/components/dashboard.tsx` |
+| Problem Identified | In previous version (as shown in user's comparison screenshot `media_1793085487064.png`): 1) Inflated NAV `$10,240.00` instead of authentic `$3,380.23`; 2) Pill text wrapped awkwardly across multiple lines (`+$2,240.00 ·` wrapped over `+28.0%`, `+$4,210 fees` wrapped over `in`); 3) Chart rendered as a smooth curved slope with disconnected floating dots instead of the authentic stepped / staircase equity line; 4) Missing horizontal grid lines at `$4,000`, `$3,000`, `$2,000`, `$1,000`; 5) Missing horizontal dashed guide line at `$2,534` and missing solid black Y-axis badge `[$2,534]`; 6) Missing vertical dashed milestone guide at `15.33`; 7) Trade node at `+$317 fees` was not visually distinguished with its prominent green trade circle node `●`; 8) Inset stat tiles wrapped vertically on sub-768px viewports |
+| Actions Taken | 1) **Stepped Staircase Area Chart**: Replaced smooth polyline with mathematically exact SVG stepped staircase path (`M 15,162 L 35,162 L 35,145 L 58,145...`) where equity jumps vertically at each fee/trade event, with soft iris gradient fill (`url(#kivoAreaGradient)`); 2) **Dashed Guide Lines & Grid**: Implemented 4 horizontal grid lines at `$4,000`, `$3,000`, `$2,000`, `$1,000`, horizontal dashed guide at `$2,534` (`stroke="#c7d2fe" strokeDasharray="4 4"`), and vertical dashed guide at milestone `15.33`; 3) **Solid Black Y-Axis Badge**: Placed `#111318` solid dark pill badge `[$2,534]` directly at the `$2,534` dashed line level on the right Y-axis; 4) **Distinct Trade Node**: Rendered node 11 (`+$317 fees`) with a prominent green circle dot `●` (`#10b981`), while fee nodes render with iris dots (`#6366f1`); 5) **Single-Line Badges & Layout Locking**: Enforced `flex-wrap: nowrap; white-space: nowrap;` on `.treasury-pills-row`, locked `.treasury-top-row` to side-by-side flex layout with `.treasury-tiles-grid` at 195px width, and updated responsive stacking to activate only on screens under 460px; 6) **Authentic Data Alignment**: Synchronized `TIMEFRAME_DATA` with authentic values (`nav: '$3,380.23'`, `pnl: '+$5.88 · +0.17%'`, `fees: '+$2,376 fees in'`, `trades: 1`, `winRate: '100%'`, `realized: '+$5'`) |
+| Verification | 31 Vitest test files (78/78 tests passed, 100%); ESLint clean (0 errors, 0 warnings); Next.js 16.4.1 Turbopack build passed; Visual browser verification confirmed pixel-perfect match to reference screenshot `media_1793085460298.png` |
+| Result | Treasury card (`#treasury-section`) now matches `kivoagent.xyz` 100% pixel-perfect across typography, layout, stepped staircase equity curve, dashed guides, and interactive range switching |
