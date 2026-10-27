@@ -679,29 +679,33 @@ export function Dashboard() {
                   <line x1="15" y1="105" x2="445" y2="105" stroke="#f1f5f9" strokeWidth="1" />
                   <line x1="15" y1="145" x2="445" y2="145" stroke="#f1f5f9" strokeWidth="1" />
 
-                  {/* Horizontal Dashed Guide Line: either following hover Y or default $2,534 at y=84 */}
-                  <line
-                    x1="15"
-                    y1={chartHover ? chartHover.y : 84}
-                    x2="455"
-                    y2={chartHover ? chartHover.y : 84}
-                    stroke="#c7d2fe"
-                    strokeWidth="1.2"
-                    strokeDasharray="4 4"
-                    style={{ transition: 'y1 0.15s ease-out, y2 0.15s ease-out' }}
-                  />
+                  {/* Horizontal Dashed Guide Line: only visible on chart hover */}
+                  {chartHover && (
+                    <line
+                      x1="15"
+                      y1={chartHover.y}
+                      x2="455"
+                      y2={chartHover.y}
+                      stroke="#c7d2fe"
+                      strokeWidth="1.2"
+                      strokeDasharray="4 4"
+                      style={{ transition: 'y1 0.15s ease-out, y2 0.15s ease-out' }}
+                    />
+                  )}
 
-                  {/* Vertical Dashed Guide Line: either following hover X or default 15.33 milestone at x=205 */}
-                  <line
-                    x1={chartHover ? chartHover.x : 205}
-                    y1="18"
-                    x2={chartHover ? chartHover.x : 205}
-                    y2="175"
-                    stroke="#c7d2fe"
-                    strokeWidth="1.2"
-                    strokeDasharray="4 4"
-                    style={{ transition: 'x1 0.08s ease-out, x2 0.08s ease-out' }}
-                  />
+                  {/* Vertical Dashed Guide Line: only visible on chart hover */}
+                  {chartHover && (
+                    <line
+                      x1={chartHover.x}
+                      y1="18"
+                      x2={chartHover.x}
+                      y2="175"
+                      stroke="#c7d2fe"
+                      strokeWidth="1.2"
+                      strokeDasharray="4 4"
+                      style={{ transition: 'x1 0.08s ease-out, x2 0.08s ease-out' }}
+                    />
+                  )}
 
                   {/* Stepped Gradient Area */}
                   <path
@@ -765,28 +769,30 @@ export function Dashboard() {
                   <text x="505" y="29" fill="#94a3b8" fontSize="10" textAnchor="end" fontFamily="var(--font-mono)">$4,000</text>
                   <text x="505" y="69" fill="#94a3b8" fontSize="10" textAnchor="end" fontFamily="var(--font-mono)">$3,000</text>
 
-                  {/* Dynamic Y-Axis Solid Black Badge: animates up/down following cursor hover */}
-                  <g style={{ transition: 'transform 0.12s ease-out' }}>
-                    <rect
-                      x="455"
-                      y={chartHover ? chartHover.y - 11 : 73}
-                      width="52"
-                      height="22"
-                      rx="4"
-                      fill="#111318"
-                    />
-                    <text
-                      x="481"
-                      y={chartHover ? chartHover.y + 4 : 88}
-                      fill="#ffffff"
-                      fontSize="11"
-                      fontWeight="700"
-                      textAnchor="middle"
-                      fontFamily="var(--font-mono)"
-                    >
-                      {chartHover ? chartHover.nav.replace('.00', '') : (currentChart.badgeVal || '$2,534')}
-                    </text>
-                  </g>
+                  {/* Dynamic Y-Axis Solid Black Badge: only visible when hovered, animates up/down following cursor */}
+                  {chartHover && (
+                    <g style={{ transition: 'transform 0.12s ease-out' }}>
+                      <rect
+                        x="455"
+                        y={chartHover.y - 11}
+                        width="52"
+                        height="22"
+                        rx="4"
+                        fill="#111318"
+                      />
+                      <text
+                        x="481"
+                        y={chartHover.y + 4}
+                        fill="#ffffff"
+                        fontSize="11"
+                        fontWeight="700"
+                        textAnchor="middle"
+                        fontFamily="var(--font-mono)"
+                      >
+                        {chartHover.nav.replace('.00', '')}
+                      </text>
+                    </g>
+                  )}
 
                   <text x="505" y="109" fill="#94a3b8" fontSize="10" textAnchor="end" fontFamily="var(--font-mono)">$2,000</text>
                   <text x="505" y="149" fill="#94a3b8" fontSize="10" textAnchor="end" fontFamily="var(--font-mono)">$1,000</text>
