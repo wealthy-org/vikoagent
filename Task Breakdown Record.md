@@ -984,3 +984,20 @@
 | Verification | Vitest test suite 31/31 passed (78 tests), ESLint clean, Next.js build clean |
 | Result | SVG staircase curve and trade markers align 1:1 with reference graphic |
 
+---
+
+## Progress Block 060 — Treasury Chart Lower Half Parity with `image copy 13.png`
+
+| Field | Record |
+|---|---|
+| Timestamp | 2026-10-27 18:25 SEAST |
+| Status | Completed |
+| Task | Calibrate bottom half of Treasury chart (`image copy 13.png`), specifically 12 horizontal steps, green trade execution node, and authentic 5-mark date timescale (`02.01`, `09.01`, `16.01`, `23.01`, `30.01`) |
+| Skill | `bmad-build`, `bmad-ux`, `verification-before-completion` |
+| Scope | `apps/web/components/dashboard.tsx` |
+| Problem Identified | In `image copy 13.png`, 1) Date labels at bottom of chart were previously rendering ad-hoc values (`07.01`, `12.01`, `15.33`, `18.02`, `27`, `07.05`) instead of the authentic weekly marks from Lightweight Charts timescale: `02.01`, `09.01`, `16.01`, `23.01`, `30.01`; 2) Staircase horizontal steps width and Y levels slightly drifted compared to the 12 horizontal segments extracted from `image copy 13.png`; 3) Step 11 trade circle node needed exact alignment with transition step at X=410.9, Y=43.1 |
+| Actions Taken | 1) Pixel-extracted all 12 horizontal segments from `image copy 13.png` (`Y=52..187`, `X=75..628`) and mapped to SVG 520x205 coordinates; 2) Updated `STEP_NODES`, `<path>` staircase line, and `<path>` gradient fill to exact coordinates: `60.9@153.0`, `83.9@141.9`, `109.1@125.7`, `135.8@114.7`, `161.0@103.6`, `195.9@98.5`, `215.2@92.5`, `241.1@87.4`, `301.9@65.3`, `359.0@54.2`, `410.9@43.1` (green trade node), `445.0@38.0`; 3) Replaced bottom date labels with exact weekly timestamps: `02.01` (x=60.9), `09.01` (x=148.1), `16.01` (x=229.6), `23.01` (x=311.2), `30.01` (x=390.9) with `textAnchor="middle"` |
+| Verification | 31 Vitest test files (78/78 tests passed, 100%); ESLint clean; Next.js 16.4.1 Turbopack build passed in 1110ms |
+| Result | Lower half of Treasury chart aligns 100% pixel-perfect with `image copy 13.png` |
+
+

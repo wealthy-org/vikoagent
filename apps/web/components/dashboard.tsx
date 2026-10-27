@@ -204,18 +204,17 @@ const TIMEFRAME_DATA: Record<string, { nav: string; pnl: string; fees: string; t
 };
 
 const STEP_NODES = [
-  { x: 35.0, y: 153.0, label: '-$261 fees', isTrade: false },
-  { x: 59.3, y: 138.6, label: '+$171 fees', isTrade: false },
-  { x: 82.6, y: 129.0, label: '+$334 fees', isTrade: false },
-  { x: 107.9, y: 114.7, label: '+$179 fees', isTrade: false },
-  { x: 134.3, y: 105.1, label: '+$149 fees', isTrade: false },
-  { x: 159.7, y: 95.5, label: '+$123 fees', isTrade: false },
-  { x: 194.6, y: 90.7, label: '+$205 fees', isTrade: false },
-  { x: 214.6, y: 85.9, label: '+$113 fees', isTrade: false },
-  { x: 240.0, y: 81.1, label: '+$135 fees', isTrade: false },
-  { x: 301.3, y: 62.0, label: '+$190 fees', isTrade: false },
-  { x: 364.7, y: 52.4, label: '+$317 fees', isTrade: true }, // Prominent Green Dot
-  { x: 411.2, y: 42.8, label: '+$100 fees', isTrade: false },
+  { x: 60.9, y: 153.0, label: '-$261 fees', isTrade: false },
+  { x: 83.9, y: 141.9, label: '+$171 fees', isTrade: false },
+  { x: 109.1, y: 125.7, label: '+$334 fees', isTrade: false },
+  { x: 135.8, y: 114.7, label: '+$179 fees', isTrade: false },
+  { x: 161.0, y: 103.6, label: '+$149 fees', isTrade: false },
+  { x: 195.9, y: 98.5, label: '+$123 fees', isTrade: false },
+  { x: 215.2, y: 92.5, label: '+$205 fees', isTrade: false },
+  { x: 241.1, y: 87.4, label: '+$113 fees', isTrade: false },
+  { x: 301.9, y: 65.3, label: '+$135 fees', isTrade: false },
+  { x: 359.0, y: 54.2, label: '+$190 fees', isTrade: false },
+  { x: 410.9, y: 43.1, label: '+$317 fees', isTrade: true }, // Prominent Green Dot
   { x: 445.0, y: 38.0, label: '+$100 fees', isTrade: false },
 ];
 
@@ -626,13 +625,13 @@ export function Dashboard() {
 
                   {/* Stepped Gradient Area */}
                   <path
-                    d="M 15,175 L 15,153 L 35,153 L 35,138.6 L 59.3,138.6 L 59.3,129 L 82.6,129 L 82.6,114.7 L 107.9,114.7 L 107.9,105.1 L 134.3,105.1 L 134.3,95.5 L 159.7,95.5 L 159.7,90.7 L 194.6,90.7 L 194.6,85.9 L 214.6,85.9 L 214.6,81.1 L 240,81.1 L 240,62 L 301.3,62 L 301.3,52.4 L 364.7,52.4 L 364.7,42.8 L 411.2,42.8 L 411.2,38 L 445,38 L 445,175 Z"
+                    d="M 15,175 L 15,153.0 L 35.0,153.0 L 60.9,153.0 L 58.7,141.9 L 83.9,141.9 L 81.7,125.7 L 109.1,125.7 L 106.9,114.7 L 135.8,114.7 L 133.6,103.6 L 161.0,103.6 L 158.8,98.5 L 195.9,98.5 L 193.7,92.5 L 215.2,92.5 L 213.7,87.4 L 241.1,87.4 L 238.9,65.3 L 301.9,65.3 L 299.7,54.2 L 359.0,54.2 L 362.7,43.1 L 410.9,43.1 L 408.7,38.0 L 445.0,38.0 L 445,175 Z"
                     fill="url(#kivoAreaGradient)"
                   />
 
                   {/* Stepped Staircase Line */}
                   <path
-                    d="M 15,153 L 35,153 L 35,138.6 L 59.3,138.6 L 59.3,129 L 82.6,129 L 82.6,114.7 L 107.9,114.7 L 107.9,105.1 L 134.3,105.1 L 134.3,95.5 L 159.7,95.5 L 159.7,90.7 L 194.6,90.7 L 194.6,85.9 L 214.6,85.9 L 214.6,81.1 L 240,81.1 L 240,62 L 301.3,62 L 301.3,52.4 L 364.7,52.4 L 364.7,42.8 L 411.2,42.8 L 411.2,38 L 445,38"
+                    d="M 15,153.0 L 35.0,153.0 L 60.9,153.0 L 58.7,141.9 L 83.9,141.9 L 81.7,125.7 L 109.1,125.7 L 106.9,114.7 L 135.8,114.7 L 133.6,103.6 L 161.0,103.6 L 158.8,98.5 L 195.9,98.5 L 193.7,92.5 L 215.2,92.5 L 213.7,87.4 L 241.1,87.4 L 238.9,65.3 L 301.9,65.3 L 299.7,54.2 L 359.0,54.2 L 362.7,43.1 L 410.9,43.1 L 408.7,38.0 L 445.0,38.0"
                     fill="none"
                     stroke="#4f46e5"
                     strokeWidth="2.2"
@@ -675,13 +674,12 @@ export function Dashboard() {
                   <text x="505" y="109" fill="#94a3b8" fontSize="10" textAnchor="end" fontFamily="var(--font-mono)">$2,000</text>
                   <text x="505" y="149" fill="#94a3b8" fontSize="10" textAnchor="end" fontFamily="var(--font-mono)">$1,000</text>
 
-                  {/* X-Axis Date Labels along Bottom */}
-                  <text x="35" y="196" fill="#94a3b8" fontSize="10" fontFamily="var(--font-mono)">07.01</text>
-                  <text x="128" y="196" fill="#94a3b8" fontSize="10" fontFamily="var(--font-mono)">12.01</text>
-                  <text x="205" y="196" fill="#94a3b8" fontSize="10" textAnchor="middle" fontFamily="var(--font-mono)">15.33</text>
-                  <text x="270" y="196" fill="#94a3b8" fontSize="10" fontFamily="var(--font-mono)">18.02</text>
-                  <text x="370" y="196" fill="#111827" fontSize="11" fontWeight="700" textAnchor="middle" fontFamily="var(--font-mono)">27</text>
-                  <text x="445" y="196" fill="#94a3b8" fontSize="10" textAnchor="end" fontFamily="var(--font-mono)">07.05</text>
+                  {/* X-Axis Date Labels along Bottom (02.01, 09.01, 16.01, 23.01, 30.01) */}
+                  <text x="60.9" y="196" fill="#94a3b8" fontSize="10" textAnchor="middle" fontFamily="var(--font-mono)">02.01</text>
+                  <text x="148.1" y="196" fill="#94a3b8" fontSize="10" textAnchor="middle" fontFamily="var(--font-mono)">09.01</text>
+                  <text x="229.6" y="196" fill="#94a3b8" fontSize="10" textAnchor="middle" fontFamily="var(--font-mono)">16.01</text>
+                  <text x="311.2" y="196" fill="#94a3b8" fontSize="10" textAnchor="middle" fontFamily="var(--font-mono)">23.01</text>
+                  <text x="390.9" y="196" fill="#94a3b8" fontSize="10" textAnchor="middle" fontFamily="var(--font-mono)">30.01</text>
                 </svg>
               </div>
             </article>
