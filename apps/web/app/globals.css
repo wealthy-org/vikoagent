@@ -293,7 +293,7 @@ img, svg, video, canvas {
   display: grid;
   grid-template-columns: 1.55fr 1fr;
   gap: 24px;
-  margin-top: 36px;
+  margin-top: 14px;
   align-items: stretch;
 }
 
@@ -397,13 +397,16 @@ img, svg, video, canvas {
   justify-content: space-between;
   align-items: flex-start;
   gap: 20px;
-  flex-wrap: nowrap;
+  flex-wrap: wrap;
 }
 
 .treasury-title-group {
   display: flex;
   align-items: center;
+  justify-content: space-between;
   gap: 12px;
+  width: 100%;
+  flex-wrap: wrap;
 }
 
 .range-pill-selector {
@@ -436,13 +439,34 @@ img, svg, video, canvas {
 }
 
 .treasury-big-nav {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin: 10px 0 8px;
+  line-height: 1.1;
+}
+
+.treasury-sol-val {
   font-family: var(--font-display);
-  font-size: clamp(38px, 4vw, 50px);
+  font-size: clamp(30px, 3.6vw, 46px);
   font-weight: 700;
   letter-spacing: -0.02em;
   color: var(--color-ink);
-  margin: 12px 0 6px;
   line-height: 1;
+  white-space: nowrap;
+}
+
+.treasury-fiat-badge {
+  font-family: var(--font-mono);
+  font-size: clamp(13px, 1.4vw, 16px);
+  font-weight: 600;
+  color: var(--color-ink-3);
+  background: rgba(17, 19, 24, 0.04);
+  padding: 3px 8px;
+  border-radius: 6px;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  white-space: nowrap;
 }
 
 .treasury-pills-row {
@@ -451,8 +475,7 @@ img, svg, video, canvas {
   gap: 8px;
   margin-top: 8px;
   font-size: 13px;
-  flex-wrap: nowrap;
-  white-space: nowrap;
+  flex-wrap: wrap;
 }
 
 .pill-green {
@@ -1159,10 +1182,12 @@ img, svg, video, canvas {
 
 .lastcall-sage-clay-card {
   border-radius: 24px;
-  padding: 20px 24px;
+  padding: 18px 22px;
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
   background: linear-gradient(145deg, #ffffff, #f3f4f7);
   box-shadow: 12px 12px 28px rgba(17, 19, 24, 0.06), -8px -8px 24px rgba(255, 255, 255, 0.95);
   border: 1px solid rgba(255, 255, 255, 0.8);
@@ -1171,6 +1196,8 @@ img, svg, video, canvas {
 .lastcall-metric-group {
   display: flex;
   flex-direction: column;
+  min-width: 0;
+  flex: 1 1 auto;
 }
 
 .lastcall-label {
@@ -1180,15 +1207,17 @@ img, svg, video, canvas {
   color: var(--color-ink-3);
   text-transform: uppercase;
   font-weight: 600;
+  white-space: nowrap;
 }
 
 .lastcall-value {
   font-family: var(--font-display);
-  font-size: 26px;
+  font-size: clamp(20px, 2.3vw, 26px);
   font-weight: 700;
   color: var(--color-ink);
-  line-height: 1.1;
+  line-height: 1.15;
   margin-top: 3px;
+  white-space: nowrap;
 }
 
 .lastcall-conviction {
@@ -1196,16 +1225,19 @@ img, svg, video, canvas {
   font-size: 11px;
   color: var(--color-ink-3);
   margin-top: 3px;
+  white-space: nowrap;
 }
 
 .sage-metric-group {
   display: flex;
   align-items: center;
   gap: 12px;
+  flex-shrink: 0;
 }
 
 .sage-text-wrap {
   text-align: right;
+  white-space: nowrap;
 }
 
 .sage-label {
@@ -1215,14 +1247,16 @@ img, svg, video, canvas {
   color: var(--color-ink-3);
   text-transform: uppercase;
   font-weight: 600;
+  white-space: nowrap;
 }
 
 .sage-status {
   font-family: var(--font-display);
-  font-size: 14px;
-  font-weight: 600;
+  font-size: 13.5px;
+  font-weight: 700;
   color: var(--color-ink-3);
   margin-top: 2px;
+  white-space: nowrap;
 }
 
 /* Right Column: Live Incoming News */
@@ -1655,7 +1689,18 @@ img, svg, video, canvas {
   gap: 10px;
 }
 
-.scanner-token-row, .receipt-audit-row {
+.scanner-token-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1.85fr) minmax(110px, 1.15fr) minmax(80px, auto);
+  align-items: center;
+  gap: 14px;
+  padding: 10px 14px;
+  border-radius: var(--radius-clay-inset);
+  min-width: 0;
+  transition: all 0.2s ease;
+}
+
+.receipt-audit-row {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -1664,21 +1709,87 @@ img, svg, video, canvas {
   border-radius: var(--radius-clay-inset);
 }
 
-.token-name-wrap h4 {
-  font-family: var(--font-display);
-  font-size: 13px;
-  font-weight: 700;
-  color: var(--color-ink);
+.token-name-wrap {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+  overflow: hidden;
 }
 
-.token-name-wrap p {
-  font-family: var(--font-mono);
-  font-size: 10px;
+.token-meta-col {
+  min-width: 0;
+  flex: 1;
+  overflow: hidden;
+}
+
+.token-title-row {
+  margin: 0;
+  font-size: 13px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.token-symbol-text {
+  font-family: var(--font-display);
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.token-name-text {
+  font-size: 11px;
+  font-weight: 500;
   color: var(--color-ink-3);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  min-width: 0;
+  flex: 1;
+}
+
+.token-source-row {
+  margin: 2px 0 0;
+  font-size: 10.5px;
+  color: var(--color-ink-3);
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  white-space: nowrap;
 }
 
 .bonding-bar-shell {
-  width: 90px;
+  min-width: 100px;
+  width: 100%;
+}
+
+.bonding-bar-labels {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 10px;
+  color: var(--color-ink-3);
+  margin-bottom: 4px;
+  gap: 8px;
+  white-space: nowrap;
+}
+
+.token-action-col {
+  text-align: right;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 3px;
+  flex-shrink: 0;
+}
+
+.token-liquidity-val {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--color-ink);
 }
 
 .bonding-bar-trough {
@@ -1926,25 +2037,23 @@ img, svg, video, canvas {
     display: flex;
     flex-direction: column;
     align-items: stretch;
-    gap: 8px;
-    padding: 10px 12px;
+    gap: 10px;
+    padding: 12px 14px;
   }
-  .scanner-token-row-tier1 {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+  .token-name-wrap {
     width: 100%;
-  }
-  .scanner-token-row-tier2 {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    width: 100%;
-    gap: 12px;
   }
   .bonding-bar-shell {
-    flex: 1;
-    width: auto;
+    width: 100%;
+    min-width: unset;
+  }
+  .token-action-col {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    padding-top: 4px;
+    border-top: 1px dashed rgba(0, 0, 0, 0.05);
   }
   .receipt-audit-row {
     display: flex;
@@ -2781,23 +2890,33 @@ img, svg, video, canvas {
 }
 
 /* Vikoagent Telemetry Enhanced Tokens & ATM Polish */
+.telemetry-banner-wrapper {
+  display: flex;
+  justify-content: center;
+  margin: 18px 0 24px;
+  position: relative;
+  z-index: 5;
+  width: 100%;
+}
+
 .telemetry-status-banner {
   display: inline-flex;
   align-items: center;
   gap: 10px;
   padding: 8px 18px;
   border-radius: var(--radius-pill);
-  background: rgba(255, 255, 255, 0.92);
+  background: rgba(255, 255, 255, 0.95);
   backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px);
   border: 1px solid rgba(108, 123, 255, 0.22);
-  box-shadow: 0 4px 20px rgba(108, 123, 255, 0.08), 0 1px 3px rgba(0, 0, 0, 0.03);
+  box-shadow: 0 4px 18px rgba(108, 123, 255, 0.08), 0 1px 3px rgba(0, 0, 0, 0.03);
   font-family: var(--font-mono);
-  font-size: 11.5px;
+  font-size: 11px;
   color: var(--color-ink-2);
-  max-width: 95%;
+  max-width: 100%;
   flex-wrap: wrap;
   justify-content: center;
+  row-gap: 6px;
 }
 
 .pulse-dot-beacon {
@@ -2883,7 +3002,8 @@ img, svg, video, canvas {
   padding: 1px 6px;
   border-radius: 4px;
   border: 1px solid rgba(0, 0, 0, 0.06);
-  margin-left: 6px;
+  flex-shrink: 0;
+  white-space: nowrap;
 }
 
 .particle-sphere-radar-ring {

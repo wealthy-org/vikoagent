@@ -694,7 +694,7 @@ export function Dashboard() {
         </div>
 
         {/* Live Operational Telemetry Pill (ATM Visual Upgrade) */}
-        <div style={{ display: 'flex', justifyContent: 'center', margin: '0 0 24px' }}>
+        <div className="telemetry-banner-wrapper">
           <div className="telemetry-status-banner">
             <span className="pulse-dot-beacon" />
             <strong style={{ color: 'var(--color-ink)' }}>SOLANA DEVNET</strong>
@@ -766,12 +766,15 @@ export function Dashboard() {
                     </div>
                   </div>
 
-                  <div className="treasury-big-nav tabular" style={{ display: 'flex', alignItems: 'baseline', gap: '8px', flexWrap: 'wrap' }}>
-                    <span>{chartHover ? chartHover.nav : currentChart.nav}</span>
-                    <span style={{ fontSize: '14px', fontWeight: 600, color: '#8b5cf6', background: '#ede9fe', padding: '2px 8px', borderRadius: '6px', display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
-                      <img src="/partners/solana.svg" alt="" style={{ width: '10px', height: '8px' }} />
-                      18.32 SOL
+                  <div className="treasury-big-nav tabular">
+                    <span className="treasury-sol-val">
+                      {chartHover ? chartHover.nav : currentChart.nav.split(' (')[0]}
                     </span>
+                    {!chartHover && currentChart.nav.includes('(') && (
+                      <span className="treasury-fiat-badge">
+                        ≈ {currentChart.nav.slice(currentChart.nav.indexOf('(') + 1, -1)}
+                      </span>
+                    )}
                   </div>
 
                   <div className="treasury-pills-row">
@@ -1732,36 +1735,29 @@ export function Dashboard() {
                 <div
                   key={t.mint}
                   className="clay-inset scanner-token-row"
-                  style={{
-                    display: 'grid',
-                    gridTemplateColumns: '1.9fr 1.3fr 1fr',
-                    alignItems: 'center',
-                    gap: '14px',
-                    padding: '10px 14px',
-                  }}
                 >
-                  <div className="token-name-wrap" style={{ display: 'flex', alignItems: 'center', gap: '10px', minWidth: 0 }}>
+                  <div className="token-name-wrap">
                     <div className="token-avatar-pill" style={{ background: t.avatarBg || 'linear-gradient(135deg, #6c7bff, #8b5cf6)' }}>
                       {t.symbol.slice(0, 2)}
                     </div>
-                    <div style={{ minWidth: 0 }}>
-                      <h4 style={{ margin: 0, fontSize: '13px', fontWeight: 700, display: 'flex', alignItems: 'center', gap: '6px', whiteSpace: 'nowrap' }}>
-                        <span>${t.symbol}</span>
-                        <span style={{ fontSize: '11px', fontWeight: 500, color: 'var(--color-ink-3)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                    <div className="token-meta-col">
+                      <h4 className="token-title-row">
+                        <span className="token-symbol-text">${t.symbol}</span>
+                        <span className="token-name-text">
                           {t.name}
                         </span>
+                        {t.auditTag && <span className="audit-tag-badge">{t.auditTag}</span>}
                       </h4>
-                      <p style={{ margin: '2px 0 0', fontSize: '10.5px', color: 'var(--color-ink-3)', display: 'flex', alignItems: 'center', gap: '5px', whiteSpace: 'nowrap' }}>
+                      <p className="token-source-row">
                         <span style={{ fontWeight: 600 }}>{t.source}</span>
                         <span style={{ opacity: 0.5 }}>·</span>
                         <span className="tabular">{t.ageSeconds}s ago</span>
-                        {t.auditTag && <span className="audit-tag-badge">{t.auditTag}</span>}
                       </p>
                     </div>
                   </div>
 
                   <div className="bonding-bar-shell">
-                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: '10px', color: 'var(--color-ink-3)', marginBottom: '4px', gap: '8px', whiteSpace: 'nowrap' }}>
+                    <div className="bonding-bar-labels">
                       <span>Curve {t.bondingProgress}%</span>
                       <span className="tabular">{t.devHoldPercent}% dev</span>
                     </div>
@@ -1776,8 +1772,8 @@ export function Dashboard() {
                     </div>
                   </div>
 
-                  <div style={{ textAlign: 'right', display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: '3px' }}>
-                    <div style={{ fontSize: '13px', fontWeight: 700, color: 'var(--color-ink)' }} className="tabular">
+                  <div className="token-action-col">
+                    <div className="token-liquidity-val tabular">
                       ${formatNumberWithCommas(t.liquidityUsd)}
                     </div>
                     <span
