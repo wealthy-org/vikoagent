@@ -2588,7 +2588,7 @@ export function Dashboard() {
                   Scanner
                 </a>
                 <a
-                  href="https://x.com"
+                  href="https://x.com/vikoagentxyz"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="footer-pill-link footer-pill-dark"
