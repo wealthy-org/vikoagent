@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server';
+import { toApiError } from '../../../packages/contracts/src/guards';
 
 export const runtime = 'nodejs';
 
@@ -68,10 +69,11 @@ Write a 2-sentence concise, professional onchain risk analysis explaining whethe
     });
   } catch (err: unknown) {
     const errorMsg = err instanceof Error ? err.message : 'Unknown error';
+    const sanitizedError = toApiError('LLM_ANALYSIS_FAILED', errorMsg, `req_${Date.now()}`);
     return NextResponse.json({
       reasoning: 'Pump.fun bonding curve metrics show healthy organic liquidity influx. Dev wallet holds below safety ceiling. Entry validated deterministically at spot price.',
       model: 'Deterministic Risk Fallback',
-      error: errorMsg,
+      error: sanitizedError.message,
     });
   }
 }

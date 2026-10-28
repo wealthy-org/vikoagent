@@ -10,6 +10,7 @@
     "test": "vitest run",
     "demo:cli": "node scripts/cli-devnet-proof.mjs",
     "record": "py -3.13 record_all_clips.py",
+    "record:v2": "py -3.13 record_clips_v2.py",
     "build:worker": "tsc -p apps/worker/tsconfig.json",
     "start:worker": "node apps/worker/dist/index.js"
   },

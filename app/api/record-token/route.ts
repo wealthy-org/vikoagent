@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { neon } from '@neondatabase/serverless';
+import { toApiError } from '../../../packages/contracts/src/guards';
 
 export const runtime = 'nodejs';
 
@@ -20,30 +21,18 @@ export async function POST(req: Request) {
     const safeMint = String(mint).trim().slice(0, 64);
     const safeSymbol = String(symbol).trim().slice(0, 16);
     const safeSource = String(source || 'PUMPPORTAL').slice(0, 32);
+    const numLiquidity = Number(liquidityUsd);
+    const safeLiquidity = Number.isFinite(numLiquidity) && numLiquidity >= 0 ? numLiquidity : 0;
 
     const sql = neon(dbUrl);
     const eventId = `evt_${Date.now()}_${Math.random().toString(36).slice(2, 7)}`;
     const eventKey = `pumpportal:${safeMint}`;
     const occurredAt = new Date().toISOString();
 
-    // Ensure table exists (self-healing for fresh Neon instances)
-    await sql`
-      CREATE TABLE IF NOT EXISTS token_events (
-        id TEXT PRIMARY KEY,
-        source TEXT NOT NULL,
-        mint TEXT NOT NULL,
-        symbol TEXT NOT NULL,
-        event_key TEXT NOT NULL UNIQUE,
-        occurred_at TIMESTAMPTZ NOT NULL,
-        payload JSONB NOT NULL DEFAULT '{}'::jsonb,
-        created_at TIMESTAMPTZ NOT NULL DEFAULT now()
-      )
-    `;
-
     // Upsert into token_events table
     await sql`
       INSERT INTO token_events (id, source, mint, symbol, event_key, occurred_at, payload)
-      VALUES (${eventId}, ${safeSource}, ${safeMint}, ${safeSymbol}, ${eventKey}, ${occurredAt}, ${JSON.stringify(payload || { liquidityUsd })})
+      VALUES (${eventId}, ${safeSource}, ${safeMint}, ${safeSymbol}, ${eventKey}, ${occurredAt}, ${JSON.stringify(payload || { liquidityUsd: safeLiquidity })})
       ON CONFLICT (event_key) DO NOTHING
     `;
 
@@ -59,7 +48,8 @@ export async function POST(req: Request) {
     });
   } catch (err: unknown) {
     const msg = err instanceof Error ? err.message : 'Database error';
-    return NextResponse.json({ success: false, error: msg }, { status: 500 });
+    const apiError = toApiError('RECORD_TOKEN_FAILED', msg, `req_${Date.now()}`);
+    return NextResponse.json({ success: false, error: apiError.message, code: apiError.code }, { status: 500 });
   }
 }
 

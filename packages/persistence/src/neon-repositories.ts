@@ -43,14 +43,40 @@ export class NeonPaperRepositories implements AsyncPaperRepositories {
       VALUES (${trade.id}, ${trade.decisionId}, ${receiptKey}, ${trade.side}, ${trade.quantity}, ${trade.price}, ${trade.timestamp})
       ON CONFLICT (receipt_key) DO UPDATE SET receipt_key = EXCLUDED.receipt_key
       RETURNING id, decision_id AS "decisionId", receipt_key AS "receiptKey", side, quantity, price, created_at AS timestamp`;
-    return { created: rows[0].id === trade.id, record: rows[0] };
+    return {
+      created: rows[0].id === trade.id,
+      record: {
+        ...rows[0],
+        quantity: Number(rows[0].quantity),
+        price: Number(rows[0].price),
+      },
+    };
   }
-  async getTrade(receiptKey: string) { const rows = await this.sql<PaperTrade>`SELECT id, decision_id AS "decisionId", receipt_key AS "receiptKey", side, quantity, price, created_at AS timestamp FROM paper_trades WHERE receipt_key=${receiptKey}`; return rows[0]; }
+  async getTrade(receiptKey: string) {
+    const rows = await this.sql<PaperTrade>`SELECT id, decision_id AS "decisionId", receipt_key AS "receiptKey", side, quantity, price, created_at AS timestamp FROM paper_trades WHERE receipt_key=${receiptKey}`;
+    if (!rows[0]) return undefined;
+    return {
+      ...rows[0],
+      quantity: Number(rows[0].quantity),
+      price: Number(rows[0].price),
+    };
+  }
 
   async create(receipt: ReceiptRecord) { const rows = await this.sql<ReceiptRecord>`INSERT INTO receipts (id, receipt_key, decision_id, token_event_id, trade_id, created_at) VALUES (${receipt.id},${receipt.receiptKey},${receipt.decisionId},${receipt.tokenEventId},${receipt.tradeId},${receipt.timestamp}) ON CONFLICT (receipt_key) DO UPDATE SET receipt_key=EXCLUDED.receipt_key RETURNING id, receipt_key AS "receiptKey", decision_id AS "decisionId", token_event_id AS "tokenEventId", trade_id AS "tradeId", created_at AS timestamp`; return { created: rows[0].id === receipt.id, record: rows[0] }; }
   async getByKey(key: string) { const rows = await this.sql<ReceiptRecord>`SELECT id, receipt_key AS "receiptKey", decision_id AS "decisionId", token_event_id AS "tokenEventId", trade_id AS "tradeId", created_at AS timestamp FROM receipts WHERE receipt_key=${key}`; return rows[0]; }
   async list() { return this.sql<ReceiptRecord>`SELECT id, receipt_key AS "receiptKey", decision_id AS "decisionId", token_event_id AS "tokenEventId", trade_id AS "tradeId", created_at AS timestamp FROM receipts ORDER BY created_at DESC`; }
 
   async save(treasury: TreasuryReadModel) { await this.sql`INSERT INTO treasury_snapshots (id, nav, realized_pnl, cash, positions, mode, created_at) VALUES (${crypto.randomUUID()},${treasury.nav},${treasury.realizedPnl},${treasury.cash},${treasury.positions},${treasury.mode},now())`; return treasury; }
-  async get() { const rows = await this.sql<TreasuryReadModel>`SELECT cash, nav, realized_pnl AS "realizedPnl", positions, mode FROM treasury_snapshots ORDER BY created_at DESC LIMIT 1`; return rows[0] ?? { cash: 10000, nav: 10000, realizedPnl: 0, positions: 0, mode: 'PAPER' }; }
+  async get(): Promise<TreasuryReadModel> {
+    const rows = await this.sql<{ cash: number | string; nav: number | string; realizedPnl: number | string; positions: number | string; mode: 'PAPER' }>`SELECT cash, nav, realized_pnl AS "realizedPnl", positions, mode FROM treasury_snapshots ORDER BY created_at DESC LIMIT 1`;
+    if (!rows[0]) return { cash: 10000, nav: 10000, realizedPnl: 0, positions: 0, mode: 'PAPER' };
+    const row = rows[0];
+    return {
+      cash: Number(row.cash),
+      nav: Number(row.nav),
+      realizedPnl: Number(row.realizedPnl),
+      positions: Number(row.positions),
+      mode: 'PAPER',
+    };
+  }
 }

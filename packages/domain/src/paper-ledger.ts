@@ -3,19 +3,32 @@ export type PaperTrade = { id:string; decisionId:string; receiptKey:string; side
 export type Treasury = { cash:number; positionQuantity:number; averageCost:number; nav:number; realizedPnl:number; startingBalance:number };
 
 export function applyPaperTrade(state:Treasury, trade:PaperTrade): Treasury {
-  if (trade.quantity <= 0 || trade.price < 0) throw new Error('INVALID_PAPER_TRADE');
+  if (
+    !Number.isFinite(trade.quantity) ||
+    trade.quantity <= 0 ||
+    !Number.isFinite(trade.price) ||
+    trade.price < 0
+  ) {
+    throw new Error('INVALID_PAPER_TRADE');
+  }
+  const cash = Number(state.cash);
+  const positionQuantity = Number(state.positionQuantity);
+  const averageCost = Number(state.averageCost);
+  const realizedPnl = Number(state.realizedPnl);
+  const startingBalance = Number(state.startingBalance);
+
   const value = trade.quantity * trade.price;
   if (trade.side === 'BUY') {
-    if (state.cash < value) throw new Error('INSUFFICIENT_PAPER_CASH');
-    const nextQuantity = state.positionQuantity + trade.quantity;
-    const averageCost = nextQuantity === 0 ? 0 : ((state.positionQuantity * state.averageCost) + value) / nextQuantity;
-    const next = {...state, cash: state.cash - value, positionQuantity: nextQuantity, averageCost};
+    if (cash < value) throw new Error('INSUFFICIENT_PAPER_CASH');
+    const nextQuantity = positionQuantity + trade.quantity;
+    const nextAverageCost = nextQuantity === 0 ? 0 : ((positionQuantity * averageCost) + value) / nextQuantity;
+    const next = {...state, startingBalance, cash: cash - value, positionQuantity: nextQuantity, averageCost: nextAverageCost, realizedPnl};
     return {...next, nav: next.cash + next.positionQuantity * trade.price};
   }
-  if (state.positionQuantity < trade.quantity) throw new Error('INSUFFICIENT_PAPER_POSITION');
-  const realizedPnl = state.realizedPnl + ((trade.price - state.averageCost) * trade.quantity);
-  const nextQuantity = state.positionQuantity - trade.quantity;
-  const next = {...state, cash: state.cash + value, positionQuantity: nextQuantity, averageCost: nextQuantity === 0 ? 0 : state.averageCost, realizedPnl};
+  if (positionQuantity < trade.quantity) throw new Error('INSUFFICIENT_PAPER_POSITION');
+  const nextRealizedPnl = realizedPnl + ((trade.price - averageCost) * trade.quantity);
+  const nextQuantity = positionQuantity - trade.quantity;
+  const next = {...state, startingBalance, cash: cash + value, positionQuantity: nextQuantity, averageCost: nextQuantity === 0 ? 0 : averageCost, realizedPnl: nextRealizedPnl};
   return {...next, nav: next.cash + next.positionQuantity * trade.price};
 }
 

@@ -12,4 +12,24 @@ describe('paper ledger', () => {
   it('blocks unsafe mutations', () => {
     expect(() => applyPaperTrade(DEFAULT_TREASURY, {id:'t',decisionId:'d',receiptKey:'r',side:'SELL',quantity:1,price:1,timestamp:'x'})).toThrow('INSUFFICIENT_PAPER_POSITION');
   });
+  it('rejects NaN, zero or infinite trade parameters', () => {
+    expect(() => applyPaperTrade(DEFAULT_TREASURY, { id: 't', decisionId: 'd', receiptKey: 'r', side: 'BUY', quantity: NaN, price: 10, timestamp: 'x' })).toThrow('INVALID_PAPER_TRADE');
+    expect(() => applyPaperTrade(DEFAULT_TREASURY, { id: 't', decisionId: 'd', receiptKey: 'r', side: 'BUY', quantity: 1, price: NaN, timestamp: 'x' })).toThrow('INVALID_PAPER_TRADE');
+    expect(() => applyPaperTrade(DEFAULT_TREASURY, { id: 't', decisionId: 'd', receiptKey: 'r', side: 'BUY', quantity: 0, price: 10, timestamp: 'x' })).toThrow('INVALID_PAPER_TRADE');
+    expect(() => applyPaperTrade(DEFAULT_TREASURY, { id: 't', decisionId: 'd', receiptKey: 'r', side: 'BUY', quantity: Infinity, price: 10, timestamp: 'x' })).toThrow('INVALID_PAPER_TRADE');
+  });
+  it('safely handles treasury state with string numeric values', () => {
+    const stringState = {
+      startingBalance: '10000' as unknown as number,
+      cash: '10000' as unknown as number,
+      positionQuantity: '0' as unknown as number,
+      averageCost: '0' as unknown as number,
+      nav: '10000' as unknown as number,
+      realizedPnl: '0' as unknown as number,
+    };
+    const next = applyPaperTrade(stringState, { id: 't1', decisionId: 'd1', receiptKey: 'r1', side: 'BUY', quantity: 5, price: 100, timestamp: '2026-01-01' });
+    expect(next.cash).toBe(9500);
+    expect(next.positionQuantity).toBe(5);
+    expect(typeof next.positionQuantity).toBe('number');
+  });
 });

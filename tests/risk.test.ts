@@ -11,4 +11,17 @@ describe('risk evaluator', () => {
     expect(evaluateRisk({...base, liquidityUsd: 1}, rule).action).toBe('REJECT');
     expect(evaluateRisk({...base, ageSeconds: 61}, rule).action).toBe('WATCH');
   });
+  it('rejects NaN, infinite, or negative metrics safely', () => {
+    expect(evaluateRisk({ ...base, liquidityUsd: NaN }, rule)).toEqual({
+      tokenEventId: 'evt-1',
+      mint: 'mint-1',
+      action: 'REJECT',
+      reason: 'INVALID_NUMERIC_RISK_METRICS',
+      timestamp: base.timestamp,
+    });
+    expect(evaluateRisk({ ...base, ageSeconds: NaN }, rule).action).toBe('REJECT');
+    expect(evaluateRisk({ ...base, liquidityUsd: -500 }, rule).action).toBe('REJECT');
+    expect(evaluateRisk({ ...base, ageSeconds: -10 }, rule).action).toBe('REJECT');
+    expect(evaluateRisk({ ...base, liquidityUsd: Infinity }, rule).action).toBe('REJECT');
+  });
 });

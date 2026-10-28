@@ -96,6 +96,27 @@ describe('Serverless API Route Handlers', () => {
       expect(json.model).toBe('Deterministic Risk Fallback');
       expect(json.error).toBeDefined();
     });
+
+    it('sanitizes secrets in error messages if fetch fails with sensitive payload', async () => {
+      const origKey = process.env.OPENROUTER_API_KEY;
+      process.env.OPENROUTER_API_KEY = 'test-key';
+      vi.stubGlobal('fetch', vi.fn().mockRejectedValue(new Error('connection failed with token=super_secret_value')));
+
+      const req = new Request('http://localhost:3000/api/analyze-token', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ symbol: 'TEST', liquidityUsd: 10000 }),
+      });
+
+      const res = await analyzePost(req);
+      const json = await res.json();
+      expect(res.status).toBe(200);
+      expect(json.error).toBeDefined();
+      expect(json.error).not.toContain('super_secret_value');
+      expect(json.error).toContain('[redacted]');
+
+      process.env.OPENROUTER_API_KEY = origKey;
+    });
   });
 
   describe('GET & POST /api/record-token', () => {

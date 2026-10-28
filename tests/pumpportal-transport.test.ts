@@ -53,4 +53,15 @@ describe('PumpPortal transport boundary', () => {
     expect(transport.health().state).toBe('RECONNECTING');
     expect(transport.health().message).toBe('stopped');
   });
+
+  it('re-instantiates socket using factory on reconnect', () => {
+    let createdCount = 0;
+    const makeSocket = (): SocketLike => {
+      createdCount += 1;
+      return { send: () => undefined, close: () => undefined, onmessage: null, onclose: null, onerror: null };
+    };
+    const transport = createPumpPortalTransport(makeSocket, () => undefined);
+    transport.start();
+    expect(createdCount).toBe(1);
+  });
 });

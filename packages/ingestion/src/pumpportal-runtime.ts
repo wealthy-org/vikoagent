@@ -7,5 +7,5 @@ export function createConfiguredPumpPortalTransport(
   env: Record<string, string | undefined> = process.env,
 ): PumpPortalTransport {
   const { url } = readPumpPortalConfig(env);
-  return createPumpPortalTransport(socketFactory(url), onEvent);
+  return createPumpPortalTransport(() => socketFactory(url), onEvent);
 }

@@ -1,8 +1,19 @@
 import { NextResponse } from 'next/server';
+import { toApiError } from '../../../packages/contracts/src/guards';
 
 export async function GET() {
   try {
     const rpcUrl = process.env.SOLANA_RPC_URL || 'https://api.devnet.solana.com';
+    const network = (process.env.SOLANA_NETWORK || 'devnet').toLowerCase();
+
+    if (network !== 'devnet' || rpcUrl.toLowerCase().includes('mainnet')) {
+      return NextResponse.json({
+        cluster: 'devnet',
+        status: 'UNSAFE_NETWORK_BLOCKED',
+        error: 'MAINNET_OR_NON_DEVNET_FORBIDDEN',
+      }, { status: 400 });
+    }
+
     const resp = await fetch(rpcUrl, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -33,10 +44,11 @@ export async function GET() {
     });
   } catch (err: unknown) {
     const msg = err instanceof Error ? err.message : 'RPC error';
+    const apiError = toApiError('SOLANA_STATUS_ERROR', msg, `req_${Date.now()}`);
     return NextResponse.json({
       cluster: 'devnet',
       status: 'ERROR',
-      error: msg,
+      error: apiError.message,
     }, { status: 500 });
   }
 }

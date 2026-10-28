@@ -21,13 +21,15 @@ async function saveTokenEvent(data: { mint: string; symbol: string; name?: strin
     const eventId = `evt_worker_${Date.now()}_${Math.random().toString(36).slice(2, 7)}`;
     const eventKey = `pumpportal:${data.mint}`;
     const occurredAt = new Date().toISOString();
-    const approxLiqUsd = Math.round(Number(data.marketCapSol || 28) * 184);
+    const rawCap = Number(data.marketCapSol);
+    const validCap = Number.isFinite(rawCap) && rawCap > 0 ? rawCap : 28;
+    const approxLiqUsd = Math.round(validCap * 184);
 
     await sql`
       INSERT INTO token_events (id, source, mint, symbol, event_key, occurred_at, payload)
       VALUES (${eventId}, 'PUMPPORTAL', ${data.mint}, ${data.symbol}, ${eventKey}, ${occurredAt}, ${JSON.stringify({
         name: data.name,
-        marketCapSol: data.marketCapSol,
+        marketCapSol: validCap,
         liquidityUsd: approxLiqUsd,
         worker: 'railway',
       })})
@@ -69,10 +71,11 @@ function startWorker() {
   });
 
   ws.on('close', () => {
-    console.warn('[Worker WS Closed] Reconnecting in 5 seconds...');
+    const backoffMs = Math.min(30000, 2000 * 2 ** Math.min(reconnectAttempts, 4));
+    console.warn(`[Worker WS Closed] Reconnecting in ${backoffMs / 1000}s...`);
     if (isRunning) {
       reconnectAttempts++;
-      setTimeout(startWorker, 5000);
+      setTimeout(startWorker, backoffMs);
     }
   });
 }
