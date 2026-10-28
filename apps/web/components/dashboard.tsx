@@ -403,7 +403,7 @@ function ActivePositionDesk() {
         if (!prev.candles || prev.candles.length === 0) return prev;
         
         const isBtc = prev.symbol === 'BTC';
-        const tickSpread = isBtc ? 1.4 : 0.03;
+        const tickSpread = isBtc ? 18.0 : 0.32;
         const tickDelta = Number(((Math.random() - 0.48) * tickSpread).toFixed(2));
         if (Math.abs(tickDelta) < 0.01) return prev;
 
@@ -434,7 +434,7 @@ function ActivePositionDesk() {
           candles: nextCandles,
         };
       });
-    }, 1100);
+    }, 1000);
 
     return () => clearInterval(tickInterval);
   }, []);
@@ -515,26 +515,6 @@ function ActivePositionDesk() {
             <div className="desk-position-heading">
               <span>{deskData.side}</span>
               <span className="leverage-tag">{deskData.leverage}x</span>
-              <span className="desk-live-badge">
-                <span className="desk-beacon-pulse" />
-                LIVE
-              </span>
-              <span className="desk-asset-toggle-pill">
-                <button
-                  type="button"
-                  onClick={() => setSelectedAsset('BTC')}
-                  className={`desk-asset-toggle-btn ${selectedAsset === 'BTC' ? 'active' : ''}`}
-                >
-                  BTC
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setSelectedAsset('SOL')}
-                  className={`desk-asset-toggle-btn ${selectedAsset === 'SOL' ? 'active' : ''}`}
-                >
-                  SOL
-                </button>
-              </span>
             </div>
             <div className="desk-size-subtext">
               ${formatNumberWithCommas(deskData.marginUsd)} margin · ${formatNumberWithCommas(deskData.sizeUsd)} size
@@ -547,7 +527,7 @@ function ActivePositionDesk() {
         </div>
       </div>
 
-      {/* 2. Timeframe Selector (1m, 5m, 15m, 1h) */}
+      {/* 2. Timeframe Selector & Live Tools Bar */}
       <div className="desk-tf-bar">
         <div className="desk-tf-pill-box">
           {(['1m', '5m', '15m', '1h'] as const).map((tf) => (
@@ -561,45 +541,68 @@ function ActivePositionDesk() {
             </button>
           ))}
         </div>
+
+        <div className="desk-tf-tools">
+          <span className="desk-live-badge">
+            <span className="desk-beacon-pulse" />
+            LIVE
+          </span>
+          <span className="desk-asset-toggle-pill">
+            <button
+              type="button"
+              onClick={() => setSelectedAsset('BTC')}
+              className={`desk-asset-toggle-btn ${selectedAsset === 'BTC' ? 'active' : ''}`}
+            >
+              BTC
+            </button>
+            <button
+              type="button"
+              onClick={() => setSelectedAsset('SOL')}
+              className={`desk-asset-toggle-btn ${selectedAsset === 'SOL' ? 'active' : ''}`}
+            >
+              SOL
+            </button>
+          </span>
+        </div>
       </div>
 
       {/* 3. Candlestick & Indicator Chart SVG */}
       <div className="desk-chart-container">
-        <svg viewBox="0 0 340 210" className="desk-chart-svg" aria-label="Position Candlestick Chart">
+        <svg viewBox="0 0 346 210" className="desk-chart-svg" aria-label="Position Candlestick Chart">
           {/* Subtle Horizontal Grid lines */}
-          <line x1="12" y1="40" x2="280" y2="40" stroke="#f1f5f9" strokeWidth="0.8" />
-          <line x1="12" y1="80" x2="280" y2="80" stroke="#f1f5f9" strokeWidth="0.8" />
-          <line x1="12" y1="120" x2="280" y2="120" stroke="#f1f5f9" strokeWidth="0.8" />
-          <line x1="12" y1="160" x2="280" y2="160" stroke="#f1f5f9" strokeWidth="0.8" />
+          <line x1="12" y1="40" x2="276" y2="40" stroke="#f1f5f9" strokeWidth="0.8" />
+          <line x1="12" y1="80" x2="276" y2="80" stroke="#f1f5f9" strokeWidth="0.8" />
+          <line x1="12" y1="120" x2="276" y2="120" stroke="#f1f5f9" strokeWidth="0.8" />
+          <line x1="12" y1="160" x2="276" y2="160" stroke="#f1f5f9" strokeWidth="0.8" />
 
           {/* Target Take Profit Line (Green dashed) */}
-          <line x1="12" y1={targetY} x2="280" y2={targetY} stroke="#10b981" strokeWidth="1" strokeDasharray="3 3" />
-          <rect x="282" y={Math.max(2, targetY - 7)} width="52" height="14" rx="3" fill="#10b981" />
-          <text x="308" y={Math.max(2, targetY - 7) + 10} fill="#ffffff" fontSize="8" fontWeight="700" textAnchor="middle" fontFamily="var(--font-mono)">
+          <line x1="12" y1={targetY} x2="276" y2={targetY} stroke="#10b981" strokeWidth="1" strokeDasharray="3 3" />
+          <rect x="280" y={Math.max(2, targetY - 7)} width="56" height="15" rx="3" fill="#10b981" />
+          <text x="308" y={Math.max(2, targetY - 7) + 11} fill="#ffffff" fontSize="8.5" fontWeight="700" textAnchor="middle" fontFamily="var(--font-mono)">
             {formatPriceNum(deskData.targetPrice)}
           </text>
 
           {/* Stop Loss Line (Red dashed) */}
-          <line x1="12" y1={stopY} x2="280" y2={stopY} stroke="#ef4444" strokeWidth="1" strokeDasharray="3 3" />
-          <rect x="282" y={Math.max(2, stopY - 7)} width="52" height="14" rx="3" fill="#ef4444" />
-          <text x="308" y={Math.max(2, stopY - 7) + 10} fill="#ffffff" fontSize="8" fontWeight="700" textAnchor="middle" fontFamily="var(--font-mono)">
+          <line x1="12" y1={stopY} x2="276" y2={stopY} stroke="#ef4444" strokeWidth="1" strokeDasharray="3 3" />
+          <rect x="280" y={Math.max(2, stopY - 7)} width="56" height="15" rx="3" fill="#ef4444" />
+          <text x="308" y={Math.max(2, stopY - 7) + 11} fill="#ffffff" fontSize="8.5" fontWeight="700" textAnchor="middle" fontFamily="var(--font-mono)">
             {formatPriceNum(deskData.stopPrice)}
           </text>
 
           {/* Entry Level Badge (Grey) */}
-          <rect x="282" y={Math.max(2, entryBadgeY - 7)} width="52" height="14" rx="3" fill="#64748b" />
-          <text x="308" y={Math.max(2, entryBadgeY - 7) + 10} fill="#ffffff" fontSize="8" fontWeight="700" textAnchor="middle" fontFamily="var(--font-mono)">
+          <rect x="280" y={Math.max(2, entryBadgeY - 7)} width="56" height="15" rx="3" fill="#64748b" />
+          <text x="308" y={Math.max(2, entryBadgeY - 7) + 11} fill="#ffffff" fontSize="8.5" fontWeight="700" textAnchor="middle" fontFamily="var(--font-mono)">
             {formatPriceNum(deskData.entryPrice)}
           </text>
 
           {/* Mark Price Badge (Red/Green depending on PnL) with Live Radar Ping */}
-          <line x1="12" y1={markY} x2="280" y2={markY} stroke={isNeg ? '#ef4444' : '#10b981'} strokeWidth="1" strokeDasharray="2 2" />
+          <line x1="12" y1={markY} x2="276" y2={markY} stroke={isNeg ? '#ef4444' : '#10b981'} strokeWidth="1.2" strokeDasharray="2 2" />
           <g>
-            <circle cx="280" cy={markY} r="6" fill={isNeg ? 'rgba(239, 68, 68, 0.35)' : 'rgba(16, 185, 129, 0.35)'} />
-            <circle cx="280" cy={markY} r="3" fill={isNeg ? '#dc2626' : '#059669'} />
+            <circle cx="276" cy={markY} r="6" fill={isNeg ? 'rgba(239, 68, 68, 0.35)' : 'rgba(16, 185, 129, 0.35)'} />
+            <circle cx="276" cy={markY} r="3" fill={isNeg ? '#dc2626' : '#059669'} />
           </g>
-          <rect x="282" y={Math.max(2, markY - 7)} width="52" height="14" rx="3" fill={isNeg ? '#dc2626' : '#059669'} />
-          <text x="308" y={Math.max(2, markY - 7) + 10} fill="#ffffff" fontSize="8" fontWeight="800" textAnchor="middle" fontFamily="var(--font-mono)">
+          <rect x="280" y={Math.max(2, markY - 7)} width="56" height="15" rx="3" fill={isNeg ? '#dc2626' : '#059669'} />
+          <text x="308" y={Math.max(2, markY - 7) + 11} fill="#ffffff" fontSize="8.5" fontWeight="800" textAnchor="middle" fontFamily="var(--font-mono)">
             {formatPriceNum(deskData.markPrice)}
           </text>
 
@@ -627,7 +630,7 @@ function ActivePositionDesk() {
             const openY = getY(c.open);
             const closeY = getY(c.close);
             const topY = Math.min(openY, closeY);
-            const bodyHeight = Math.max(1.8, Math.abs(openY - closeY));
+            const bodyHeight = Math.max(2, Math.abs(openY - closeY));
             const isBull = c.close >= c.open;
             const color = isBull ? '#10b981' : '#ef4444';
 
@@ -647,6 +650,34 @@ function ActivePositionDesk() {
               </g>
             );
           })}
+
+          {/* Active Candle Live Halo & Radar Dot */}
+          {candles.length > 0 && (
+            <g>
+              <circle
+                cx={getX(candles.length - 1)}
+                cy={getY(candles[candles.length - 1].close)}
+                r="6"
+                fill={candles[candles.length - 1].close >= candles[candles.length - 1].open ? '#10b981' : '#ef4444'}
+                opacity="0.4"
+              >
+                <animate attributeName="r" values="3;9;3" dur="1.2s" repeatCount="indefinite" />
+                <animate attributeName="opacity" values="0.8;0.1;0.8" dur="1.2s" repeatCount="indefinite" />
+              </circle>
+              <circle
+                cx={getX(candles.length - 1)}
+                cy={getY(candles[candles.length - 1].close)}
+                r="2.8"
+                fill={candles[candles.length - 1].close >= candles[candles.length - 1].open ? '#10b981' : '#ef4444'}
+              />
+              <circle
+                cx={getX(candles.length - 1)}
+                cy={getY(candles[candles.length - 1].close)}
+                r="1.2"
+                fill="#ffffff"
+              />
+            </g>
+          )}
 
           {/* Moving Averages */}
           {ma7D && <path d={ma7D} fill="none" stroke="#3b82f6" strokeWidth="1.6" strokeLinecap="round" />}

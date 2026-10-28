@@ -3061,8 +3061,8 @@ img, svg, video, canvas {
 .desk-top-header {
   display: flex;
   justify-content: space-between;
-  align-items: flex-start;
-  margin-bottom: 12px;
+  align-items: center;
+  margin-bottom: 14px;
 }
 
 .desk-coin-group {
@@ -3072,13 +3072,13 @@ img, svg, video, canvas {
 }
 
 .desk-coin-icon {
-  width: 42px;
-  height: 42px;
+  width: 44px;
+  height: 44px;
   border-radius: 50%;
   display: grid;
   place-items: center;
   font-weight: 800;
-  font-size: 20px;
+  font-size: 22px;
   color: #ffffff;
   flex-shrink: 0;
   box-shadow: 0 4px 12px rgba(247, 147, 26, 0.25);
@@ -3100,7 +3100,7 @@ img, svg, video, canvas {
 
 .desk-position-heading {
   font-family: var(--font-display);
-  font-size: 19px;
+  font-size: 20px;
   font-weight: 700;
   color: var(--color-ink);
   line-height: 1.2;
@@ -3119,7 +3119,6 @@ img, svg, video, canvas {
   background: #f1f5f9;
   border-radius: 9999px;
   padding: 2px;
-  margin-left: 6px;
   border: 1px solid #e2e8f0;
 }
 
@@ -3150,10 +3149,14 @@ img, svg, video, canvas {
 
 .desk-pnl-headline {
   font-family: var(--font-display);
-  font-size: 27px;
+  font-size: 26px;
   font-weight: 800;
   line-height: 1.1;
   letter-spacing: -0.02em;
+  white-space: nowrap;
+  text-align: right;
+  flex-shrink: 0;
+  margin-left: 8px;
 }
 
 .desk-pnl-headline.pnl-neg {
@@ -3167,8 +3170,15 @@ img, svg, video, canvas {
 /* Timeframe Bar */
 .desk-tf-bar {
   display: flex;
-  justify-content: flex-start;
-  margin-bottom: 8px;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.desk-tf-tools {
+  display: flex;
+  align-items: center;
+  gap: 6px;
 }
 
 .desk-tf-pill-box {
