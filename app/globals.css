@@ -3307,3 +3307,44 @@ img, svg, video, canvas {
   flex: 1;
 }
 
+.desk-live-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 9.5px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: #10b981;
+  background: rgba(16, 185, 129, 0.1);
+  padding: 2px 7px;
+  border-radius: 9999px;
+  border: 1px solid rgba(16, 185, 129, 0.2);
+  margin-left: 6px;
+  vertical-align: middle;
+}
+
+.desk-beacon-pulse {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #10b981;
+  display: inline-block;
+  animation: beacon-ping 1.5s cubic-bezier(0, 0, 0.2, 1) infinite;
+}
+
+@keyframes beacon-ping {
+  0% { transform: scale(0.9); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7); }
+  70% { transform: scale(1.1); box-shadow: 0 0 0 5px rgba(16, 185, 129, 0); }
+  100% { transform: scale(0.9); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
+}
+
+.desk-pnl-headline.tick-up {
+  text-shadow: 0 0 14px rgba(16, 185, 129, 0.45);
+  transition: text-shadow 0.2s ease;
+}
+
+.desk-pnl-headline.tick-down {
+  text-shadow: 0 0 14px rgba(239, 68, 68, 0.45);
+  transition: text-shadow 0.2s ease;
+}
+

@@ -334,6 +334,7 @@ interface PositionDeskData {
 function ActivePositionDesk() {
   const [selectedAsset, setSelectedAsset] = useState<'BTC' | 'SOL'>('BTC');
   const [selectedTf, setSelectedTf] = useState<'1m' | '5m' | '15m' | '1h'>('5m');
+  const [lastTickDir, setLastTickDir] = useState<'up' | 'down' | null>(null);
   const [deskData, setDeskData] = useState<PositionDeskData>({
     symbol: 'BTC',
     assetName: 'Bitcoin',
@@ -394,6 +395,49 @@ function ActivePositionDesk() {
     }, 4000);
     return () => clearInterval(interval);
   }, [selectedAsset, selectedTf, fetchDeskData]);
+
+  // Micro-tick engine: simulates live order-flow ticks between 4s REST fetches
+  useEffect(() => {
+    const tickInterval = setInterval(() => {
+      setDeskData((prev) => {
+        if (!prev.candles || prev.candles.length === 0) return prev;
+        
+        const isBtc = prev.symbol === 'BTC';
+        const tickSpread = isBtc ? 1.4 : 0.03;
+        const tickDelta = Number(((Math.random() - 0.48) * tickSpread).toFixed(2));
+        if (Math.abs(tickDelta) < 0.01) return prev;
+
+        const nextMark = Number((prev.markPrice + tickDelta).toFixed(2));
+        const dir = tickDelta >= 0 ? 'up' : 'down';
+        setLastTickDir(dir);
+
+        // Update latest candle
+        const nextCandles = [...prev.candles];
+        const lastIdx = nextCandles.length - 1;
+        const lastC = { ...nextCandles[lastIdx] };
+        lastC.close = nextMark;
+        lastC.high = Math.max(lastC.high, nextMark);
+        lastC.low = Math.min(lastC.low, nextMark);
+        lastC.volume = lastC.volume + Math.floor(Math.random() * 4);
+        nextCandles[lastIdx] = lastC;
+
+        // Recalculate PnL
+        const priceDiffRatio = (nextMark - prev.entryPrice) / prev.entryPrice;
+        const pnlUsd = Number((prev.sizeUsd * priceDiffRatio).toFixed(2));
+        const pnlPercent = Number((priceDiffRatio * prev.leverage * 100).toFixed(2));
+
+        return {
+          ...prev,
+          markPrice: nextMark,
+          pnlUsd,
+          pnlPercent,
+          candles: nextCandles,
+        };
+      });
+    }, 1100);
+
+    return () => clearInterval(tickInterval);
+  }, []);
 
   // Geometry computation for candlesticks and indicators
   const candles = deskData.candles.length >= 8 ? deskData.candles : [];
@@ -471,6 +515,10 @@ function ActivePositionDesk() {
             <div className="desk-position-heading">
               <span>{deskData.side}</span>
               <span className="leverage-tag">{deskData.leverage}x</span>
+              <span className="desk-live-badge">
+                <span className="desk-beacon-pulse" />
+                LIVE
+              </span>
               <span className="desk-asset-toggle-pill">
                 <button
                   type="button"
@@ -489,12 +537,12 @@ function ActivePositionDesk() {
               </span>
             </div>
             <div className="desk-size-subtext">
-              ${deskData.marginUsd.toLocaleString()} margin · ${deskData.sizeUsd.toLocaleString()} size
+              ${formatNumberWithCommas(deskData.marginUsd)} margin · ${formatNumberWithCommas(deskData.sizeUsd)} size
             </div>
           </div>
         </div>
 
-        <div className={`desk-pnl-headline tabular ${isNeg ? 'pnl-neg' : 'pnl-pos'}`}>
+        <div className={`desk-pnl-headline tabular ${isNeg ? 'pnl-neg' : 'pnl-pos'} ${lastTickDir === 'up' ? 'tick-up' : lastTickDir === 'down' ? 'tick-down' : ''}`}>
           {pnlDisplay}
         </div>
       </div>
@@ -544,8 +592,12 @@ function ActivePositionDesk() {
             {formatPriceNum(deskData.entryPrice)}
           </text>
 
-          {/* Mark Price Badge (Red/Green depending on PnL) */}
+          {/* Mark Price Badge (Red/Green depending on PnL) with Live Radar Ping */}
           <line x1="12" y1={markY} x2="280" y2={markY} stroke={isNeg ? '#ef4444' : '#10b981'} strokeWidth="1" strokeDasharray="2 2" />
+          <g>
+            <circle cx="280" cy={markY} r="6" fill={isNeg ? 'rgba(239, 68, 68, 0.35)' : 'rgba(16, 185, 129, 0.35)'} />
+            <circle cx="280" cy={markY} r="3" fill={isNeg ? '#dc2626' : '#059669'} />
+          </g>
           <rect x="282" y={Math.max(2, markY - 7)} width="52" height="14" rx="3" fill={isNeg ? '#dc2626' : '#059669'} />
           <text x="308" y={Math.max(2, markY - 7) + 10} fill="#ffffff" fontSize="8" fontWeight="800" textAnchor="middle" fontFamily="var(--font-mono)">
             {formatPriceNum(deskData.markPrice)}
