@@ -693,20 +693,6 @@ export function Dashboard() {
           <span>● {model.health.state}</span>
         </div>
 
-        {/* Live Operational Telemetry Pill (ATM Visual Upgrade) */}
-        <div className="telemetry-banner-wrapper">
-          <div className="telemetry-status-banner">
-            <span className="pulse-dot-beacon" />
-            <strong style={{ color: 'var(--color-ink)' }}>SOLANA DEVNET</strong>
-            <span style={{ opacity: 0.35 }}>•</span>
-            <span style={{ color: '#0d8a5c', fontWeight: 600 }}>PAPER MODE ACTIVE</span>
-            <span style={{ opacity: 0.35 }}>•</span>
-            <span>PUMPPORTAL WS {liveConnected ? 'CONNECTED (34ms)' : 'SYNCED'}</span>
-            <span style={{ opacity: 0.35 }}>•</span>
-            <span style={{ color: 'var(--color-iris)' }}>SLOT {solanaDevnetSlot ? solanaDevnetSlot.toLocaleString() : '318,492,102'}</span>
-          </div>
-        </div>
-
         {/* 2. HERO TWO-COLUMN SECTION */}
         <section className="hero-two-col">
           {/* Left Stack: Title & Treasury */}
@@ -1622,40 +1608,36 @@ export function Dashboard() {
                 {/* Left: LAST CALL */}
                 <div className="lastcall-metric-group">
                   <span className="lastcall-label">LAST CALL</span>
-                  <strong className="lastcall-value" style={{ color: 'var(--color-long)' }}>BUY $SOLCAT</strong>
+                  <strong className="lastcall-value">BUY $SOLCAT</strong>
                   <span className="lastcall-conviction tabular">conviction 85%</span>
                 </div>
 
-                {/* Right: RISK GUARD with 52px Circular Dial */}
+                {/* Subtle vertical hairline divider */}
+                <div className="lastcall-divider" aria-hidden="true" />
+
+                {/* Right: RISK GUARD with Circular Safety Dial */}
                 <div className="sage-metric-group">
                   <div className="sage-text-wrap">
                     <span className="sage-label">RISK GUARD</span>
-                    <div className="sage-status" style={{ color: 'var(--color-long)' }}>PASS (Rule #2)</div>
+                    <div className="sage-status">PASS (Rule #2)</div>
                   </div>
-                  <div style={{ position: 'relative', width: '52px', height: '52px', flexShrink: 0 }}>
-                    <svg width="52" height="52" viewBox="0 0 52 52" style={{ transform: 'rotate(-90deg)', display: 'block' }}>
-                      <circle cx="26" cy="26" r="22" stroke="var(--color-line)" strokeWidth="3" fill="none" />
+                  <div className="sage-dial-wrapper">
+                    <svg width="40" height="40" viewBox="0 0 40 40" style={{ transform: 'rotate(-90deg)', display: 'block' }}>
+                      <circle cx="20" cy="20" r="16.5" stroke="var(--color-line)" strokeWidth="2.5" fill="none" />
                       <circle
-                        cx="26"
-                        cy="26"
-                        r="22"
-                        stroke="var(--color-ink-4)"
-                        strokeWidth="3"
+                        cx="20"
+                        cy="20"
+                        r="16.5"
+                        stroke="var(--color-long)"
+                        strokeWidth="2.5"
                         fill="none"
-                        strokeDasharray="138.23"
-                        strokeDashoffset="138.23"
+                        strokeDasharray="103.67"
+                        strokeDashoffset="0"
+                        style={{ opacity: 0.85 }}
                       />
                     </svg>
-                    <div
-                      style={{
-                        position: 'absolute',
-                        inset: 0,
-                        display: 'grid',
-                        placeItems: 'center',
-                        color: 'var(--color-long)',
-                      }}
-                    >
-                      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                    <div className="sage-dial-icon">
+                      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
                         <polyline points="20 6 9 17 4 12" />
                       </svg>
                     </div>
