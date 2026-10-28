@@ -1,0 +1,70 @@
+{
+  "generation_hash": "212265b5019300f771e8",
+  "inputs": {
+    "jinja2_version": "3.1.6",
+    "project_root": "C:\\laragon\\www\\kevin-work\\wealthy-project\\Vikoagent",
+    "renderer_sha256": "b866e2bbb649d93ea30ed0a3bf01d1fec030002c0a5a82f5bd958746b432a904",
+    "resolved_values": {
+      "config.core.output_folder": "C:/laragon/www/kevin-work/wealthy-project/Vikoagent/_bmad-output",
+      "customization.workflow.activation_steps_append": [],
+      "customization.workflow.activation_steps_prepend": [],
+      "customization.workflow.fixes": "apply",
+      "customization.workflow.interactive": true,
+      "customization.workflow.on_complete": "",
+      "customization.workflow.persistent_facts": [],
+      "customization.workflow.review": "thorough",
+      "customization.workflow.thorough_lenses": [
+        {
+          "id": "blind-hunter",
+          "instruction": "Launch a context-free subagent with this prompt:\n\nConduct a review of CONTENT.\nLook for what's missing, not only what's wrong.\nCompute your finding floor N from the diff file's size: N = min(floor(sqrt(kB) + 1), 10), where kB is the file's size in kilobytes. State the arithmetic in one line, then find at least N issues to fix or improve.\nOutput a Markdown list of findings only — no severity, priority, or ranking.\nIf the content is empty, stop and say so.\nIf you have zero findings, re-check and keep thinking; do not stop with an empty list.\n\nCONTENT: the unified diff at `{diff_file}`. Read that file — it is the content under review.\n\nReview by inspection only. Do not modify code, run builds or tests, or invoke quality gates. Do not invoke any skill, and do not spawn subagents of your own — you are the reviewer. Return your findings as text in your final message; do not route them through any findings-reporting tool the host may offer.\n\n",
+          "name": "Blind Hunter"
+        },
+        {
+          "id": "edge-case-hunter",
+          "instruction": "Launch a context-free subagent with this prompt:\n\nRead `{skill-root}/review-prompts/edge-case-hunter.md` completely and follow it as your review instructions.\n\nclaims_file (leave unread until your instructions call for it): {claims_file}\n\nReview content: the unified diff at `{diff_file}`. Read that file — it is the content under review.\n\nReview by inspection only. Do not modify code, run builds or tests, or invoke quality gates. Do not invoke any skill, and do not spawn subagents of your own — you are the reviewer. If the instruction file is unreadable, report that exact failure and stop. Return your findings as text in your final message; do not route them through any findings-reporting tool the host may offer.\n\n",
+          "name": "Edge Case Hunter"
+        },
+        {
+          "id": "verification-gap",
+          "instruction": "Launch a context-free subagent with this prompt:\n\nRead `{skill-root}/review-prompts/verification-gap.md` completely and follow it as your review instructions.\n\nReview content: the unified diff at `{diff_file}`. Read that file — it is the content under review.\n\nReview by inspection only. Do not modify code, run builds or tests, or invoke quality gates. Do not invoke any skill, and do not spawn subagents of your own — you are the reviewer. If the instruction file is unreadable, report that exact failure and stop. Return your findings as text in your final message; do not route them through any findings-reporting tool the host may offer.\n\n",
+          "name": "Verification Gap Reviewer"
+        },
+        {
+          "id": "intent-alignment",
+          "instruction": "Launch a subagent with this prompt:\n\nYou are an intent-alignment auditor. You have no other context about how this change was produced. Here is the verbatim intent this work started from:\n\n{verbatim_intent}\n\nThe diff is the unified diff at `{diff_file}`. Read that file — it is the change under review.\n\nYour task is strictly descriptive — do not prescribe additional work. Report: (1) the defensible readings of the intent, enumerated; (2) which reading this diff implements; (3) where the readings and the diff diverge — specifically, which surface the intent's expectations live at versus which surface the diff's changes and its tests exercise.\n\nReview by inspection only. Do not modify code, run builds or tests, or invoke quality gates. Do not invoke any skill, and do not spawn subagents of your own — you are the reviewer. Return your findings as text in your final message; do not route them through any findings-reporting tool the host may offer.\n\n",
+          "name": "Intent Alignment Auditor",
+          "when": "an intent is available: the spec's intent section, or the user's or conversation's own words on what the change is for"
+        }
+      ],
+      "initiative_folder": "C:/laragon/www/kevin-work/wealthy-project/Vikoagent/_bmad-output/initiative-vikoagent"
+    },
+    "skill_root": "C:\\Users\\KevinAdisuryaNugraha\\.agents\\skills\\bmad-code-review",
+    "source_sha256": {
+      "references/claims-check.md": "7be5d35dd90a1950addc2062acdf8669026b239117efe1e398da1e8161cfa6f9",
+      "references/deletion-check.md": "0f1f124e4e957147e89164a272b10bedc694ad0d9ad2618c8610ac74ee9cb0da",
+      "review-prompts/edge-case-hunter.md": "5f4572d57340b4c0d155f33454d644a44af101cd7fd02a01591be68a4ebb8b7f",
+      "review-prompts/verification-gap.md": "06f6184d7d94c808970d0146cdc4585dfd66b94a7b7ab2988277fb6fc4208508",
+      "step-01-gather-context.md": "a14117eeae43335838323bec3beda31c99c4f0404097db4a579909ba698b9c8b",
+      "step-02-review.md": "68ef4250d5280ac66e0e57670496408010907d6b274a384304e4c78144e85010",
+      "step-03-triage.md": "d70d9c1b41ca2f098fca3872f3043c1415c634d4bfc62fcdaa622e49819abe76",
+      "step-04-present.md": "334455e6875f481f63692339807d1b3e1a51a0fb64cf4eac7a1b4ea1a8cb3beb",
+      "workflow.md": "8d12706a762292c03a9dc67bc81d003ca09aa7ae26ce7d3af56f51198f0319f9"
+    }
+  },
+  "outputs": {
+    "references/claims-check.md": "7be5d35dd90a1950addc2062acdf8669026b239117efe1e398da1e8161cfa6f9",
+    "references/deletion-check.md": "0f1f124e4e957147e89164a272b10bedc694ad0d9ad2618c8610ac74ee9cb0da",
+    "review-prompts/edge-case-hunter.md": "5f4572d57340b4c0d155f33454d644a44af101cd7fd02a01591be68a4ebb8b7f",
+    "review-prompts/verification-gap.md": "06f6184d7d94c808970d0146cdc4585dfd66b94a7b7ab2988277fb6fc4208508",
+    "step-01-gather-context.md": "143e55d3809e80b9b5ef98182aef400994a385c21db8ac275e136c33f7dbd0f5",
+    "step-02-review.md": "36c0413e8b72581ad784afc3d53b9f6b63379ecacbdd80e163e50ab665adb3af",
+    "step-03-triage.md": "a89af578e36da11433159ab2489b122d3fc04578f7c5a78ece88eb5d9762ed14",
+    "step-04-present.md": "08ba91bf1eabe5afbd3f8bf9dcb1dae17e5ec92b0c93de555eb84d106ea3f3f1",
+    "workflow.md": "55abaecd5da1e60cf7f7394c92f764d2bc1c8e55bb1b1fbbcebfc18b5b6ae4a7"
+  },
+  "project_root": "C:\\laragon\\www\\kevin-work\\wealthy-project\\Vikoagent",
+  "project_slug": "vikoagent",
+  "root_hash": "c96f12bd98c1",
+  "schema_version": 1,
+  "skill": "bmad-code-review"
+}
