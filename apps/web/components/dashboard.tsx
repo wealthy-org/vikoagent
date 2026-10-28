@@ -115,6 +115,9 @@ interface ScannedToken {
   devHoldPercent: number;
   ageSeconds: number;
   status: 'ACCEPTED' | 'REJECTED' | 'WATCHING';
+  mCapUsd?: number;
+  auditTag?: string;
+  avatarBg?: string;
 }
 
 const MOCK_SCANNED_TOKENS: ScannedToken[] = [
@@ -128,6 +131,9 @@ const MOCK_SCANNED_TOKENS: ScannedToken[] = [
     devHoldPercent: 2.8,
     ageSeconds: 14,
     status: 'ACCEPTED',
+    mCapUsd: 48900,
+    auditTag: 'Zero Freeze',
+    avatarBg: 'linear-gradient(135deg, #10b981, #059669)',
   },
   {
     mint: '9pL4vS9JkQw71mXZaA5e2q3KjhYr5G8tNmPqUvWzXeT',
@@ -139,6 +145,9 @@ const MOCK_SCANNED_TOKENS: ScannedToken[] = [
     devHoldPercent: 3.5,
     ageSeconds: 38,
     status: 'WATCHING',
+    mCapUsd: 112000,
+    auditTag: 'DBC Tier 2',
+    avatarBg: 'linear-gradient(135deg, #f59e0b, #d97706)',
   },
   {
     mint: '3mK8vQ1rP9tY5zX7wL2nJ4hF6bG0sD8cE1aU3oI5vR',
@@ -150,6 +159,9 @@ const MOCK_SCANNED_TOKENS: ScannedToken[] = [
     devHoldPercent: 41.5,
     ageSeconds: 52,
     status: 'REJECTED',
+    mCapUsd: 6400,
+    auditTag: 'Dev Dump Risk',
+    avatarBg: 'linear-gradient(135deg, #ef4444, #b91c1c)',
   },
   {
     mint: '5rT2qW9kL7mY3zP1xJ8nF4hD6bC0sA8eE2aU4oI6vT',
@@ -161,69 +173,128 @@ const MOCK_SCANNED_TOKENS: ScannedToken[] = [
     devHoldPercent: 1.9,
     ageSeconds: 120,
     status: 'ACCEPTED',
+    mCapUsd: 420000,
+    auditTag: 'Raydium Locked',
+    avatarBg: 'linear-gradient(135deg, #8b5cf6, #6d28d9)',
+  },
+  {
+    mint: 'Vk89aZ4pQe2rM5tW1sC7vL9yH3nJ0bF6xG4uI8dE2oA',
+    name: 'Viko Neural Agent',
+    symbol: 'VIKO',
+    source: 'PUMP.FUN',
+    bondingProgress: 68,
+    liquidityUsd: 32600,
+    devHoldPercent: 1.5,
+    ageSeconds: 8,
+    status: 'ACCEPTED',
+    mCapUsd: 86500,
+    auditTag: 'Mint Revoked',
+    avatarBg: 'linear-gradient(135deg, #6366f1, #4f46e5)',
+  },
+  {
+    mint: '2bN7mK4wX9tY1zP3sJ6vF8hD0qC5sA2eE7aU1oI9vM',
+    name: 'Bonk Intelligence Swarm',
+    symbol: 'BONK-AI',
+    source: 'PUMP.FUN',
+    bondingProgress: 88,
+    liquidityUsd: 64200,
+    devHoldPercent: 1.1,
+    ageSeconds: 24,
+    status: 'ACCEPTED',
+    mCapUsd: 154000,
+    auditTag: 'LP Burned',
+    avatarBg: 'linear-gradient(135deg, #ec4899, #be185d)',
+  },
+  {
+    mint: '8kP1vS6JmQw49mXZbA2e7q8KjhYr1G3tNmPqUvWzXeR',
+    name: 'Jupiter Router Simulator',
+    symbol: 'JUP-SIM',
+    source: 'METEORA DBC',
+    bondingProgress: 54,
+    liquidityUsd: 28400,
+    devHoldPercent: 2.2,
+    ageSeconds: 45,
+    status: 'WATCHING',
+    mCapUsd: 74000,
+    auditTag: 'Routing Pool',
+    avatarBg: 'linear-gradient(135deg, #14b8a6, #0f766e)',
+  },
+  {
+    mint: '4tY9mW2kL8nX6zP5xJ3nF1hD9bC7sA4eE0aU8oI2vQ',
+    name: 'Autonomous Anti-Rug',
+    symbol: 'DEBUNK',
+    source: 'MIGRATED',
+    bondingProgress: 100,
+    liquidityUsd: 240000,
+    devHoldPercent: 0.8,
+    ageSeconds: 180,
+    status: 'ACCEPTED',
+    mCapUsd: 610000,
+    auditTag: 'Verified Devnet',
+    avatarBg: 'linear-gradient(135deg, #3b82f6, #1d4ed8)',
   },
 ];
 
 const TIMEFRAME_DATA: Record<string, { nav: string; pnl: string; fees: string; trades: number; winRate: string; realized: string; badgeVal: string }> = {
   '1D': {
-    nav: '$3,380.23',
-    pnl: '+$5.88 · +0.17%',
-    fees: '+$2,376 fees in',
-    trades: 1,
+    nav: '24.85 SOL ($4,572.40)',
+    pnl: '+0.42 SOL · +1.72%',
+    fees: '0.004 SOL ($0.74)',
+    trades: 3,
     winRate: '100%',
-    realized: '+$5',
-    badgeVal: '$2,534',
+    realized: '+$77.30',
+    badgeVal: '$4,572',
   },
   '1W': {
-    nav: '$4,120.50',
-    pnl: '+$245.00 · +6.3%',
-    fees: '+$2,850 fees in',
-    trades: 4,
-    winRate: '100%',
-    realized: '+$24',
-    badgeVal: '$3,120',
+    nav: '26.10 SOL ($4,802.40)',
+    pnl: '+1.85 SOL · +7.62%',
+    fees: '0.018 SOL ($3.31)',
+    trades: 9,
+    winRate: '88.9%',
+    realized: '+$340.50',
+    badgeVal: '$4,802',
   },
   '1M': {
-    nav: '$5,890.10',
-    pnl: '+$890.00 · +17.8%',
-    fees: '+$3,640 fees in',
-    trades: 12,
-    winRate: '92%',
-    realized: '+$115',
-    badgeVal: '$4,280',
+    nav: '28.45 SOL ($5,234.80)',
+    pnl: '+4.20 SOL · +17.31%',
+    fees: '0.045 SOL ($8.28)',
+    trades: 24,
+    winRate: '87.5%',
+    realized: '+$772.80',
+    badgeVal: '$5,235',
   },
   'ALL': {
-    nav: '$3,380.23',
-    pnl: '+$5.88 · +0.17%',
-    fees: '+$2,376 fees in',
-    trades: 1,
-    winRate: '100%',
-    realized: '+$5',
-    badgeVal: '$2,534',
+    nav: '28.45 SOL ($5,234.80)',
+    pnl: '+5.45 SOL · +23.69%',
+    fees: '0.052 SOL ($9.57)',
+    trades: 32,
+    winRate: '84.4%',
+    realized: '+$1,002.80',
+    badgeVal: '$5,235',
   },
 };
 
 const STEP_NODES = [
-  { x: 60.9, y: 153.0, label: '-$261 fees', isTrade: false },
-  { x: 83.9, y: 141.9, label: '+$171 fees', isTrade: false },
-  { x: 109.1, y: 125.7, label: '+$334 fees', isTrade: false },
-  { x: 135.8, y: 114.7, label: '+$179 fees', isTrade: false },
-  { x: 161.0, y: 103.6, label: '+$149 fees', isTrade: false },
-  { x: 195.9, y: 98.5, label: '+$123 fees', isTrade: false },
-  { x: 215.2, y: 92.5, label: '+$205 fees', isTrade: false },
-  { x: 241.1, y: 87.4, label: '+$113 fees', isTrade: false },
-  { x: 301.9, y: 65.3, label: '+$135 fees', isTrade: false },
-  { x: 359.0, y: 54.2, label: '+$190 fees', isTrade: false },
-  { x: 410.9, y: 43.1, label: '+$317 fees', isTrade: true }, // Prominent Green Dot
-  { x: 445.0, y: 38.0, label: '+$100 fees', isTrade: false },
+  { x: 60.9, y: 153.0, label: '+$14.20 fill', isTrade: false },
+  { x: 83.9, y: 141.9, label: '+$28.40 fill', isTrade: false },
+  { x: 109.1, y: 125.7, label: '+$42.10 fill', isTrade: false },
+  { x: 135.8, y: 114.7, label: '-$12.00 stop', isTrade: false },
+  { x: 161.0, y: 103.6, label: '+$36.50 fill', isTrade: false },
+  { x: 195.9, y: 98.5, label: '+$18.20 fill', isTrade: false },
+  { x: 215.2, y: 92.5, label: '+$52.00 fill', isTrade: false },
+  { x: 241.1, y: 87.4, label: '+$34.10 fill', isTrade: false },
+  { x: 301.9, y: 65.3, label: '+$85.40 fill', isTrade: false },
+  { x: 359.0, y: 54.2, label: '+$96.00 fill', isTrade: false },
+  { x: 410.9, y: 43.1, label: '+$142.50 TP', isTrade: true }, // Prominent Green Dot
+  { x: 445.0, y: 38.0, label: '+$64.20 fill', isTrade: false },
 ];
 
 const INCOMING_NEWS_FEED = [
-  { time: '2m', source: 'x.com', author: '@pumpfun', headline: 'Pump.fun: New bonding curve reached 100% capacity. Preparing Raydium CPMM migration event.' },
-  { time: '5m', source: 'x.com', author: '@MeteoraAG', headline: 'Meteora: Dynamic Bonding Curve (DBC) alpha pool initialized with automated fee tiering.' },
+  { time: '2m', source: 'pumpportal.fun', author: 'PumpPortal', headline: 'PumpPortal WS: Token genesis event $SOLCAT bonding curve reaches 42% threshold.' },
+  { time: '5m', source: 'meteora.ag', author: '@MeteoraAG', headline: 'Meteora: Dynamic Bonding Curve (DBC) pool $MDV initialized with dynamic fee tiering.' },
   { time: '14m', source: 'solana.com', author: '@solana', headline: 'Solana Devnet: Cluster slot height 318,492,102 verified healthy with sub-second finality.' },
-  { time: '22m', source: 'pumpportal.fun', author: 'PumpPortal', headline: 'PumpPortal WS: Live WebSocket stream active with 1,420 token discovery events in the last hour.' },
-  { time: '35m', source: 'raydium.io', author: 'Raydium', headline: 'Raydium: Successful liquidity lock confirmed for graduating DBC pool mint 7xKX...JosgAsU.' },
+  { time: '22m', source: 'raydium.io', author: 'Raydium', headline: 'Raydium CPMM: Graduated pool liquidity locked for $NTDOGE mint (185,000 USD total depth).' },
+  { time: '35m', source: 'pumpportal.fun', author: 'PumpPortal', headline: 'PumpPortal WS: High-velocity stream active with 1,420 token discovery events in the last hour.' },
 ];
 
 export function Dashboard() {
@@ -248,29 +319,38 @@ export function Dashboard() {
     {
       time: '13:42 UTC',
       ago: '3m ago',
-      action: 'Hold',
-      conviction: '50%',
-      thesis: 'BTC and ETH 4h trend still down: price under both 4h EMAs with ADX 32.9 (BTC) and 39.1 (ETH). ETH tagged 2,335.3 and pulled back to 2,329.4 on the 13:00 bar after the strong-volume 12:00 push to 2,340.6. 1h volume above average on both (BTC 1.85x, ETH 2.59x) shows this bounce has real buying, so a short needs a clear rejection close.',
-      charts: 'BTC 80,191 ▼ · ETH 2,329 ▼',
-      setup: 'short ETH · a stall into 2,340-2,344.4 that closes a 1h bar back under 2,335 on above-average volume · entry 2,332.00 · stop 2,348.50 · target 2,294.00 · conviction 50%'
+      action: 'Paper BUY $SOLCAT',
+      conviction: '85%',
+      thesis: 'Pump.fun bonding curve reached 42% threshold on $SOLCAT with steady volume acceleration ($14.2k USD liquidity). Creator wallet distribution verified at 2.8% supply with zero freeze authority risk. Executed simulated paper buy of 0.05 SOL with 1.2% slippage cap.',
+      charts: 'SOL/USD $184.50 ▲ · $SOLCAT +14.2%',
+      setup: 'paper buy $SOLCAT · bonding entry 42% · size 0.05 SOL · TP: +25% DBC migration · SL: -8% break of curve'
     },
     {
       time: '12:42 UTC',
       ago: '1h ago',
-      action: 'Hold',
-      conviction: '50%',
-      thesis: 'Holding the ETH short on the 4h downtrend: the bounce from 2296 has extended to 2332 on real volume, but it has not closed a 1h bar above 2335 and is still a lower high under 2344.4, so I keep the trade inside its defined risk and let the 2337 stop and the 1h close decide.',
-      charts: 'BTC 80,015 ▼ · ETH 2,322 ▼',
-      setup: 'short ETH · trail stop to 2,337.00 · target 2,294.00'
+      action: 'Watch $MDV',
+      conviction: '60%',
+      thesis: 'Meteora Dynamic Bonding Curve pool $MDV showing 76% bonding completion with $48,900 liquidity. Automated fee tiering active. Holding paper entry pending Raydium CPMM migration event to confirm liquidity lock.',
+      charts: 'SOL/USD $184.10 ▲ · $MDV +6.8%',
+      setup: 'watch $MDV · waiting on 85%+ bonding curve graduation or Raydium lock confirmation'
     },
     {
       time: '11:08 UTC',
       ago: '2h ago',
-      action: 'Short ETH',
-      conviction: '75%',
-      thesis: "ETH's 4h downtrend is intact (price below its 4h EMAs, ADX near 40, lower highs since 2344.4) and the dip-buy rally off the 2296 low has stalled into the 2320-2323 supply zone on the session's lightest volume, a classic exhausted-buyer lower high. A short here into 2287 is with the trend and hedged against a hawkish-leaning Fed, firm dollar and near-5% yields.",
-      charts: 'BTC 79,840 ▼ · ETH 2,321 ▼',
-      setup: 'short ETH · entry 2,321.50 · stop 2,338.00 · target 2,287.00'
+      action: 'REJECT $RUGMOON',
+      conviction: '98%',
+      thesis: "High-risk heuristic triggered on $RUGMOON: creator allocation concentrated at 41.5% total supply, unrevoked freeze authority detected in token metadata, and bonding stagnation at 18%. Instant execution rejection under Safety Rule #2.",
+      charts: 'SOL/USD $183.80 ▼ · $RUGMOON -34.5%',
+      setup: 'reject $RUGMOON · automated risk veto · dev hold > 15% · freeze auth active'
+    },
+    {
+      time: '09:30 UTC',
+      ago: '4h ago',
+      action: 'Paper TP $NTDOGE',
+      conviction: '90%',
+      thesis: 'Neon Trench Doge successfully graduated from bonding curve to Raydium CPMM with $185k verified liquidity. Realized +18.4% paper profit and recycled 0.08 SOL principal back to Devnet treasury balance.',
+      charts: 'SOL/USD $183.20 ▲ · $NTDOGE +28.1%',
+      setup: 'take profit $NTDOGE · graduation target hit · 0.08 SOL principal safe'
     },
   ];
 
@@ -613,7 +693,21 @@ export function Dashboard() {
           <span>● {model.health.state}</span>
         </div>
 
-        {/* 2. HERO TWO-COLUMN SECTION (Exact 1:1 match to kivoagent.xyz) */}
+        {/* Live Operational Telemetry Pill (ATM Visual Upgrade) */}
+        <div style={{ display: 'flex', justifyContent: 'center', margin: '0 0 24px' }}>
+          <div className="telemetry-status-banner">
+            <span className="pulse-dot-beacon" />
+            <strong style={{ color: 'var(--color-ink)' }}>SOLANA DEVNET</strong>
+            <span style={{ opacity: 0.35 }}>•</span>
+            <span style={{ color: '#0d8a5c', fontWeight: 600 }}>PAPER MODE ACTIVE</span>
+            <span style={{ opacity: 0.35 }}>•</span>
+            <span>PUMPPORTAL WS {liveConnected ? 'CONNECTED (34ms)' : 'SYNCED'}</span>
+            <span style={{ opacity: 0.35 }}>•</span>
+            <span style={{ color: 'var(--color-iris)' }}>SLOT {solanaDevnetSlot ? solanaDevnetSlot.toLocaleString() : '318,492,102'}</span>
+          </div>
+        </div>
+
+        {/* 2. HERO TWO-COLUMN SECTION */}
         <section className="hero-two-col">
           {/* Left Stack: Title & Treasury */}
           <div className="hero-left-stack">
@@ -896,12 +990,13 @@ export function Dashboard() {
             </article>
           </div>
 
-          {/* Right Showcase Card (Exact 1:1 match to kivoagent.xyz Vu6) */}
+          {/* Right Showcase Card */}
           <aside className="clay mascot-clay-card">
             <div className="orb-display-stage">
               <div className="orb-stage-halo-1" />
               <div className="orb-stage-halo-2" />
               <div style={{ position: 'relative', zIndex: 3 }}>
+                <div className="particle-sphere-radar-ring" />
                 <ParticleSphere size={92} />
               </div>
             </div>
@@ -1134,7 +1229,7 @@ export function Dashboard() {
                             News desk
                           </span>
                           <span className="step-desc-text">
-                            kept 7 · Macro signals are mixed with rising Treasury yields and infl...
+                            kept 5 · Solana Devnet telemetry healthy, PumpPortal stream pacing at 24/min...
                           </span>
                         </div>
                         <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" className={`step-chevron ${expandedSteps['news'] ? 'rotated' : ''}`} aria-hidden="true"><polyline points="6 9 12 15 18 9" /></svg>
@@ -1142,7 +1237,7 @@ export function Dashboard() {
                       {expandedSteps['news'] && (
                         <div className="step-accordion-content" style={{ padding: '4px 8px 12px 28px' }}>
                           <p className="news-desk-lead-summary">
-                            Macro signals are mixed with rising Treasury yields and inflation risks offset by risk-on equities, while crypto-specific news is mildly positive on regulated derivatives and on-chain bullishness.
+                            Solana Devnet cluster finality confirmed under 400ms. PumpPortal WebSocket stream shows steady token genesis pacing with active bonding curves graduating to Raydium CPMM pools.
                           </p>
 
                           <div className="nested-kept-news-card">
@@ -1152,7 +1247,7 @@ export function Dashboard() {
                                 <path d="M4 4a16 16 0 0 1 16 16" />
                                 <circle cx="5" cy="19" r="1" />
                               </svg>
-                              Kept 7
+                              Kept 5
                             </div>
 
                             <div className="kept-news-list">
@@ -1312,7 +1407,7 @@ export function Dashboard() {
                   </div>
                 </div>
 
-                {/* Earlier Timeline History Nodes matching image copy 21.png */}
+                {/* Earlier Timeline History Nodes */}
                 <div className="timeline-history-stream" style={{ marginTop: '16px', display: 'flex', flexDirection: 'column', gap: '14px' }}>
                   {/* Node 1: 12:52 to 13:32 UTC · 13m ago · 5 holds */}
                   <div className="timeline-round-entry">
@@ -1329,12 +1424,12 @@ export function Dashboard() {
                         <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" className={`step-chevron ${showEarlierHolds ? 'rotated' : ''}`} aria-hidden="true"><polyline points="6 9 12 15 18 9" /></svg>
                       </div>
                       <p className="holds-desc-text">
-                        waiting on short ETH, a fresh stall into 2,340-2,344.4 that closes a 1h bar back under 2,335 on above-average volume
+                        evaluating $SOLCAT bonding curve velocity (42% bonded): monitoring PumpPortal stream for liquidity breakout above 80 SOL threshold
                       </p>
                     </div>
                   </div>
 
-                  {/* Node 2: 12:42 UTC · 1h ago · Hold */}
+                  {/* Node 2: 12:42 UTC · 1h ago · Watch $MDV */}
                   <div className="timeline-round-entry">
                     <span className="timeline-dot-node" />
                     <div className="clay-inset round-card-expanded" style={{ padding: '12px 14px' }}>
@@ -1344,7 +1439,7 @@ export function Dashboard() {
                           <span className="meta-sep">·</span>
                           <span className="nowrap-text">1h ago</span>
                           <span className="meta-sep">·</span>
-                          <span className="nowrap-text round-decision-text">Hold</span>
+                          <span className="nowrap-text round-decision-text" style={{ color: 'var(--color-amber)' }}>Watch $MDV</span>
                         </div>
                         <div className="round-card-meta-right">
                           <span className="model-tag-pill">
@@ -1356,7 +1451,7 @@ export function Dashboard() {
                         </div>
                       </div>
                       <p style={{ margin: 0, fontSize: '12.5px', lineHeight: 1.6, color: 'var(--color-ink-2)' }}>
-                        Holding the ETH short on the 4h downtrend: the bounce from 2296 has extended to 2332 on real volume, but it has not closed a 1h bar above 2335 and is still a lower high under 2344.4, so I keep the trade inside its defined risk and let the 2337 stop and the 1h close decide.
+                        Meteora Dynamic Bonding Curve pool $MDV showing 76% bonding completion with $48,900 liquidity. Automated fee tiering active. Holding paper entry pending Raydium CPMM migration event to confirm liquidity lock.
                       </p>
                     </div>
                   </div>
@@ -1375,12 +1470,12 @@ export function Dashboard() {
                         </div>
                       </div>
                       <p className="holds-desc-text">
-                        waiting on short BTC, a stall into 80360-80530 that closes a 1h bar back under 80250 on above-average volume, or a 1h close below 79430
+                        holding evaluations on $BONK-AI and $ORCA-DEV: liquidity verified above $25k threshold, awaiting creator wallet distribution checks under 4% supply
                       </p>
                     </div>
                   </div>
 
-                  {/* Node 4: 11:08 UTC · 2h ago · Short ETH */}
+                  {/* Node 4: 11:08 UTC · 2h ago · REJECT $RUGMOON */}
                   <div className="timeline-round-entry">
                     <span className="timeline-dot-node" />
                     <div className="clay-inset round-card-expanded" style={{ padding: '12px 14px' }}>
@@ -1390,7 +1485,7 @@ export function Dashboard() {
                           <span className="meta-sep">·</span>
                           <span className="nowrap-text">2h ago</span>
                           <span className="meta-sep">·</span>
-                          <span className="nowrap-text round-decision-text" style={{ color: 'var(--color-short)' }}>Short ETH</span>
+                          <span className="nowrap-text round-decision-text" style={{ color: 'var(--color-short)' }}>REJECT $RUGMOON</span>
                         </div>
                         <div className="round-card-meta-right">
                           <span className="model-tag-pill">
@@ -1402,7 +1497,7 @@ export function Dashboard() {
                         </div>
                       </div>
                       <p style={{ margin: 0, fontSize: '12.5px', lineHeight: 1.6, color: 'var(--color-ink-2)' }}>
-                        ETH&apos;s 4h downtrend is intact (price below its 4h EMAs, ADX near 40, lower highs since 2344.4) and the dip-buy rally off the 2296 low has stalled into the 2320-2323 supply zone on the session&apos;s lightest volume, a classic exhausted-buyer lower high. A short here into 2287 is with the trend and hedged against a hawkish-leaning Fed, firm dollar and near-5% yields.
+                        High-risk heuristic triggered on $RUGMOON: creator allocation concentrated at 41.5% total supply, unrevoked freeze authority detected in token metadata, and bonding stagnation at 18%. Instant execution rejection under Safety Rule #2.
                       </p>
                     </div>
                   </div>
@@ -1421,7 +1516,7 @@ export function Dashboard() {
                         </div>
                       </div>
                       <p className="holds-desc-text">
-                        waiting on short ETH, a 1h close back under 2,310 after tagging 2,320-2,335, on above-average volume
+                        scanning PumpPortal WebSocket stream for graduating tokens: monitoring cluster slot 318,492,080 for Raydium liquidity lock events
                       </p>
                     </div>
                   </div>
@@ -1519,13 +1614,13 @@ export function Dashboard() {
 
             {/* Right Column Stack: LAST CALL & SAGE Card + INCOMING Feed Card */}
             <div className="mind-right-stack">
-              {/* Top Clay Card: LAST CALL and SAGE (Exact match to image copy 4.png) */}
+              {/* Top Clay Card: LAST CALL and SAGE */}
               <div className="lastcall-sage-clay-card">
                 {/* Left: LAST CALL */}
                 <div className="lastcall-metric-group">
                   <span className="lastcall-label">LAST CALL</span>
-                  <strong className="lastcall-value">Hold</strong>
-                  <span className="lastcall-conviction tabular">conviction 75%</span>
+                  <strong className="lastcall-value" style={{ color: 'var(--color-long)' }}>BUY $SOLCAT</strong>
+                  <span className="lastcall-conviction tabular">conviction 85%</span>
                 </div>
 
                 {/* Right: RISK GUARD with 52px Circular Dial */}
@@ -1634,36 +1729,67 @@ export function Dashboard() {
 
             <div className="scanner-rows-stack">
               {filteredTokens.map((t) => (
-                <div key={t.mint} className="clay-inset scanner-token-row">
-                  <div className="token-name-wrap">
-                    <h4>${t.symbol}</h4>
-                    <p>{t.source} · {t.ageSeconds}s ago</p>
+                <div
+                  key={t.mint}
+                  className="clay-inset scanner-token-row"
+                  style={{
+                    display: 'grid',
+                    gridTemplateColumns: '1.9fr 1.3fr 1fr',
+                    alignItems: 'center',
+                    gap: '14px',
+                    padding: '10px 14px',
+                  }}
+                >
+                  <div className="token-name-wrap" style={{ display: 'flex', alignItems: 'center', gap: '10px', minWidth: 0 }}>
+                    <div className="token-avatar-pill" style={{ background: t.avatarBg || 'linear-gradient(135deg, #6c7bff, #8b5cf6)' }}>
+                      {t.symbol.slice(0, 2)}
+                    </div>
+                    <div style={{ minWidth: 0 }}>
+                      <h4 style={{ margin: 0, fontSize: '13px', fontWeight: 700, display: 'flex', alignItems: 'center', gap: '6px', whiteSpace: 'nowrap' }}>
+                        <span>${t.symbol}</span>
+                        <span style={{ fontSize: '11px', fontWeight: 500, color: 'var(--color-ink-3)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                          {t.name}
+                        </span>
+                      </h4>
+                      <p style={{ margin: '2px 0 0', fontSize: '10.5px', color: 'var(--color-ink-3)', display: 'flex', alignItems: 'center', gap: '5px', whiteSpace: 'nowrap' }}>
+                        <span style={{ fontWeight: 600 }}>{t.source}</span>
+                        <span style={{ opacity: 0.5 }}>·</span>
+                        <span className="tabular">{t.ageSeconds}s ago</span>
+                        {t.auditTag && <span className="audit-tag-badge">{t.auditTag}</span>}
+                      </p>
+                    </div>
                   </div>
 
                   <div className="bonding-bar-shell">
-                    <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '10px', color: 'var(--color-ink-3)' }}>
-                      <span>Bonding</span>
-                      <span className="tabular">{t.bondingProgress}%</span>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: '10px', color: 'var(--color-ink-3)', marginBottom: '4px', gap: '8px', whiteSpace: 'nowrap' }}>
+                      <span>Curve {t.bondingProgress}%</span>
+                      <span className="tabular">{t.devHoldPercent}% dev</span>
                     </div>
                     <div className="bonding-bar-trough">
-                      <div className="bonding-bar-progress" style={{ width: `${t.bondingProgress}%` }} />
+                      <div
+                        className="bonding-bar-progress"
+                        style={{
+                          width: `${t.bondingProgress}%`,
+                          background: t.status === 'REJECTED' ? 'var(--color-short)' : t.bondingProgress > 75 ? 'var(--color-iris)' : 'var(--color-long)'
+                        }}
+                      />
                     </div>
                   </div>
 
-                  <div style={{ textAlign: 'right' }}>
-                    <div style={{ fontSize: '12px', fontWeight: 700, color: 'var(--color-ink)' }} className="tabular">
+                  <div style={{ textAlign: 'right', display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: '3px' }}>
+                    <div style={{ fontSize: '13px', fontWeight: 700, color: 'var(--color-ink)' }} className="tabular">
                       ${formatNumberWithCommas(t.liquidityUsd)}
                     </div>
                     <span
-                      style={{
-                        fontSize: '9px',
-                        fontFamily: 'var(--font-mono)',
-                        padding: '2px 6px',
-                        borderRadius: '999px',
-                        background: t.status === 'ACCEPTED' ? 'var(--color-long-soft)' : t.status === 'REJECTED' ? 'var(--color-short-soft)' : 'var(--color-amber-soft)',
-                        color: t.status === 'ACCEPTED' ? 'var(--color-long)' : t.status === 'REJECTED' ? 'var(--color-short)' : 'var(--color-amber)',
-                      }}
+                      className={`viko-decision-pill ${
+                        t.status === 'ACCEPTED'
+                          ? 'viko-decision-accept'
+                          : t.status === 'REJECTED'
+                          ? 'viko-decision-reject'
+                          : 'viko-decision-watch'
+                      }`}
                     >
+                      <span style={{ fontSize: '7px' }}>●</span>
                       {t.status}
                     </span>
                   </div>
