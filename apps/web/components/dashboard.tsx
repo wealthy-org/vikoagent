@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect, useRef, useCallback } from 'react';
+import React, { useState, useEffect, useRef, useCallback, useMemo } from 'react';
 import { getDashboardReadModel } from '../../api/src/read-model';
 
 function formatNumberWithCommas(num: number): string {
@@ -334,6 +334,7 @@ interface PositionDeskData {
 function ActivePositionDesk() {
   const [selectedAsset, setSelectedAsset] = useState<'BTC' | 'SOL'>('BTC');
   const [selectedTf, setSelectedTf] = useState<'1m' | '5m' | '15m' | '1h'>('5m');
+  const [isTfLoading, setIsTfLoading] = useState(false);
   const [lastTickDir, setLastTickDir] = useState<'up' | 'down' | null>(null);
   const [deskData, setDeskData] = useState<PositionDeskData>({
     symbol: 'BTC',
@@ -503,6 +504,31 @@ function ActivePositionDesk() {
     return num.toFixed(1);
   };
 
+  // Dynamic X-Axis labels derived from actual candle timestamps
+  const xLabels = useMemo(() => {
+    if (!candles || candles.length < 4) {
+      return ['28', '03.00', '06.00', '09.00'];
+    }
+    const idxs = [
+      0,
+      Math.floor(candles.length * 0.33),
+      Math.floor(candles.length * 0.66),
+      candles.length - 1,
+    ];
+    return idxs.map((idx) => {
+      const c = candles[idx];
+      const d = new Date(c.time);
+      if (selectedTf === '1h') {
+        const day = d.getDate();
+        const hr = String(d.getHours()).padStart(2, '0');
+        return `${day}. ${hr}:00`;
+      }
+      const hr = String(d.getHours()).padStart(2, '0');
+      const min = String(d.getMinutes()).padStart(2, '0');
+      return `${hr}.${min}`;
+    });
+  }, [candles, selectedTf]);
+
   const [chartHover, setChartHover] = useState<{
     x: number;
     y: number;
@@ -584,8 +610,14 @@ function ActivePositionDesk() {
             <button
               key={tf}
               type="button"
-              onClick={() => setSelectedTf(tf)}
+              onClick={() => {
+                if (selectedTf === tf) return;
+                setSelectedTf(tf);
+                setIsTfLoading(true);
+                fetchDeskData(selectedAsset, tf).finally(() => setIsTfLoading(false));
+              }}
               className={`desk-tf-btn ${selectedTf === tf ? 'active' : ''}`}
+              title={`${tf} Candlestick Resolution`}
             >
               {tf}
             </button>
@@ -624,7 +656,7 @@ function ActivePositionDesk() {
           aria-label="Position Candlestick Chart"
           onMouseMove={handleChartMouseMove}
           onMouseLeave={handleChartMouseLeave}
-          style={{ cursor: 'crosshair' }}
+          style={{ cursor: 'crosshair', opacity: isTfLoading ? 0.6 : 1, transition: 'opacity 0.15s ease' }}
         >
           {/* Subtle Horizontal Grid lines */}
           <line x1="12" y1="40" x2="276" y2="40" stroke="#f1f5f9" strokeWidth="0.8" />
@@ -757,11 +789,11 @@ function ActivePositionDesk() {
             Long
           </text>
 
-          {/* X-Axis Date/Time Labels */}
-          <text x="24" y="204" fill="#94a3b8" fontSize="8" textAnchor="middle" fontFamily="var(--font-mono)">28</text>
-          <text x="100" y="204" fill="#94a3b8" fontSize="8" textAnchor="middle" fontFamily="var(--font-mono)">03.00</text>
-          <text x="180" y="204" fill="#94a3b8" fontSize="8" textAnchor="middle" fontFamily="var(--font-mono)">06.00</text>
-          <text x="260" y="204" fill="#94a3b8" fontSize="8" textAnchor="middle" fontFamily="var(--font-mono)">09.00</text>
+          {/* X-Axis Date/Time Labels dynamically driven by current timeframe */}
+          <text x="32" y="204" fill="#94a3b8" fontSize="8" textAnchor="middle" fontFamily="var(--font-mono)">{xLabels[0]}</text>
+          <text x="110" y="204" fill="#94a3b8" fontSize="8" textAnchor="middle" fontFamily="var(--font-mono)">{xLabels[1]}</text>
+          <text x="188" y="204" fill="#94a3b8" fontSize="8" textAnchor="middle" fontFamily="var(--font-mono)">{xLabels[2]}</text>
+          <text x="264" y="204" fill="#94a3b8" fontSize="8" textAnchor="middle" fontFamily="var(--font-mono)">{xLabels[3]}</text>
 
           {/* Interactive Crosshair Hover Lines & Royal Blue Badges (Exact 1:1 with reference image copy 30) */}
           {chartHover && (
