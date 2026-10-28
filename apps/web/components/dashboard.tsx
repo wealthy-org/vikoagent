@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { getDashboardReadModel } from '../../api/src/read-model';
 
 function formatNumberWithCommas(num: number): string {
@@ -297,12 +297,385 @@ const INCOMING_NEWS_FEED = [
   { time: '35m', source: 'pumpportal.fun', author: 'PumpPortal', headline: 'PumpPortal WS: High-velocity stream active with 1,420 token discovery events in the last hour.' },
 ];
 
+interface CandleItem {
+  time: number;
+  open: number;
+  high: number;
+  low: number;
+  close: number;
+  volume: number;
+}
+
+interface PositionDeskData {
+  symbol: string;
+  assetName: string;
+  interval: string;
+  markPrice: number;
+  entryPrice: number;
+  side: 'Long' | 'Short';
+  leverage: number;
+  marginUsd: number;
+  sizeUsd: number;
+  pnlUsd: number;
+  pnlPercent: number;
+  stopPrice: number;
+  targetPrice: number;
+  liquidationPrice: number;
+  supportPrice: number;
+  resistancePrice: number;
+  trend: 'trend up' | 'trend down';
+  macdSignal: string;
+  vwapDiffPercent: number;
+  riskRuleComment: string;
+  candles: CandleItem[];
+  updatedAt: string;
+}
+
+function ActivePositionDesk() {
+  const [selectedAsset, setSelectedAsset] = useState<'BTC' | 'SOL'>('BTC');
+  const [selectedTf, setSelectedTf] = useState<'1m' | '5m' | '15m' | '1h'>('5m');
+  const [deskData, setDeskData] = useState<PositionDeskData>({
+    symbol: 'BTC',
+    assetName: 'Bitcoin',
+    interval: '5m',
+    markPrice: 81348.5,
+    entryPrice: 81449.5,
+    side: 'Long',
+    leverage: 20,
+    marginUsd: 912,
+    sizeUsd: 18254,
+    pnlUsd: -22.63,
+    pnlPercent: -2.48,
+    stopPrice: 81150.0,
+    targetPrice: 82069.0,
+    liquidationPrice: 77377.0,
+    supportPrice: 81281,
+    resistancePrice: 81804,
+    trend: 'trend up',
+    macdSignal: 'MACD falling',
+    vwapDiffPercent: 0.43,
+    riskRuleComment: 'A 1h close back below 81,150 m triggers automated risk veto...',
+    candles: [
+      { time: 1, open: 80800, high: 80920, low: 80710, close: 80890, volume: 1400 },
+      { time: 2, open: 80890, high: 81050, low: 80850, close: 81010, volume: 1800 },
+      { time: 3, open: 81010, high: 81120, low: 80960, close: 80990, volume: 1200 },
+      { time: 4, open: 80990, high: 81250, low: 80980, close: 81200, volume: 2200 },
+      { time: 5, open: 81200, high: 81380, low: 81170, close: 81350, volume: 3100 },
+      { time: 6, open: 81350, high: 81490, low: 81300, close: 81440, volume: 2900 },
+      { time: 7, open: 81440, high: 81680, low: 81410, close: 81620, volume: 4200 },
+      { time: 8, open: 81620, high: 81850, low: 81580, close: 81820, volume: 5100 },
+      { time: 9, open: 81820, high: 81900, low: 81650, close: 81710, volume: 3800 },
+      { time: 10, open: 81710, high: 81780, low: 81520, close: 81560, volume: 2400 },
+      { time: 11, open: 81560, high: 81640, low: 81420, close: 81480, volume: 1900 },
+      { time: 12, open: 81480, high: 81520, low: 81310, close: 81348.5, volume: 2100 },
+    ],
+    updatedAt: new Date().toISOString(),
+  });
+
+  const fetchDeskData = useCallback(async (asset: 'BTC' | 'SOL', tf: '1m' | '5m' | '15m' | '1h') => {
+    try {
+      const sym = asset === 'BTC' ? 'BTCUSDT' : 'SOLUSDT';
+      const res = await fetch(`/api/market-candles?symbol=${sym}&interval=${tf}`, { cache: 'no-store' });
+      if (res.ok) {
+        const data = await res.json();
+        if (data && data.candles && data.candles.length > 0) {
+          setDeskData(data);
+        }
+      }
+    } catch {
+      // ignore network errors
+    }
+  }, []);
+
+  useEffect(() => {
+    fetchDeskData(selectedAsset, selectedTf);
+    const interval = setInterval(() => {
+      fetchDeskData(selectedAsset, selectedTf);
+    }, 4000);
+    return () => clearInterval(interval);
+  }, [selectedAsset, selectedTf, fetchDeskData]);
+
+  // Geometry computation for candlesticks and indicators
+  const candles = deskData.candles.length >= 8 ? deskData.candles : [];
+  
+  let minP = deskData.stopPrice;
+  let maxP = deskData.targetPrice;
+  if (candles.length > 0) {
+    minP = Math.min(...candles.map((c) => c.low), deskData.stopPrice);
+    maxP = Math.max(...candles.map((c) => c.high), deskData.targetPrice);
+  }
+  const span = maxP - minP || 1;
+  const pad = span * 0.04;
+  const sMin = minP - pad;
+  const sMax = maxP + pad;
+  const sRange = sMax - sMin;
+
+  const getY = (p: number) => 8 + ((sMax - p) / sRange) * 160;
+  const getX = (i: number) => 14 + (i / Math.max(1, candles.length - 1)) * 265;
+  const cWidth = candles.length > 0 ? Math.max(2.2, Math.min(4.6, (265 / candles.length) * 0.65)) : 3.5;
+
+  // Moving Average 7 & 21
+  const ma7: { x: number; y: number }[] = [];
+  const ma21: { x: number; y: number }[] = [];
+  for (let i = 0; i < candles.length; i++) {
+    if (i >= 3) {
+      const slice7 = candles.slice(Math.max(0, i - 4), i + 1);
+      const avg7 = slice7.reduce((sum, c) => sum + c.close, 0) / slice7.length;
+      ma7.push({ x: getX(i), y: getY(avg7) });
+    }
+    if (i >= 6) {
+      const slice21 = candles.slice(Math.max(0, i - 10), i + 1);
+      const avg21 = slice21.reduce((sum, c) => sum + c.close, 0) / slice21.length;
+      ma21.push({ x: getX(i), y: getY(avg21) });
+    }
+  }
+
+  const ma7D = ma7.length > 0 ? `M ${ma7.map((p) => `${p.x.toFixed(1)},${p.y.toFixed(1)}`).join(' L ')}` : '';
+  const ma21D = ma21.length > 0 ? `M ${ma21.map((p) => `${p.x.toFixed(1)},${p.y.toFixed(1)}`).join(' L ')}` : '';
+
+  // Max volume for volume bars
+  const maxVol = candles.length > 0 ? Math.max(...candles.map((c) => c.volume)) || 1 : 1;
+
+  // Progress percentage for stop-to-target slider
+  const totalDist = deskData.targetPrice - deskData.stopPrice || 1;
+  const currentProg = Math.min(100, Math.max(0, ((deskData.markPrice - deskData.stopPrice) / totalDist) * 100));
+
+  const isNeg = deskData.pnlUsd < 0;
+  const pnlDisplay = `${isNeg ? '-' : '+'}$${Math.abs(deskData.pnlUsd).toFixed(2)}`;
+
+  const entryIdx = Math.max(0, candles.length - 8);
+  const entryX = getX(entryIdx);
+  const entryY = getY(deskData.entryPrice);
+
+  const targetY = getY(deskData.targetPrice);
+  const stopY = getY(deskData.stopPrice);
+  const markY = getY(deskData.markPrice);
+  const entryBadgeY = getY(deskData.entryPrice);
+
+  const formatPriceNum = (num: number) => {
+    if (selectedAsset === 'BTC') {
+      return Math.round(num).toLocaleString('en-US');
+    }
+    return num.toFixed(1);
+  };
+
+  return (
+    <aside className="clay position-desk-card" aria-label="Active Trading Position Desk">
+      {/* 1. Header: Coin Icon, Title, Subtitle, Live PnL */}
+      <div className="desk-top-header">
+        <div className="desk-coin-group">
+          <div className={`desk-coin-icon ${selectedAsset.toLowerCase()}`}>
+            {selectedAsset === 'BTC' ? '₿' : '◎'}
+          </div>
+          <div className="desk-title-wrap">
+            <div className="desk-position-heading">
+              <span>{deskData.side}</span>
+              <span className="leverage-tag">{deskData.leverage}x</span>
+              <span className="desk-asset-toggle-pill">
+                <button
+                  type="button"
+                  onClick={() => setSelectedAsset('BTC')}
+                  className={`desk-asset-toggle-btn ${selectedAsset === 'BTC' ? 'active' : ''}`}
+                >
+                  BTC
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setSelectedAsset('SOL')}
+                  className={`desk-asset-toggle-btn ${selectedAsset === 'SOL' ? 'active' : ''}`}
+                >
+                  SOL
+                </button>
+              </span>
+            </div>
+            <div className="desk-size-subtext">
+              ${deskData.marginUsd.toLocaleString()} margin · ${deskData.sizeUsd.toLocaleString()} size
+            </div>
+          </div>
+        </div>
+
+        <div className={`desk-pnl-headline tabular ${isNeg ? 'pnl-neg' : 'pnl-pos'}`}>
+          {pnlDisplay}
+        </div>
+      </div>
+
+      {/* 2. Timeframe Selector (1m, 5m, 15m, 1h) */}
+      <div className="desk-tf-bar">
+        <div className="desk-tf-pill-box">
+          {(['1m', '5m', '15m', '1h'] as const).map((tf) => (
+            <button
+              key={tf}
+              type="button"
+              onClick={() => setSelectedTf(tf)}
+              className={`desk-tf-btn ${selectedTf === tf ? 'active' : ''}`}
+            >
+              {tf}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      {/* 3. Candlestick & Indicator Chart SVG */}
+      <div className="desk-chart-container">
+        <svg viewBox="0 0 340 210" className="desk-chart-svg" aria-label="Position Candlestick Chart">
+          {/* Subtle Horizontal Grid lines */}
+          <line x1="12" y1="40" x2="280" y2="40" stroke="#f1f5f9" strokeWidth="0.8" />
+          <line x1="12" y1="80" x2="280" y2="80" stroke="#f1f5f9" strokeWidth="0.8" />
+          <line x1="12" y1="120" x2="280" y2="120" stroke="#f1f5f9" strokeWidth="0.8" />
+          <line x1="12" y1="160" x2="280" y2="160" stroke="#f1f5f9" strokeWidth="0.8" />
+
+          {/* Target Take Profit Line (Green dashed) */}
+          <line x1="12" y1={targetY} x2="280" y2={targetY} stroke="#10b981" strokeWidth="1" strokeDasharray="3 3" />
+          <rect x="282" y={Math.max(2, targetY - 7)} width="52" height="14" rx="3" fill="#10b981" />
+          <text x="308" y={Math.max(2, targetY - 7) + 10} fill="#ffffff" fontSize="8" fontWeight="700" textAnchor="middle" fontFamily="var(--font-mono)">
+            {formatPriceNum(deskData.targetPrice)}
+          </text>
+
+          {/* Stop Loss Line (Red dashed) */}
+          <line x1="12" y1={stopY} x2="280" y2={stopY} stroke="#ef4444" strokeWidth="1" strokeDasharray="3 3" />
+          <rect x="282" y={Math.max(2, stopY - 7)} width="52" height="14" rx="3" fill="#ef4444" />
+          <text x="308" y={Math.max(2, stopY - 7) + 10} fill="#ffffff" fontSize="8" fontWeight="700" textAnchor="middle" fontFamily="var(--font-mono)">
+            {formatPriceNum(deskData.stopPrice)}
+          </text>
+
+          {/* Entry Level Badge (Grey) */}
+          <rect x="282" y={Math.max(2, entryBadgeY - 7)} width="52" height="14" rx="3" fill="#64748b" />
+          <text x="308" y={Math.max(2, entryBadgeY - 7) + 10} fill="#ffffff" fontSize="8" fontWeight="700" textAnchor="middle" fontFamily="var(--font-mono)">
+            {formatPriceNum(deskData.entryPrice)}
+          </text>
+
+          {/* Mark Price Badge (Red/Green depending on PnL) */}
+          <line x1="12" y1={markY} x2="280" y2={markY} stroke={isNeg ? '#ef4444' : '#10b981'} strokeWidth="1" strokeDasharray="2 2" />
+          <rect x="282" y={Math.max(2, markY - 7)} width="52" height="14" rx="3" fill={isNeg ? '#dc2626' : '#059669'} />
+          <text x="308" y={Math.max(2, markY - 7) + 10} fill="#ffffff" fontSize="8" fontWeight="800" textAnchor="middle" fontFamily="var(--font-mono)">
+            {formatPriceNum(deskData.markPrice)}
+          </text>
+
+          {/* Volume Bars at Bottom */}
+          {candles.map((c, i) => {
+            const vHeight = (c.volume / maxVol) * 22;
+            const isBull = c.close >= c.open;
+            return (
+              <rect
+                key={`vol-${i}`}
+                x={getX(i) - cWidth / 2}
+                y={190 - vHeight}
+                width={cWidth}
+                height={Math.max(1, vHeight)}
+                fill={isBull ? 'rgba(16, 185, 129, 0.28)' : 'rgba(239, 68, 68, 0.28)'}
+              />
+            );
+          })}
+
+          {/* Candlesticks (Wick + Body) */}
+          {candles.map((c, i) => {
+            const cx = getX(i);
+            const highY = getY(c.high);
+            const lowY = getY(c.low);
+            const openY = getY(c.open);
+            const closeY = getY(c.close);
+            const topY = Math.min(openY, closeY);
+            const bodyHeight = Math.max(1.8, Math.abs(openY - closeY));
+            const isBull = c.close >= c.open;
+            const color = isBull ? '#10b981' : '#ef4444';
+
+            return (
+              <g key={`c-${i}`}>
+                {/* Thin Center Wick */}
+                <line x1={cx} y1={highY} x2={cx} y2={lowY} stroke={color} strokeWidth="1" />
+                {/* Candle Body */}
+                <rect
+                  x={cx - cWidth / 2}
+                  y={topY}
+                  width={cWidth}
+                  height={bodyHeight}
+                  fill={color}
+                  rx="0.5"
+                />
+              </g>
+            );
+          })}
+
+          {/* Moving Averages */}
+          {ma7D && <path d={ma7D} fill="none" stroke="#3b82f6" strokeWidth="1.6" strokeLinecap="round" />}
+          {ma21D && <path d={ma21D} fill="none" stroke="#f97316" strokeWidth="1.4" strokeLinecap="round" />}
+
+          {/* Entry Arrow and Annotation "Long" */}
+          <path
+            d={`M ${entryX},${entryY + 6} L ${entryX - 3.5},${entryY + 12} L ${entryX + 3.5},${entryY + 12} Z`}
+            fill="#6366f1"
+          />
+          <text
+            x={entryX}
+            y={entryY + 22}
+            fill="#6366f1"
+            fontSize="8"
+            fontWeight="800"
+            textAnchor="middle"
+            fontFamily="var(--font-mono)"
+          >
+            Long
+          </text>
+
+          {/* X-Axis Date/Time Labels */}
+          <text x="24" y="204" fill="#94a3b8" fontSize="8" textAnchor="middle" fontFamily="var(--font-mono)">28</text>
+          <text x="100" y="204" fill="#94a3b8" fontSize="8" textAnchor="middle" fontFamily="var(--font-mono)">03.00</text>
+          <text x="180" y="204" fill="#94a3b8" fontSize="8" textAnchor="middle" fontFamily="var(--font-mono)">06.00</text>
+          <text x="260" y="204" fill="#94a3b8" fontSize="8" textAnchor="middle" fontFamily="var(--font-mono)">09.00</text>
+        </svg>
+      </div>
+
+      {/* 4. Technical Indicators Pills */}
+      <div className="desk-badges-row">
+        <span className="desk-badge-pill desk-badge-emerald">
+          {deskData.trend}
+        </span>
+        <span className="desk-badge-pill desk-badge-neutral">
+          {deskData.macdSignal}
+        </span>
+        <span className="desk-badge-pill desk-badge-neutral">
+          +{deskData.vwapDiffPercent}% vs VWAP
+        </span>
+      </div>
+
+      {/* 5. Support & Resistance Badges */}
+      <div className="desk-badges-row">
+        <span className="desk-badge-pill desk-badge-neutral">
+          support {formatPriceNum(deskData.supportPrice)}
+        </span>
+        <span className="desk-badge-pill desk-badge-neutral">
+          resistance {formatPriceNum(deskData.resistancePrice)}
+        </span>
+      </div>
+
+      {/* 6. Stop-to-Target Risk Progress Slider */}
+      <div className="desk-risk-slider-wrap">
+        <div className="desk-slider-track">
+          <div className="desk-slider-thumb" style={{ left: `${currentProg}%` }} />
+        </div>
+        <div className="desk-slider-labels">
+          <span>🛑 stop {formatPriceNum(deskData.stopPrice)}</span>
+          <span style={{ fontWeight: 600, color: '#334155' }}>now {formatPriceNum(deskData.markPrice)}</span>
+          <span>target {formatPriceNum(deskData.targetPrice)} 🎯</span>
+        </div>
+      </div>
+
+      {/* 7. Bottom Metric Strip & Rule */}
+      <div className="desk-bottom-strip">
+        <span className="desk-metric-pill">entry {formatPriceNum(deskData.entryPrice)}</span>
+        <span className="desk-metric-pill">liq {formatPriceNum(deskData.liquidationPrice)}</span>
+        <span className="desk-rule-comment" title={deskData.riskRuleComment}>
+          {deskData.riskRuleComment}
+        </span>
+      </div>
+    </aside>
+  );
+}
+
 export function Dashboard() {
   const model = getDashboardReadModel();
   const [selectedRange, setSelectedRange] = useState<'1D' | '1W' | '1M' | 'ALL'>('ALL');
   const [scannerTab, setScannerTab] = useState<'ALL' | 'PUMP.FUN' | 'METEORA DBC' | 'MIGRATED'>('ALL');
-  const [countdownMinutes, setCountdownMinutes] = useState(0);
-  const [countdownSeconds, setCountdownSeconds] = useState(27);
   const [roundCountdown, setRoundCountdown] = useState(77); // 1:17
   const [scannedTokens, setScannedTokens] = useState<ScannedToken[]>(MOCK_SCANNED_TOKENS);
   const [incomingFeed, setIncomingFeed] = useState(INCOMING_NEWS_FEED);
@@ -601,14 +974,6 @@ export function Dashboard() {
 
   useEffect(() => {
     const timer = setInterval(() => {
-      setCountdownSeconds((sec) => {
-        if (sec <= 0) {
-          setCountdownMinutes((m) => (m <= 0 ? 0 : m - 1));
-          return 59;
-        }
-        return sec - 1;
-      });
-
       setRoundCountdown((prev) => (prev <= 1 ? 80 : prev - 1));
 
       // Increment age of scanned tokens
@@ -979,31 +1344,8 @@ export function Dashboard() {
             </article>
           </div>
 
-          {/* Right Showcase Card */}
-          <aside className="clay mascot-clay-card">
-            <div className="orb-display-stage">
-              <div className="orb-stage-halo-1" />
-              <div className="orb-stage-halo-2" />
-              <div style={{ position: 'relative', zIndex: 3 }}>
-                <div className="particle-sphere-radar-ring" />
-                <ParticleSphere size={92} />
-              </div>
-            </div>
-
-            <h2 className="mascot-reasoning-title">
-              Reason<span style={{ fontWeight: 700 }}>ing</span>
-            </h2>
-            <div className="mascot-down-arrow" style={{ display: 'flex', justifyContent: 'center' }}>
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                <line x1="12" y1="5" x2="12" y2="19" />
-                <polyline points="19 12 12 19 5 12" />
-              </svg>
-            </div>
-
-            <div className="mascot-countdown-capsule tabular" suppressHydrationWarning>
-              next look in {countdownMinutes}:{countdownSeconds < 10 ? `0${countdownSeconds}` : countdownSeconds}
-            </div>
-          </aside>
+          {/* Right Showcase Card: Active Position Candlestick Trading Desk (1:1 Kivo Reference) */}
+          <ActivePositionDesk />
         </section>
 
         {/* ================================================================= */}

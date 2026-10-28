@@ -3043,3 +3043,267 @@ img, svg, video, canvas {
   to { transform: rotate(360deg); }
 }
 
+/* ========================================================================= */
+/* KIVO ACTIVE POSITION CANDLESTICK TRADING DESK CARD (EXACT 1:1 REPLICA)    */
+/* ========================================================================= */
+.position-desk-card {
+  padding: 22px 20px;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  overflow: hidden;
+  background: #ffffff;
+  border: 1px solid rgba(226, 232, 240, 0.95);
+  border-radius: 20px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04), 0 1px 3px rgba(0, 0, 0, 0.02);
+}
+
+.desk-top-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 12px;
+}
+
+.desk-coin-group {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.desk-coin-icon {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  font-weight: 800;
+  font-size: 20px;
+  color: #ffffff;
+  flex-shrink: 0;
+  box-shadow: 0 4px 12px rgba(247, 147, 26, 0.25);
+}
+
+.desk-coin-icon.btc {
+  background: #f7931a;
+}
+
+.desk-coin-icon.sol {
+  background: linear-gradient(135deg, #9945ff 0%, #14f195 100%);
+  box-shadow: 0 4px 12px rgba(153, 69, 255, 0.25);
+}
+
+.desk-title-wrap {
+  display: flex;
+  flex-direction: column;
+}
+
+.desk-position-heading {
+  font-family: var(--font-display);
+  font-size: 19px;
+  font-weight: 700;
+  color: var(--color-ink);
+  line-height: 1.2;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.desk-position-heading .leverage-tag {
+  color: #94a3b8;
+  font-weight: 500;
+}
+
+.desk-asset-toggle-pill {
+  display: inline-flex;
+  background: #f1f5f9;
+  border-radius: 9999px;
+  padding: 2px;
+  margin-left: 6px;
+  border: 1px solid #e2e8f0;
+}
+
+.desk-asset-toggle-btn {
+  border: none;
+  background: transparent;
+  font-size: 10px;
+  font-weight: 600;
+  padding: 1px 7px;
+  border-radius: 9999px;
+  color: #64748b;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.desk-asset-toggle-btn.active {
+  background: #ffffff;
+  color: #1e293b;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.08);
+}
+
+.desk-size-subtext {
+  font-size: 12px;
+  color: #94a3b8;
+  margin-top: 3px;
+  font-family: var(--font-mono);
+}
+
+.desk-pnl-headline {
+  font-family: var(--font-display);
+  font-size: 27px;
+  font-weight: 800;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+}
+
+.desk-pnl-headline.pnl-neg {
+  color: #ef4444;
+}
+
+.desk-pnl-headline.pnl-pos {
+  color: #10b981;
+}
+
+/* Timeframe Bar */
+.desk-tf-bar {
+  display: flex;
+  justify-content: flex-start;
+  margin-bottom: 8px;
+}
+
+.desk-tf-pill-box {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  border: 1px dashed #cbd5e1;
+  border-radius: 9999px;
+  padding: 2px 4px;
+}
+
+.desk-tf-btn {
+  border: none;
+  background: transparent;
+  font-size: 11px;
+  font-weight: 600;
+  color: #64748b;
+  padding: 2px 8px;
+  border-radius: 9999px;
+  cursor: pointer;
+  font-family: var(--font-mono);
+  transition: all 0.15s ease;
+}
+
+.desk-tf-btn.active {
+  background: #f1f5f9;
+  color: #0f172a;
+}
+
+/* Candlestick SVG Container */
+.desk-chart-container {
+  width: 100%;
+  position: relative;
+  background: #fafafa;
+  border-radius: 12px;
+  padding: 4px 2px;
+  border: 1px solid #f1f5f9;
+  margin-bottom: 12px;
+}
+
+.desk-chart-svg {
+  width: 100%;
+  height: 205px;
+  display: block;
+}
+
+/* Technical Badges Rows */
+.desk-badges-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.desk-badge-pill {
+  font-size: 11px;
+  font-weight: 600;
+  padding: 4px 10px;
+  border-radius: 9999px;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.desk-badge-emerald {
+  background: #dcfce7;
+  color: #15803d;
+}
+
+.desk-badge-neutral {
+  background: #f8fafc;
+  color: #334155;
+  border: 1px solid #e2e8f0;
+}
+
+/* Risk Slider Track */
+.desk-risk-slider-wrap {
+  margin: 6px 0 10px;
+}
+
+.desk-slider-track {
+  width: 100%;
+  height: 6px;
+  border-radius: 9999px;
+  background: linear-gradient(to right, rgba(239, 68, 68, 0.22) 0%, rgba(245, 158, 11, 0.22) 50%, rgba(16, 185, 129, 0.22) 100%);
+  position: relative;
+  margin-bottom: 6px;
+}
+
+.desk-slider-thumb {
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: #6366f1;
+  box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.25);
+}
+
+.desk-slider-labels {
+  display: flex;
+  justify-content: space-between;
+  font-size: 11px;
+  color: #64748b;
+  font-family: var(--font-mono);
+}
+
+/* Bottom Metrics Strip */
+.desk-bottom-strip {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding-top: 10px;
+  border-top: 1px solid #f1f5f9;
+  font-size: 11px;
+}
+
+.desk-metric-pill {
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  padding: 3px 8px;
+  border-radius: 6px;
+  font-family: var(--font-mono);
+  font-weight: 600;
+  color: #334155;
+  white-space: nowrap;
+}
+
+.desk-rule-comment {
+  font-size: 11px;
+  color: #94a3b8;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  flex: 1;
+}
+
