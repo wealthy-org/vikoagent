@@ -503,6 +503,56 @@ function ActivePositionDesk() {
     return num.toFixed(1);
   };
 
+  const [chartHover, setChartHover] = useState<{
+    x: number;
+    y: number;
+    price: number;
+    dateStr: string;
+  } | null>(null);
+
+  const handleChartMouseMove = useCallback(
+    (e: React.MouseEvent<SVGSVGElement>) => {
+      const svg = e.currentTarget;
+      const rect = svg.getBoundingClientRect();
+      if (!rect.width || !rect.height) return;
+
+      const svgX = ((e.clientX - rect.left) / rect.width) * 346;
+      const svgY = ((e.clientY - rect.top) / rect.height) * 210;
+
+      const clampedY = Math.max(8, Math.min(168, svgY));
+      const hoverPrice = sMax - ((clampedY - 8) / 160) * sRange;
+
+      if (!candles || candles.length === 0) return;
+
+      const nearestIdx = Math.max(
+        0,
+        Math.min(candles.length - 1, Math.round(((svgX - 14) / 265) * (candles.length - 1)))
+      );
+      const c = candles[nearestIdx];
+
+      const d = new Date(c.time);
+      const months = ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des'];
+      const day = d.getDate();
+      const month = months[d.getMonth()];
+      const year = String(d.getFullYear()).slice(-2);
+      const hours = String(d.getHours()).padStart(2, '0');
+      const mins = String(d.getMinutes()).padStart(2, '0');
+      const dateStr = `${day} ${month} '${year}   ${hours}:${mins}`;
+
+      setChartHover({
+        x: getX(nearestIdx),
+        y: clampedY,
+        price: hoverPrice,
+        dateStr,
+      });
+    },
+    [sMax, sRange, candles]
+  );
+
+  const handleChartMouseLeave = useCallback(() => {
+    setChartHover(null);
+  }, []);
+
   return (
     <aside className="clay position-desk-card" aria-label="Active Trading Position Desk">
       {/* 1. Header: Coin Icon, Title, Subtitle, Live PnL */}
@@ -568,7 +618,14 @@ function ActivePositionDesk() {
 
       {/* 3. Candlestick & Indicator Chart SVG */}
       <div className="desk-chart-container">
-        <svg viewBox="0 0 346 210" className="desk-chart-svg" aria-label="Position Candlestick Chart">
+        <svg
+          viewBox="0 0 346 210"
+          className="desk-chart-svg"
+          aria-label="Position Candlestick Chart"
+          onMouseMove={handleChartMouseMove}
+          onMouseLeave={handleChartMouseLeave}
+          style={{ cursor: 'crosshair' }}
+        >
           {/* Subtle Horizontal Grid lines */}
           <line x1="12" y1="40" x2="276" y2="40" stroke="#f1f5f9" strokeWidth="0.8" />
           <line x1="12" y1="80" x2="276" y2="80" stroke="#f1f5f9" strokeWidth="0.8" />
@@ -705,6 +762,79 @@ function ActivePositionDesk() {
           <text x="100" y="204" fill="#94a3b8" fontSize="8" textAnchor="middle" fontFamily="var(--font-mono)">03.00</text>
           <text x="180" y="204" fill="#94a3b8" fontSize="8" textAnchor="middle" fontFamily="var(--font-mono)">06.00</text>
           <text x="260" y="204" fill="#94a3b8" fontSize="8" textAnchor="middle" fontFamily="var(--font-mono)">09.00</text>
+
+          {/* Interactive Crosshair Hover Lines & Royal Blue Badges (Exact 1:1 with reference image copy 30) */}
+          {chartHover && (
+            <g pointerEvents="none">
+              {/* Vertical dashed crosshair line */}
+              <line
+                x1={chartHover.x}
+                y1="8"
+                x2={chartHover.x}
+                y2="178"
+                stroke="#818cf8"
+                strokeWidth="1.2"
+                strokeDasharray="3 3"
+              />
+              {/* Horizontal dashed crosshair line */}
+              <line
+                x1="12"
+                y1={chartHover.y}
+                x2="276"
+                y2={chartHover.y}
+                stroke="#818cf8"
+                strokeWidth="1.2"
+                strokeDasharray="3 3"
+              />
+              {/* Crosshair Center Intersection Point */}
+              <circle cx={chartHover.x} cy={chartHover.y} r="3" fill="#4338ca" />
+              <circle cx={chartHover.x} cy={chartHover.y} r="1.5" fill="#ffffff" />
+
+              {/* Right Y-Axis Royal Blue Price Badge */}
+              <rect
+                x="280"
+                y={Math.max(2, Math.min(168, chartHover.y - 8))}
+                width="56"
+                height="16"
+                rx="3.5"
+                fill="#4338ca"
+                style={{ filter: 'drop-shadow(0 2px 5px rgba(67, 56, 202, 0.4))' }}
+              />
+              <text
+                x="308"
+                y={Math.max(2, Math.min(168, chartHover.y - 8)) + 11.5}
+                fill="#ffffff"
+                fontSize="8.5"
+                fontWeight="800"
+                textAnchor="middle"
+                fontFamily="var(--font-mono)"
+              >
+                {formatPriceNum(chartHover.price)}
+              </text>
+
+              {/* Bottom X-Axis Royal Blue Date & Time Badge */}
+              <rect
+                x={Math.max(12, Math.min(176, chartHover.x - 55))}
+                y="178"
+                width="110"
+                height="18"
+                rx="4"
+                fill="#4338ca"
+                style={{ filter: 'drop-shadow(0 2px 5px rgba(67, 56, 202, 0.4))' }}
+              />
+              <text
+                x={Math.max(12, Math.min(176, chartHover.x - 55)) + 55}
+                y="190.5"
+                fill="#ffffff"
+                fontSize="8.5"
+                fontWeight="700"
+                textAnchor="middle"
+                fontFamily="var(--font-mono)"
+              >
+                {chartHover.dateStr}
+              </text>
+            </g>
+          )}
         </svg>
       </div>
 
