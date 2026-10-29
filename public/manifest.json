@@ -5,10 +5,11 @@
   "start_url": "/",
   "id": "/",
   "display": "standalone",
-  "orientation": "portrait-primary",
-  "background_color": "#f8fafc",
+  "display_override": ["window-controls-overlay", "standalone", "minimal-ui"],
+  "orientation": "any",
+  "background_color": "#f6f7f9",
   "theme_color": "#0b0e14",
-  "categories": ["finance", "utilities"],
+  "categories": ["finance", "utilities", "productivity"],
   "icons": [
     {
       "src": "/brand/kivo-mark-128.png",
@@ -27,6 +28,29 @@
       "sizes": "512x512",
       "type": "image/jpeg",
       "purpose": "any maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Live Proof Terminal",
+      "short_name": "Terminal",
+      "description": "Open Viko live CLI Devnet proof engine",
+      "url": "/cli",
+      "icons": [{ "src": "/brand/kivo-mark-128.png", "sizes": "128x128" }]
+    },
+    {
+      "name": "Whitepaper Docs",
+      "short_name": "Docs",
+      "description": "Read sovereign devnet trader architecture docs",
+      "url": "/docs",
+      "icons": [{ "src": "/brand/kivo-mark-128.png", "sizes": "128x128" }]
+    },
+    {
+      "name": "Devnet Token Radar",
+      "short_name": "Radar",
+      "description": "Watch live scanned pump.fun and meteora tokens",
+      "url": "/#radar-scan",
+      "icons": [{ "src": "/brand/kivo-mark-128.png", "sizes": "128x128" }]
     }
   ]
 }
