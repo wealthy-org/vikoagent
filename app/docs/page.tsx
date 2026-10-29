@@ -92,7 +92,7 @@ function ContractRow({
             rel="noopener noreferrer"
             className="docs-table-link"
           >
-            <span>{address}</span>
+            <span style={{ wordBreak: "break-all" }}>{address}</span>
             <svg
               width="12"
               height="12"
@@ -339,7 +339,7 @@ export default function DocsPage() {
               <span className="docs-h2-num">05</span>
               The house rules
             </h2>
-            <div className="docs-table-wrapper docs-table-wrap">
+            <div className="docs-table-wrapper docs-table-wrap table-scroll-container">
               <table className="docs-table">
                 <tbody>
                   <TableRow k="Leverage" v="10x to 100x, and liquidation at least twice as far away as the stop" />
@@ -459,7 +459,7 @@ export default function DocsPage() {
               <span className="docs-h2-num">10</span>
               What it runs on
             </h2>
-            <div className="docs-table-wrapper docs-table-wrap">
+            <div className="docs-table-wrapper docs-table-wrap table-scroll-container">
               <table className="docs-table">
                 <tbody>
                   <TableRow k="PumpPortal" v="real-time WebSocket stream for pump.fun mints" />
@@ -501,7 +501,7 @@ export default function DocsPage() {
               <span className="docs-h2-num">12</span>
               Contracts and links
             </h2>
-            <div className="docs-table-wrapper docs-table-wrap">
+            <div className="docs-table-wrapper docs-table-wrap table-scroll-container">
               <table className="docs-table">
                 <tbody>
                   <ContractRow label="Solana Devnet RPC" address="api.devnet.solana.com" explorer={solanaExplorer} />

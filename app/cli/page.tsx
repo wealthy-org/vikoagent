@@ -158,7 +158,7 @@ export default function CliDemoPage() {
       alignItems: 'center',
     }}>
       {/* Top Header Bar */}
-      <header style={{
+      <header className="cli-header-bar" style={{
         width: '100%',
         maxWidth: '1020px',
         display: 'flex',
@@ -282,7 +282,7 @@ export default function CliDemoPage() {
         </div>
 
         {/* Terminal Screen Body */}
-        <div style={{
+        <div className="cli-banner-container" style={{
           padding: '20px 24px',
           fontSize: '13px',
           lineHeight: '1.6',
@@ -291,19 +291,25 @@ export default function CliDemoPage() {
           overflowY: 'auto',
           wordBreak: 'break-all',
         }}>
-          {logs.map((log, i) => (
-            <div
-              key={i}
-              style={{
-                color: log.color || '#f1f5f9',
-                fontWeight: log.bold ? 700 : 400,
-                whiteSpace: 'pre-wrap',
-                fontFamily: 'ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace',
-              }}
-            >
-              {log.text}
-            </div>
-          ))}
+          {logs.map((log, i) => {
+            const isAscii = log.text.includes('█');
+            return (
+              <div
+                key={i}
+                style={{
+                  color: log.color || '#f1f5f9',
+                  fontWeight: log.bold ? 700 : 400,
+                  whiteSpace: isAscii ? 'pre' : 'pre-wrap',
+                  wordBreak: isAscii ? 'normal' : 'break-word',
+                  fontFamily: 'ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace',
+                  fontSize: isAscii ? 'clamp(7px, 1.6vw, 12px)' : 'inherit',
+                  lineHeight: isAscii ? '1.15' : '1.6',
+                }}
+              >
+                {log.text}
+              </div>
+            );
+          })}
 
           {isRunning && (
             <div style={{ display: 'inline-block', width: '8px', height: '16px', background: '#8b5cf6', verticalAlign: 'middle', animation: 'blink 1s step-end infinite' }} />
@@ -330,7 +336,7 @@ export default function CliDemoPage() {
         <a href="https://explorer.solana.com/?cluster=devnet" target="_blank" rel="noopener noreferrer" style={{ color: '#94a3b8', textDecoration: 'none' }}>Solana Devnet Explorer ↗</a>
       </footer>
 
-      <style jsx global>{`
+      <style>{`
         @keyframes blink {
           50% { opacity: 0; }
         }
