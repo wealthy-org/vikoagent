@@ -11,16 +11,21 @@ interface NavItem {
   icon: (active: boolean) => React.ReactNode;
 }
 
+interface BeforeInstallPromptEvent extends Event {
+  prompt: () => Promise<void>;
+  userChoice: Promise<{ outcome: 'accepted' | 'dismissed' }>;
+}
+
 export function MobileDock() {
   const [activeTab, setActiveTab] = useState<string>('dashboard');
-  const [deferredPrompt, setDeferredPrompt] = useState<any>(null);
+  const [deferredPrompt, setDeferredPrompt] = useState<BeforeInstallPromptEvent | null>(null);
   const [showInstallPill, setShowInstallPill] = useState(false);
 
   useEffect(() => {
     // Listen for PWA beforeinstallprompt
     const handleBeforeInstallPrompt = (e: Event) => {
       e.preventDefault();
-      setDeferredPrompt(e);
+      setDeferredPrompt(e as BeforeInstallPromptEvent);
       setShowInstallPill(true);
     };
 
@@ -53,7 +58,7 @@ export function MobileDock() {
 
   const handleInstallClick = async () => {
     if (!deferredPrompt) return;
-    deferredPrompt.prompt();
+    await deferredPrompt.prompt();
     const { outcome } = await deferredPrompt.userChoice;
     if (outcome === 'accepted') {
       setShowInstallPill(false);

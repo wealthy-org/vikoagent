@@ -24,3 +24,4 @@ describe('Responsive CSS Contract', () => {
     expect(css).toContain('@media (max-width: 1024px)');
   });
 });
+

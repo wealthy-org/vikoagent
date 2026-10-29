@@ -164,3 +164,4 @@ The design enforces standard responsive tiers:
    - Tablet (768px - 1024px): Seamless transition from stacked to dual-column without colliding pills or clipped charts.
    - Desktop (1440px+): Preserves rich claymorphism, crisp shadows, and interactive hover crosshairs.
 4. **PWA Invariant**: PWA audit in browser DevTools confirms valid manifest, registered service worker, and standalone display capability.
+

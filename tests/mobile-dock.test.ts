@@ -19,3 +19,4 @@ describe('MobileDock Component', () => {
     expect(html).toContain('aria-label="Mobile Bottom Dock"');
   });
 });
+

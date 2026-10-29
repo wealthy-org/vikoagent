@@ -1,6 +1,6 @@
 # Responsive Multi-Device Overhaul, Professional Mobile Trader Widgets & PWA Hardening Implementation Plan
 
-> **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
+> **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [x]`) syntax for tracking.
 
 **Goal:** Deliver a flawless responsive layout across all device sizes (<400px, 400-640px, 641-768px, 769-1024px, 1025-1440px, >1440px) eliminating the 5 defect classes (rusak, berdempetan, menumpuk, bertabrakan, hancur), adding a floating glassmorphic Mobile Bottom Dock, mobile segmented widget controls, touch-friendly trader ergonomics, and hardened PWA support.
 
@@ -34,7 +34,7 @@
 - Consumes: Root claymorphism design tokens in `app/globals.css`.
 - Produces: CSS utility classes and media queries for `.mobile-only`, `.desktop-only`, `.table-scroll-container`, `.cli-banner-container`, `.segmented-control`, `.dock-bottom-spacer`, and fluid clamp containers.
 
-- [ ] **Step 1: Write failing contract test for responsive CSS tokens**
+- [x] **Step 1: Write failing contract test for responsive CSS tokens**
 
 Create `tests/responsive-css-contract.test.ts`:
 ```typescript
@@ -66,21 +66,21 @@ describe('Responsive CSS Contract', () => {
 });
 ```
 
-- [ ] **Step 2: Run test to verify it fails**
+- [x] **Step 2: Run test to verify it fails**
 
 Run: `npx vitest run tests/responsive-css-contract.test.ts`
 Expected: FAIL (missing `.table-scroll-container`, `.mobile-bottom-dock`, etc.)
 
-- [ ] **Step 3: Implement responsive CSS additions in `app/globals.css` & `apps/web/app/globals.css`**
+- [x] **Step 3: Implement responsive CSS additions in `app/globals.css` & `apps/web/app/globals.css`**
 
 Add responsive utilities, mobile dock rules, segmented controls, table containment, and media queries for `<480px`, `<768px`, and `<1024px`. Ensure `app/globals.css` and `apps/web/app/globals.css` remain in sync.
 
-- [ ] **Step 4: Run test to verify it passes**
+- [x] **Step 4: Run test to verify it passes**
 
 Run: `npx vitest run tests/responsive-css-contract.test.ts`
 Expected: PASS
 
-- [ ] **Step 5: Commit changes**
+- [x] **Step 5: Commit changes**
 
 ```bash
 git add app/globals.css apps/web/app/globals.css tests/responsive-css-contract.test.ts
@@ -101,7 +101,7 @@ git commit -m "style(css): add responsive tokens, dock styles, and overflow cont
 - Consumes: Standard Web App Manifest & Service Worker specification.
 - Produces: Enhanced `manifest.json` with shortcuts and display overrides; updated `sw.js` with offline fallback.
 
-- [ ] **Step 1: Write test for PWA manifest and service worker configuration**
+- [x] **Step 1: Write test for PWA manifest and service worker configuration**
 
 Create `tests/pwa-manifest-sw.test.ts`:
 ```typescript
@@ -132,21 +132,21 @@ describe('PWA Configuration and Manifest', () => {
 });
 ```
 
-- [ ] **Step 2: Run test to verify it fails**
+- [x] **Step 2: Run test to verify it fails**
 
 Run: `npx vitest run tests/pwa-manifest-sw.test.ts`
 Expected: FAIL (missing `shortcuts` in manifest)
 
-- [ ] **Step 3: Update `public/manifest.json` and `public/sw.js`**
+- [x] **Step 3: Update `public/manifest.json` and `public/sw.js`**
 
 Add `shortcuts` (`Live Terminal` pointing to `/cli`, `Documentation` pointing to `/docs`, `Token Radar` pointing to `/#radar-scan`), `display_override`, and ensure `sw.js` handles offline fallbacks cleanly.
 
-- [ ] **Step 4: Run test to verify it passes**
+- [x] **Step 4: Run test to verify it passes**
 
 Run: `npx vitest run tests/pwa-manifest-sw.test.ts`
 Expected: PASS
 
-- [ ] **Step 5: Commit changes**
+- [x] **Step 5: Commit changes**
 
 ```bash
 git add public/manifest.json public/sw.js tests/pwa-manifest-sw.test.ts
@@ -166,7 +166,7 @@ git commit -m "feat(pwa): expand web app manifest shortcuts and service worker r
 - Consumes: Navigation anchors (`#top`, `#mind-stream`, `#radar-scan`, `/cli`, `/docs`).
 - Produces: `<MobileDock />` component with active tab highlighting and smooth scrolling; `<PwaInstallPill />` prompt for mobile install.
 
-- [ ] **Step 1: Write test for MobileDock component**
+- [x] **Step 1: Write test for MobileDock component**
 
 Create `tests/mobile-dock.test.ts`:
 ```typescript
@@ -193,21 +193,21 @@ describe('MobileDock Component', () => {
 });
 ```
 
-- [ ] **Step 2: Run test to verify it fails**
+- [x] **Step 2: Run test to verify it fails**
 
 Run: `npx vitest run tests/mobile-dock.test.ts`
 Expected: FAIL (module `../apps/web/components/mobile-dock` does not exist)
 
-- [ ] **Step 3: Create `apps/web/components/mobile-dock.tsx`**
+- [x] **Step 3: Create `apps/web/components/mobile-dock.tsx`**
 
 Implement `<MobileDock />` with glassmorphic styling, smooth scroll listeners, and safe-area inset spacing. Export it for inclusion in the dashboard.
 
-- [ ] **Step 4: Run test to verify it passes**
+- [x] **Step 4: Run test to verify it passes**
 
 Run: `npx vitest run tests/mobile-dock.test.ts`
 Expected: PASS
 
-- [ ] **Step 5: Commit changes**
+- [x] **Step 5: Commit changes**
 
 ```bash
 git add apps/web/components/mobile-dock.tsx tests/mobile-dock.test.ts
@@ -226,7 +226,7 @@ git commit -m "feat(ui): create glassmorphic MobileDock navigation component"
 - Consumes: `MobileDock`, `ActivePositionDesk`, `MOCK_SCANNED_TOKENS`.
 - Produces: Flawless responsive layout across all device widths without clipping, collisions, or overlapping elements.
 
-- [ ] **Step 1: Write test verifying responsive containers and segmented tab presence**
+- [x] **Step 1: Write test verifying responsive containers and segmented tab presence**
 
 Create `tests/dashboard-responsive.test.ts`:
 ```typescript
@@ -250,12 +250,12 @@ describe('Dashboard Responsive Overhaul', () => {
 });
 ```
 
-- [ ] **Step 2: Run test to verify it fails**
+- [x] **Step 2: Run test to verify it fails**
 
 Run: `npx vitest run tests/dashboard-responsive.test.ts`
 Expected: FAIL
 
-- [ ] **Step 3: Refactor `dashboard.tsx` for comprehensive responsiveness**
+- [x] **Step 3: Refactor `dashboard.tsx` for comprehensive responsiveness**
   - Embed `<MobileDock />` with bottom padding spacer.
   - Wrap Token Scanner in `<div className="table-scroll-container">`.
   - Add segmented control (`[🧠 Agent Stream] | [📡 Devnet Radar]`) on mobile for `#mind-stream`.
@@ -263,12 +263,12 @@ Expected: FAIL
   - Refactor Treasury 24h stats container to `.treasury-24h-grid` (2×2 under 480px).
   - Add `id="radar-scan"` to Token Scanner section for direct dock linking.
 
-- [ ] **Step 4: Run test to verify it passes**
+- [x] **Step 4: Run test to verify it passes**
 
 Run: `npx vitest run tests/dashboard-responsive.test.ts`
 Expected: PASS
 
-- [ ] **Step 5: Commit changes**
+- [x] **Step 5: Commit changes**
 
 ```bash
 git add apps/web/components/dashboard.tsx tests/dashboard-responsive.test.ts
@@ -288,7 +288,7 @@ git commit -m "feat(dashboard): implement full responsive layout, mobile segment
 - Consumes: Existing documentation sections and CLI terminal simulation.
 - Produces: Overflow-protected tables in `/docs` and responsive monospace ASCII art in `/cli`.
 
-- [ ] **Step 1: Write test for docs and cli responsive containment**
+- [x] **Step 1: Write test for docs and cli responsive containment**
 
 Create `tests/docs-cli-responsive.test.ts`:
 ```typescript
@@ -313,21 +313,21 @@ describe('Docs and CLI Responsive Hardening', () => {
 });
 ```
 
-- [ ] **Step 2: Run test to verify it fails**
+- [x] **Step 2: Run test to verify it fails**
 
 Run: `npx vitest run tests/docs-cli-responsive.test.ts`
 Expected: FAIL
 
-- [ ] **Step 3: Update `app/docs/page.tsx` and `app/cli/page.tsx`**
+- [x] **Step 3: Update `app/docs/page.tsx` and `app/cli/page.tsx`**
   - In `app/docs/page.tsx`: add `table-scroll-container` to table wrappers and ensure address cells have `word-break: break-all` and copy actions.
   - In `app/cli/page.tsx`: wrap ASCII banner in `<div className="cli-banner-container">`, give terminal header `.cli-header-bar` with `flex-wrap: wrap`, and use fluid typography clamp so ASCII art does not distort on mobile screens.
 
-- [ ] **Step 4: Run test to verify it passes**
+- [x] **Step 4: Run test to verify it passes**
 
 Run: `npx vitest run tests/docs-cli-responsive.test.ts`
 Expected: PASS
 
-- [ ] **Step 5: Commit changes**
+- [x] **Step 5: Commit changes**
 
 ```bash
 git add app/docs/page.tsx app/cli/page.tsx tests/docs-cli-responsive.test.ts
@@ -343,24 +343,25 @@ git commit -m "feat(pages): harden responsive layouts for documentation and CLI 
 - Run linting
 - Run Next.js production build
 
-- [ ] **Step 1: Run all unit and integration tests**
+- [x] **Step 1: Run all unit and integration tests**
 
 Run: `npm test`
 Expected: All 98+ tests pass.
 
-- [ ] **Step 2: Run code linter**
+- [x] **Step 2: Run code linter**
 
 Run: `npm run lint`
 Expected: Zero lint errors or warnings.
 
-- [ ] **Step 3: Run production build**
+- [x] **Step 3: Run production build**
 
 Run: `npm run build`
 Expected: Successful Next.js production build (`Compiled successfully`).
 
-- [ ] **Step 4: Commit any final integration touches**
+- [x] **Step 4: Commit any final integration touches**
 
 ```bash
 git add .
 git commit -m "chore: complete responsive multi-device overhaul, mobile widgets, and PWA verification"
 ```
+

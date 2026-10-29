@@ -23,3 +23,4 @@ describe('PWA Configuration and Manifest', () => {
     expect(sw).toContain('Offline mode active');
   });
 });
+

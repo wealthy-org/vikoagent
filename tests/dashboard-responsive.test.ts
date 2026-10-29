@@ -16,3 +16,4 @@ describe('Dashboard Responsive Overhaul', () => {
     expect(html).toContain('treasury-24h-grid');
   });
 });
+
