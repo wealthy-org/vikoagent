@@ -1408,7 +1408,7 @@ export function Dashboard() {
             {/* Kivo Exact White Clay Treasury Card (rf6) */}
             <article className="clay treasury-clay-card" id="treasury-section">
               <div className="treasury-top-row">
-                <div>
+                <div className="treasury-meta-stack">
                   <div className="treasury-title-group">
                     <span className="stat-tile-label" style={{ fontSize: '10px', margin: 0, letterSpacing: '0.14em' }}>TREASURY</span>
                     <div className="range-pill-selector">
@@ -1462,7 +1462,7 @@ export function Dashboard() {
                     <span className="stat-tile-val tabular" style={{ color: 'var(--color-long)' }}>{currentChart.realized}</span>
                   </div>
                   <div className="clay-inset stat-inset-tile">
-                    <span className="stat-tile-label">ACTIVE POSITIONS</span>
+                    <span className="stat-tile-label">POSITIONS</span>
                     <span className="stat-tile-val tabular" style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
                       <span style={{ fontSize: '10px', background: '#ede9fe', border: '1px solid #ddd6fe', color: '#6d28d9', padding: '1px 4px', borderRadius: '4px', fontWeight: 600, display: 'inline-flex', alignItems: 'center', gap: '3px' }}>
                         <img src="/partners/solana.svg" alt="" style={{ width: '9px', height: '7px' }} />
@@ -1543,25 +1543,45 @@ export function Dashboard() {
                     strokeLinejoin="round"
                   />
 
-                  {/* Step Nodes and Labels */}
+                  {/* Step Nodes and Landmark Trade Execution */}
                   {STEP_NODES.map((node, i) => (
                     <g key={i}>
                       <circle
                         cx={node.x}
                         cy={node.y}
-                        r={node.isTrade ? 3.6 : 2.6}
+                        r={node.isTrade ? 4.2 : 2.6}
                         fill={node.isTrade ? '#10b981' : '#6366f1'}
+                        stroke={node.isTrade ? '#ffffff' : 'none'}
+                        strokeWidth={node.isTrade ? 1.5 : 0}
                       />
-                      <text
-                        x={node.x}
-                        y={node.y - 7}
-                        fontSize="7.5"
-                        fill="#818cf8"
-                        textAnchor="middle"
-                        fontFamily="var(--font-mono)"
-                      >
-                        {node.label}
-                      </text>
+                      {node.isTrade && (
+                        <g>
+                          {/* Elevated Emerald Take-Profit Badge */}
+                          <rect
+                            x={node.x - 38}
+                            y={node.y - 25}
+                            width="68"
+                            height="17"
+                            rx="8.5"
+                            fill="#ecfdf5"
+                            stroke="#10b981"
+                            strokeWidth="1"
+                            style={{ filter: 'drop-shadow(0 2px 5px rgba(16, 185, 129, 0.25))' }}
+                          />
+                          <circle cx={node.x - 28} cy={node.y - 16.5} r="2.5" fill="#10b981" />
+                          <text
+                            x={node.x + 3}
+                            y={node.y - 13}
+                            fontSize="8"
+                            fontWeight="700"
+                            fill="#047857"
+                            textAnchor="middle"
+                            fontFamily="var(--font-mono)"
+                          >
+                            +$142.50 TP
+                          </text>
+                        </g>
+                      )}
                     </g>
                   ))}
 
@@ -1619,26 +1639,26 @@ export function Dashboard() {
 
                   {/* Dynamic Tooltip on Hover showing Date and Value */}
                   {chartHover && (
-                    <g transform={`translate(${Math.max(35, Math.min(380, chartHover.x - 45))}, ${Math.max(16, chartHover.y - 28)})`}>
+                    <g transform={`translate(${Math.max(30, Math.min(330, chartHover.x - 55))}, ${Math.max(12, chartHover.y - 30)})`}>
                       <rect
-                        width="90"
-                        height="20"
-                        rx="4"
+                        width="110"
+                        height="22"
+                        rx="6"
                         fill="#ffffff"
-                        stroke="#c7d2fe"
-                        strokeWidth="1"
-                        style={{ filter: 'drop-shadow(0 2px 4px rgba(17, 19, 24, 0.08))' }}
+                        stroke="#818cf8"
+                        strokeWidth="1.2"
+                        style={{ filter: 'drop-shadow(0 4px 10px rgba(79, 70, 229, 0.16))' }}
                       />
                       <text
-                        x="45"
-                        y="14"
-                        fill="#4f46e5"
-                        fontSize="9"
-                        fontWeight="600"
+                        x="55"
+                        y="14.5"
+                        fill="#4338ca"
+                        fontSize="9.5"
+                        fontWeight="700"
                         textAnchor="middle"
                         fontFamily="var(--font-mono)"
                       >
-                        {chartHover.date}
+                        {chartHover.date} · {chartHover.nav}
                       </text>
                     </g>
                   )}

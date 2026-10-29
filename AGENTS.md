@@ -17,17 +17,20 @@ Vikoagent is a TypeScript/Next.js Solana Devnet paper-trading telemetry product.
 - Domain logic: `packages/domain/`; shared contracts: `packages/contracts/`.
 - Ingestion adapters: `packages/ingestion/`; persistence ports: `packages/persistence/`.
 - Requirements and tickets: `_bmad-output/`.
+- Progress tracking: `Task Breakdown Record.md` (append-only ledger) and `Task Breakdown Record Template.md` (canonical spec and template).
 
 ## Running and verifying
 
 - Run `npm test`, `npm run lint`, and `npm run build` before declaring work complete.
 - Use deterministic fixtures for local development; live PumpPortal transport remains separate from parser boundaries.
+- Mandatory Task Logging: After completing any task, story, bug fix, or milestone, append a new progress block to `Task Breakdown Record.md` following `Task Breakdown Record Template.md`.
 
 ## Conventions that differ from defaults
 
 - Use `ACCEPT`, `REJECT`, and `WATCH` for decisions; do not add execution authority to LLM output.
 - Use idempotency keys for event, decision, and paper-trade writes.
 - Use exact timestamps in ISO 8601 UTC format and preserve `DEVNET` / `PAPER MODE` labels.
+- Progress records are strictly append-only: never overwrite, edit, or truncate prior blocks in `Task Breakdown Record.md`; always increment the block counter (`Progress Block NNN — <Title>`), fill all mandatory fields, and verify all claims before writing.
 
 ## Known pitfalls
 

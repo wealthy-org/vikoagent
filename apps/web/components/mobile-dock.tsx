@@ -178,39 +178,13 @@ export function MobileDock() {
         <aside
           role="region"
           aria-label="PWA Install Promotion"
-          style={{
-            position: 'fixed',
-            bottom: 'calc(68px + var(--safe-bottom))',
-            left: '50%',
-            transform: 'translateX(-50%)',
-            zIndex: 998,
-            display: 'flex',
-            alignItems: 'center',
-            gap: '8px',
-            background: 'linear-gradient(135deg, #111318, #1f242e)',
-            color: '#ffffff',
-            padding: '8px 16px',
-            borderRadius: '9999px',
-            boxShadow: '0 8px 24px rgba(0, 0, 0, 0.25)',
-            fontSize: '12px',
-            fontWeight: 600,
-            whiteSpace: 'nowrap',
-          }}
+          className="pwa-install-toast"
         >
           <span>📲 Install Viko for full trader experience</span>
           <button
             type="button"
             onClick={handleInstallClick}
-            style={{
-              background: 'var(--color-iris, #6c7bff)',
-              color: '#ffffff',
-              border: 'none',
-              borderRadius: '9999px',
-              padding: '4px 10px',
-              fontSize: '11px',
-              fontWeight: 700,
-              cursor: 'pointer',
-            }}
+            className="pwa-install-btn"
           >
             Install
           </button>
@@ -218,14 +192,7 @@ export function MobileDock() {
             type="button"
             onClick={() => setShowInstallPill(false)}
             aria-label="Close install prompt"
-            style={{
-              background: 'transparent',
-              color: '#94a3b8',
-              border: 'none',
-              cursor: 'pointer',
-              fontSize: '14px',
-              padding: '0 4px',
-            }}
+            className="pwa-install-close"
           >
             ✕
           </button>
