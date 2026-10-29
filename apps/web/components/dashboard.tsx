@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect, useRef, useCallback, useMemo } from 'react';
 import { getDashboardReadModel } from '../../api/src/read-model';
+import { MobileDock } from './mobile-dock';
 
 function formatNumberWithCommas(num: number): string {
   return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
@@ -575,6 +576,47 @@ function ActivePositionDesk() {
     [sMax, sRange, candles]
   );
 
+  const handleDeskTouchMove = useCallback(
+    (e: React.TouchEvent<SVGSVGElement>) => {
+      if (!e.touches || e.touches.length === 0) return;
+      const touch = e.touches[0];
+      const svg = e.currentTarget;
+      const rect = svg.getBoundingClientRect();
+      if (!rect.width || !rect.height) return;
+
+      const svgX = ((touch.clientX - rect.left) / rect.width) * 346;
+      const svgY = ((touch.clientY - rect.top) / rect.height) * 210;
+
+      const clampedY = Math.max(8, Math.min(168, svgY));
+      const hoverPrice = sMax - ((clampedY - 8) / 160) * sRange;
+
+      if (!candles || candles.length === 0) return;
+
+      const nearestIdx = Math.max(
+        0,
+        Math.min(candles.length - 1, Math.round(((svgX - 14) / 265) * (candles.length - 1)))
+      );
+      const c = candles[nearestIdx];
+
+      const d = new Date(c.time);
+      const months = ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des'];
+      const day = d.getDate();
+      const month = months[d.getMonth()];
+      const year = String(d.getFullYear()).slice(-2);
+      const hours = String(d.getHours()).padStart(2, '0');
+      const mins = String(d.getMinutes()).padStart(2, '0');
+      const dateStr = `${day} ${month} '${year}   ${hours}:${mins}`;
+
+      setChartHover({
+        x: getX(nearestIdx),
+        y: clampedY,
+        price: hoverPrice,
+        dateStr,
+      });
+    },
+    [sMax, sRange, candles]
+  );
+
   const handleChartMouseLeave = useCallback(() => {
     setChartHover(null);
   }, []);
@@ -656,6 +698,8 @@ function ActivePositionDesk() {
           aria-label="Position Candlestick Chart"
           onMouseMove={handleChartMouseMove}
           onMouseLeave={handleChartMouseLeave}
+          onTouchMove={handleDeskTouchMove}
+          onTouchEnd={handleChartMouseLeave}
           style={{ cursor: 'crosshair', opacity: isTfLoading ? 0.6 : 1, transition: 'opacity 0.15s ease' }}
         >
           {/* Subtle Horizontal Grid lines */}
@@ -1027,6 +1071,25 @@ export function Dashboard() {
     });
   }
 
+  function handleChartTouchMove(e: React.TouchEvent<SVGSVGElement>) {
+    if (!e.touches || e.touches.length === 0) return;
+    const touch = e.touches[0];
+    const rect = e.currentTarget.getBoundingClientRect();
+    if (!rect.width) return;
+    const clientX = touch.clientX - rect.left;
+    const svgX = (clientX / rect.width) * 520;
+
+    const clampedX = Math.max(15, Math.min(445, svgX));
+    const step = CHART_STEPS_LOOKUP.find((s) => clampedX >= s.xMin && clampedX < s.xMax) || CHART_STEPS_LOOKUP[CHART_STEPS_LOOKUP.length - 1];
+
+    setChartHover({
+      x: clampedX,
+      y: step.y,
+      nav: step.nav,
+      date: step.date,
+    });
+  }
+
   function handleChartMouseLeave() {
     setChartHover(null);
   }
@@ -1385,7 +1448,7 @@ export function Dashboard() {
                 </div>
 
                 {/* 4 Inset Tiles on the Right */}
-                <div className="treasury-tiles-grid">
+                <div className="treasury-tiles-grid treasury-24h-grid">
                   <div className="clay-inset stat-inset-tile">
                     <span className="stat-tile-label">TRADES</span>
                     <span className="stat-tile-val tabular">{currentChart.trades}</span>
@@ -1419,6 +1482,8 @@ export function Dashboard() {
                   aria-label="Treasury NAV chart"
                   onMouseMove={handleChartMouseMove}
                   onMouseLeave={handleChartMouseLeave}
+          onTouchMove={handleChartTouchMove}
+          onTouchEnd={handleChartMouseLeave}
                   style={{ cursor: 'crosshair' }}
                 >
                   <defs>
@@ -1597,6 +1662,24 @@ export function Dashboard() {
         {/* 3. THE MIND MASTER SECTION (Exact 1:1 match to kivoagent.xyz) */}
         {/* ================================================================= */}
         <section className="clay mind-master-card" id="mind-stream">
+        {/* Mobile View Switcher (Mind Stream vs Token Radar) */}
+        <div className="segmented-control mobile-only" role="tablist" aria-label="Mobile View Switcher">
+          <a
+            href="#mind-stream"
+            role="tab"
+            className="segmented-tab active"
+          >
+            <span>🧠 Agent Stream</span>
+          </a>
+          <a
+            href="#radar-scan"
+            role="tab"
+            className="segmented-tab"
+          >
+            <span>📡 Token Radar</span>
+          </a>
+        </div>
+
           {/* Top Bar with MIND badge and live asset price indicators */}
           <div className="mind-top-bar">
             <div>
@@ -2278,7 +2361,7 @@ export function Dashboard() {
         {/* ================================================================= */}
         <section className="bottom-two-col">
           {/* Left Column: Token Scanner Radar */}
-          <article className="clay scanner-clay-panel" id="scanner-radar">
+          <article className="clay scanner-clay-panel" id="radar-scan" data-anchor="scanner-radar">
             <div className="panel-header-row">
               <h2 className="section-heading-h2" style={{ fontSize: '18px' }}>Token Scanner</h2>
               <span className="pill-green" style={{ fontSize: '10px' }}>
@@ -2299,7 +2382,7 @@ export function Dashboard() {
               ))}
             </div>
 
-            <div className="scanner-rows-stack">
+            <div className="table-scroll-container"><div className="scanner-rows-stack">
               {filteredTokens.map((t) => (
                 <div
                   key={t.mint}
@@ -2361,7 +2444,8 @@ export function Dashboard() {
                 </div>
               ))}
             </div>
-          </article>
+          </div>
+        </article>
 
           {/* Right Column: Execution Receipts */}
           <article className="clay receipts-clay-panel" id="receipts-ledger">
@@ -2532,6 +2616,8 @@ export function Dashboard() {
             </a>
           </div>
         </section>
+        <div className="dock-bottom-spacer mobile-only" />
+        <MobileDock />
       </main>
 
       {/* ================================================================= */}
